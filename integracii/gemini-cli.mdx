@@ -1,0 +1,140 @@
+---
+title: Gemini CLI
+description: Подключение Gemini CLI к Polza.ai для использования любых моделей через интерфейс командной строки Google
+icon: g
+---
+
+Gemini CLI — официальный инструмент командной строки от Google для работы с AI-моделями прямо в терминале. Поддерживает агентные задачи, работу с кодом и файловой системой. Через Polza.ai вы можете использовать Gemini CLI не только с моделями Google, но и с Claude, GPT, DeepSeek и другими.
+
+## Требования
+
+- Node.js 18 или выше
+- npm
+- API-ключ Polza.ai ([получить в дашборде](https://polza.ai/dashboard/api-keys))
+
+## Установка
+
+<Steps>
+
+<Step title="Установите Gemini CLI">
+
+```bash
+npm install -g @google/gemini-cli
+```
+
+Проверьте установку:
+
+```bash
+gemini --version
+```
+
+</Step>
+
+<Step title="Задайте переменные окружения">
+
+Укажите Polza.ai как бэкенд через переменные окружения:
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    export GOOGLE_GEMINI_BASE_URL="https://api.polza.ai/"
+    export GEMINI_API_KEY="ваш_ключ_polza_ai"
+    ```
+
+    Чтобы не вводить каждый раз, добавьте в `~/.bashrc` или `~/.zshrc`:
+
+    ```bash
+    echo 'export GOOGLE_GEMINI_BASE_URL="https://api.polza.ai/"' >> ~/.zshrc
+    echo 'export GEMINI_API_KEY="ваш_ключ_polza_ai"' >> ~/.zshrc
+    source ~/.zshrc
+    ```
+  </Tab>
+  <Tab title="Windows (PowerShell)">
+    ```powershell
+    $env:GOOGLE_GEMINI_BASE_URL = "https://api.polza.ai/"
+    $env:GEMINI_API_KEY = "ваш_ключ_polza_ai"
+    ```
+
+    Для постоянного сохранения:
+
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable("GOOGLE_GEMINI_BASE_URL", "https://api.polza.ai/", "User")
+    [System.Environment]::SetEnvironmentVariable("GEMINI_API_KEY", "ваш_ключ_polza_ai", "User")
+    ```
+  </Tab>
+  <Tab title="Windows (cmd.exe)">
+    ```cmd
+    set GOOGLE_GEMINI_BASE_URL=https://api.polza.ai/
+    set GEMINI_API_KEY=ваш_ключ_polza_ai
+    ```
+  </Tab>
+</Tabs>
+
+**Опционально:** задайте модель по умолчанию через переменную окружения `GEMINI_MODEL`, либо выберите её при запуске флагом `--model`:
+
+```bash
+set GEMINI_MODEL=anthropic/claude-sonnet-5
+gemini --model anthropic/claude-sonnet-5
+```
+
+</Step>
+
+<Step title="Запустите Gemini CLI">
+
+```bash
+gemini
+```
+
+При первом запуске выберите способ авторизации — укажите **API Key** и введите ваш ключ Polza.ai.
+
+<Frame>
+  <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336.png" alt="Gemini CLI, подключённый к Polza.ai" />
+</Frame>
+
+</Step>
+
+</Steps>
+
+## Рекомендуемые модели
+
+| Модель | ID | Контекст | Code Arena | Особенности |
+|---|---|---|---|---|
+| Claude Fable 5 | `anthropic/claude-fable-5` | 1M | #1 (1653) | 2026 release. Mythos-class — самый мощный Claude для длинных async-агентов и автономной работы с кодовой базой |
+| Claude Opus 4.8 | `anthropic/claude-opus-4.8` | 1M | #10 (1535) | 2026 release. Текущий GA-топ Opus, thinking-вариант — #3 (1561) |
+| Claude Sonnet 5 | `anthropic/claude-sonnet-5` | 1M | #6 (1551, High) | 2026 release. Лучший баланс цены и качества в Sonnet-классе, адаптивное мышление |
+| Claude Opus 4.7 | `anthropic/claude-opus-4.7` | 1M | #5 (1557) | Стабильный fallback: почти догоняет Opus 4.8 по Code Arena |
+| GPT-5.5 Pro | `openai/gpt-5.5-pro` | 1.05M | not ranked | 2026 release. Усиленные рассуждения, xhigh-вариант — топ-3 в Code Arena |
+| GPT-5.5 | `openai/gpt-5.5` | 1.05M | #27 (1448) | 2026 release. Базовый frontier, ощутимо лучше GPT-5.4 в агентных задачах |
+| Gemini 3.5 Flash | `google/gemini-3.5-flash` | 1M | #15 (1510) | 2026 release. Near-Pro кодинг по цене Flash, мультимодальный (текст/изображения/видео/аудио/PDF) |
+| Gemini 3.1 Pro Preview | `google/gemini-3.1-pro-preview` | 1M | #29 (1445) | Reasoning-флагман Google, повышенная стабильность в длинных агентских сессиях |
+| DeepSeek V4 Pro | `deepseek/deepseek-v4-pro` | 1M | #28 (1446) | 2026 release. 1.6T MoE (49B active) — самый дешёвый Pro-класс |
+| Kimi K2.7 Code | `moonshotai/kimi-k2.7-code` | 262K | #22 (1471) | 2026 release. Специализация на end-to-end кодинге, мультимодальный MoE |
+
+## Возможности
+
+- **Агентный режим** — Gemini CLI автономно выполняет многошаговые задачи: читает файлы, пишет код, запускает команды
+- **Работа с кодовой базой** — анализирует весь проект, предлагает рефакторинг, пишет тесты
+- **Поддержка MCP** — подключайте внешние инструменты через Model Context Protocol
+- **Потоковый вывод** — ответы отображаются в реальном времени
+- **Мультимодальность** — передавайте изображения и PDF прямо в запросе
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Ошибка аутентификации (401 Unauthorized)">
+    Проверьте, что переменная `GEMINI_API_KEY` задана правильно:
+    ```bash
+    echo $GEMINI_API_KEY
+    ```
+    Если пусто — повторите шаг с экспортом или перезапустите терминал.
+  </Accordion>
+
+  <Accordion title="Модель не найдена">
+    Проверьте точное написание ID модели на [polza.ai/models](https://polza.ai/models). Gemini CLI передаёт ID модели как есть — опечатки приведут к ошибке.
+  </Accordion>
+
+  <Accordion title="Переменные не сохраняются после перезапуска терминала">
+    На macOS/Linux добавьте строки `export` в профиль оболочки (`~/.zshrc`, `~/.bashrc`).
+    На Windows используйте `[System.Environment]::SetEnvironmentVariable` с параметром `"User"`.
+  </Accordion>
+</AccordionGroup>

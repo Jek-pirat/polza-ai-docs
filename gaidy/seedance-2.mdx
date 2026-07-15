@@ -1,12 +1,14 @@
 ---
 title: Seedance 2
-description: Генерация видео с моделями Seedance 2 и Seedance 2 Fast от ByteDance
+description: Генерация видео с моделями Seedance 2, Seedance 2 Fast и Seedance 2 Mini от ByteDance
 icon: video
 ---
 
 Модели генерации видео от ByteDance нового поколения. Поддержка text-to-video и image-to-video, разрешения 480p–720p, длительность до 15 сек, multi-shot сцены и опциональная генерация звука.
 
 **Seedance 2 Fast** — ускоренная версия с аналогичными возможностями. Используйте её, когда скорость важнее максимального качества.
+
+**Seedance 2 Mini** — самая экономичная версия линейки с тем же набором возможностей: text-to-video, image-to-video, референсы из изображений/видео/аудио, edit, extend и генерация синхронного звука.
 
 Полная документация API: [Генерация медиа](https://polza.ai/docs/api-reference/media/create)
 
@@ -26,7 +28,7 @@ icon: video
 
 | Параметр | Обязательный | Описание |
 | --- | --- | --- |
-| `model` | Да | `bytedance/seedance-2` или `bytedance/seedance-2-fast` |
+| `model` | Да | `bytedance/seedance-2`, `bytedance/seedance-2-fast` или `bytedance/seedance-2-mini` |
 | `prompt` | Да | Описание видео (3–20000 символов) |
 | `aspect_ratio` | Нет | 16:9, 4:3, 1:1, 3:4, 9:16, 21:9 |
 | `resolution` | Нет | 480p, 720p |
@@ -67,6 +69,27 @@ icon: video
       -H "Content-Type: application/json" \
       -d '{
         "model": "bytedance/seedance-2-fast",
+        "input": {
+          "prompt": "Описание видео (3–20000 символов)",
+          "aspect_ratio": "16:9",
+          "resolution": "720p",
+          "duration": "10",
+          "videos": [],
+          "images": [],
+          "generate_audio": "false",
+          "multi_shots": "false"
+        },
+        "async": true
+      }'
+    ```
+  </Tab>
+  <Tab title="Seedance 2 Mini">
+    ```bash
+    curl -X POST "https://polza.ai/api/v1/media" \
+      -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "bytedance/seedance-2-mini",
         "input": {
           "prompt": "Описание видео (3–20000 символов)",
           "aspect_ratio": "16:9",

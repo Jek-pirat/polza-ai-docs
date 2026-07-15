@@ -361,6 +361,16 @@
       "size": 93267,
       "source_path": "images/dify/03-add-model.png",
       "uploaded_at": "2026-06-17T16:43:41+00:00"
+    },
+    "1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/gemini-cli.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336.png",
+      "s3_key": "polza-docs/images/1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336.png",
+      "sha256": "1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336",
+      "size": 37544,
+      "source_path": "images/gemini-cli/gemini.png",
+      "uploaded_at": "2026-07-15T10:20:03+00:00"
     }
   },
   "key_prefix": "polza-docs/images",
