@@ -28,68 +28,67 @@ npm i -g @openai/codex
 ## Настройка
 
 <Steps>
+  <Step title="Создайте файл конфигурации">
+    <Tabs>
+      <Tab title="macOS / Linux">
+        ```bash
+        mkdir -p ~/.codex
+        nano ~/.codex/config.toml
+        ```
+      </Tab>
+      <Tab title="Windows">
+        ```powershell
+        mkdir "$env:USERPROFILE\.codex" -Force
+        notepad "$env:USERPROFILE\.codex\config.toml"
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
 
-### Создайте файл конфигурации
+  <Step title="Вставьте конфигурацию провайдера">
+    <CodeGroup>
+    ```toml config.toml
+     model_provider = "polza"
+    model = "deepseek/deepseek-v4-flash-0731"
+    model_reasoning_effort = "high"
 
-<Tabs>
-  <Tab title="macOS / Linux">
-    ```bash
-    mkdir -p ~/.codex
-    nano ~/.codex/config.toml
+    [model_providers.polza]
+    name = "Polza.ai"
+    base_url = "https://polza.ai/api/v1/"
+    env_key = "POLZA_API_KEY"
+    wire_api = "responses"
     ```
-  </Tab>
-  <Tab title="Windows">
-    ```powershell
-    mkdir "$env:USERPROFILE\.codex" -Force
-    notepad "$env:USERPROFILE\.codex\config.toml"
-    ```
-  </Tab>
-</Tabs>
+    </CodeGroup>
+  </Step>
 
-### Вставьте конфигурацию провайдера
+  <Step title="Откройте терминал, установите API-ключ и запустите Codex">
+    Откройте терминал (Terminal на macOS/Linux, PowerShell на Windows), задайте переменную окружения с вашим API-ключом и запустите Codex:
 
-<CodeGroup>
-```toml config.toml
-model = "google/gemini-2.5-flash-lite-preview-09-2025"
-model_provider = "polza"
+    <Tabs>
+      <Tab title="macOS / Linux">
+        ```bash
+        export POLZA_API_KEY="ваш-ключ"
+        codex "ваш запрос"
+        ```
 
-[model_providers.polza]
-name = "Polza.ai"
-base_url = "https://polza.ai/api/v1/"
-env_key = "POLZA_API_KEY"
-wire_api = "responses"
-```
-</CodeGroup>
+        Чтобы сохранить ключ на постоянной основе, добавьте строку `export POLZA_API_KEY="ваш-ключ"` в `~/.bashrc` или `~/.zshrc`.
+      </Tab>
+      <Tab title="Windows">
+        ```powershell
+        $env:POLZA_API_KEY = "ваш-ключ"
+        codex "ваш запрос"
+        ```
 
-### Откройте терминал, установите API-ключ и запустите Codex
+        Для сохранения на постоянной основе:
 
-Откройте терминал (Terminal на macOS/Linux, PowerShell на Windows), задайте переменную окружения с вашим API-ключом и запустите Codex:
+        ```powershell
+        [System.Environment]::SetEnvironmentVariable("POLZA_API_KEY", "ваш-ключ", "User")
+        ```
 
-<Tabs>
-  <Tab title="macOS / Linux">
-    ```bash
-    export POLZA_API_KEY="ваш-ключ"
-    codex "ваш запрос"
-    ```
-
-    Чтобы сохранить ключ на постоянной основе, добавьте строку `export POLZA_API_KEY="ваш-ключ"` в `~/.bashrc` или `~/.zshrc`.
-  </Tab>
-  <Tab title="Windows">
-    ```powershell
-    $env:POLZA_API_KEY = "ваш-ключ"
-    codex "ваш запрос"
-    ```
-
-    Для сохранения на постоянной основе:
-
-    ```powershell
-    [System.Environment]::SetEnvironmentVariable("POLZA_API_KEY", "ваш-ключ", "User")
-    ```
-
-    Или через GUI: `Win + R` → `sysdm.cpl` → вкладка **Дополнительно** → **Переменные среды** → **Создать**.
-  </Tab>
-</Tabs>
-
+        Или через GUI: `Win + R` → `sysdm.cpl` → вкладка **Дополнительно** → **Переменные среды** → **Создать**.
+      </Tab>
+    </Tabs>
+  </Step>
 </Steps>
 
 ## Рекомендуемые модели
@@ -125,4 +124,4 @@ wire_api = "responses"
 
 - [Qwen Code CLI + Polza.ai](/integracii/qwen-code)
 - [Claude Code + Polza.ai](/integracii/claude-code)
-- [Polza.ai API Reference](/api-reference/responses/create)
+- [Gemini CLI + Polza.ai](/integracii/gemini-cli)
