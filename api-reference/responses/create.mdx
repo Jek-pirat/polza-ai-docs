@@ -1,6 +1,6 @@
-﻿---
+---
 title: POST Responses
-description: Responses API — альтернативный формат запросов
+description: Responses API — OpenAI-совместимый формат запросов с tool calling и streaming
 icon: reply
 openapi: POST /v1/responses
 ---
@@ -11,40 +11,91 @@ openapi: POST /v1/responses
 Responses API находится в **бета-версии**. API может измениться без предварительного уведомления.
 </Warning>
 
-Responses API — альтернативный формат, совместимый с OpenAI Responses API.
-Автоматически трансформируется в Chat Completions формат внутри.
+Responses API — формат, совместимый с OpenAI Responses API. Работает с официальным OpenAI SDK
+(`client.responses.create(...)`), Codex CLI и другими каноничными клиентами. Внутри запрос
+трансформируется в Chat Completions и уходит выбранному провайдеру.
+
+Эндпоинты:
+
+| Метод | Путь | Назначение |
+|---|---|---|
+| `POST` | `/v1/responses` | Создание ответа (обычный и streaming) |
+| `POST` | `/v1/responses/compact` | Компактизация истории диалога |
+
+Пути `/v2/responses` и `/v2/responses/compact` — алиасы, поведение идентично.
+
+<Note>
+**API stateless.** Мы не храним предыдущие ответы: `previous_response_id`, `conversation` и `store`
+не поддерживаются. Всю историю диалога — включая вызовы инструментов — передавайте в `input`
+каждым запросом. Методов `GET /v1/responses/{id}`, `DELETE` и `/cancel` нет.
+</Note>
 
 ## Основные параметры
 
 | Параметр | Тип | Описание |
 |----------|-----|----------|
-| `model` | string | ID модели |
-| `input` | string / array | Текст или массив сообщений |
-| `instructions` | string | Системные инструкции |
+| `model` | string | ID модели. Поддерживает alias-формат `<model>@<key>=<value>` (см. ниже) |
+| `input` | string / array | Текст или массив input items |
+| `instructions` | string | Системные инструкции (эквивалент system-сообщения) |
 | `stream` | boolean | Потоковая передача через SSE |
+
+### Alias-формат модели
+
+К имени модели можно дописать параметры маршрутизации через `@`:
+
+```text
+openai/gpt-4o@provider=azure&reasoning_effort=high&allow_fallbacks=false
+```
+
+Поддерживаемые ключи: `provider`, `reasoning_effort`, `allow_fallbacks`. При конфликте alias
+и одноимённого поля в теле запроса API вернёт 400.
 
 ### Дополнительные параметры
 
 | Параметр | Тип | Описание |
 |----------|-----|----------|
-| `tools` | array | Определения инструментов |
-| `tool_choice` | string/object | Выбор инструмента: none, auto, required |
-| `reasoning` | object | Настройки reasoning (effort: xhigh/high/medium/low/minimal/none) |
+| `tools` | array | Определения инструментов (см. раздел Tool calling) |
+| `tool_choice` | string / object | `none`, `auto`, `required` или `{"type":"function","name":"..."}` |
+| `parallel_tool_calls` | boolean | Разрешить параллельные вызовы инструментов |
+| `max_tool_calls` | integer | Ограничение на количество вызовов |
+| `reasoning` | object | Настройки reasoning: `effort` (`max`/`xhigh`/`high`/`medium`/`low`/`minimal`/`none`), `summary`, `max_tokens`, `type: adaptive` для Claude 4.6+ |
+| `text` | object | Формат вывода: `{"format": {"type": "text" \| "json_object" \| "json_schema", ...}}` |
 | `max_output_tokens` | integer | Максимум выходных токенов |
-| `temperature` | float (0-2) | Температура генерации |
-| `top_p` | float (0-1) | Nucleus sampling |
-| `top_logprobs` | integer (0-20) | Количество log probabilities |
-| `previous_response_id` | string | ID предыдущего ответа для продолжения |
-| `models` | array | Массив fallback-моделей |
-| `text` | object | Формат текста: text, json_object, json_schema |
+| `temperature` | float (0–2) | Температура генерации |
+| `top_p` | float (0–1) | Nucleus sampling |
+| `top_k` | integer | Top-K sampling |
+| `top_logprobs` | integer (0–20) | Количество log probabilities |
+| `frequency_penalty` / `presence_penalty` | float (−2…2) | Штрафы за повторы |
+| `include` | array | Дополнительные поля вывода, например `["reasoning.encrypted_content"]` |
+| `prompt_cache_key` | string | Ключ кеширования промпта |
+| `prompt_cache_retention` | string | `in_memory` или `24h` |
+| `modalities` | array | `["text"]`, `["text","image"]` — для моделей с генерацией изображений |
+| `image_config` | object | Параметры генерации изображений |
+| `provider` | object | Предпочтения по провайдерам (см. [Выбор провайдера](/gaidy/provider-selection)) |
+| `plugins` | array | Серверные плагины: `web`, `file-parser`, `moderation`, `masker`, `response-healing` |
 | `metadata` | object | Произвольные key-value данные |
+| `user` / `safety_identifier` | string | Идентификатор конечного пользователя |
+
+### Не поддерживаются
+
+Эти поля принимаются ради совместимости с OpenAI SDK, но не влияют на результат:
+
+| Параметр | Что использовать вместо |
+|----------|-------------------------|
+| `previous_response_id` | Передавайте всю историю в `input` |
+| `conversation` | То же |
+| `store` | Ответы не сохраняются, истории через API нет |
+| `background` | Асинхронного режима у Responses API нет |
+| `prompt` (reusable prompt templates) | Передавайте текст инструкций в `instructions` |
+| `models` (массив fallback) | Alias `model@allow_fallbacks=true` |
+| `session_id` | `metadata` или `user` |
 
 ## Примеры
 
 <CodeGroup>
 ```bash cURL
 curl -X POST "https://polza.ai/api/v1/responses" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "openai/gpt-4o",
@@ -53,33 +104,327 @@ curl -X POST "https://polza.ai/api/v1/responses" \
 ```
 
 ```python Python
-import requests
+from openai import OpenAI
 
-response = requests.post(
-    'https://polza.ai/api/v1/responses',
-    headers={'Authorization': 'Bearer YOUR_API_KEY'},
-    json={
-        'model': 'openai/gpt-4o',
-        'input': [
-            {"role": "user", "content": "Привет!"}
-        ],
-        'instructions': 'Отвечай кратко и по делу'
-    }
+client = OpenAI(
+    base_url="https://polza.ai/api/v1",
+    api_key="<POLZA_AI_API_KEY>",
 )
 
-data = response.json()
-print(data['output'][0]['content'][0]['text'])
+response = client.responses.create(
+    model="openai/gpt-4o",
+    input=[{"role": "user", "content": "Привет!"}],
+    instructions="Отвечай кратко и по делу",
+)
+
+print(response.output_text)
+```
+
+```typescript TypeScript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'https://polza.ai/api/v1',
+  apiKey: '<POLZA_AI_API_KEY>',
+});
+
+const response = await client.responses.create({
+  model: 'openai/gpt-4o',
+  input: [{ role: 'user', content: 'Привет!' }],
+  instructions: 'Отвечай кратко и по делу',
+});
+
+console.log(response.output_text);
 ```
 </CodeGroup>
 
+### Структура ответа
+
+```json
+{
+  "id": "gen_581761234567890123",
+  "object": "response",
+  "created_at": 1785312000,
+  "completed_at": 1785312003,
+  "model": "openai/gpt-4o",
+  "status": "completed",
+  "error": null,
+  "output_text": "Квантовые компьютеры — это...",
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_1785312000_0",
+      "status": "completed",
+      "role": "assistant",
+      "content": [{ "type": "output_text", "text": "Квантовые компьютеры — это...", "annotations": [] }]
+    }
+  ],
+  "incomplete_details": null,
+  "usage": {
+    "input_tokens": 12,
+    "output_tokens": 148,
+    "total_tokens": 160,
+    "cost_rub": 0.0413
+  }
+}
+```
+
+`status` — `completed`, `incomplete` или `failed`. При `incomplete` заполняется
+`incomplete_details.reason` (`max_output_tokens` или `content_filter`).
+
+В `usage` поля продублированы в двух неймингах: `input_tokens`/`output_tokens` (Responses API)
+и `prompt_tokens`/`completion_tokens` (Chat Completions) — используйте любой. `cost_rub` —
+фактическая стоимость запроса, списанная с баланса.
+
+## Tool calling
+
+Поддерживается полный цикл: передача `tools` → получение `function_call` → отправка результата
+через `function_call_output` → финальный ответ модели.
+
+### Типы инструментов
+
+| `type` | Поддержка |
+|---|---|
+| `function` | Оба формата: плоский Responses (`{"type":"function","name":...}`) и вложенный (`{"type":"function","function":{...}}`) |
+| `custom` | Free-form инструмент. Внутри приводится к функции с единственным строковым полем `input`, в ответе приходит как `function_call` с `arguments = {"input": "..."}` |
+| `web_search`, `web_search_preview` | Включает серверный веб-поиск (эквивалент `plugins: [{"id": "web"}]`) |
+| Прочие (`code_interpreter`, `file_search`, `local_shell`) | Не поддерживаются — модель их не увидит |
+
+<Warning>
+Возможность вызывать инструменты зависит от модели. Если модель не поддерживает tool calling,
+инструменты будут проигнорированы провайдером. Проверяйте поддержку в
+[каталоге моделей](https://polza.ai/models).
+</Warning>
+
+### 1. Запрос с инструментами
+
+```json
+{
+  "model": "openai/gpt-4o",
+  "input": [{ "role": "user", "content": "Какая погода в Москве?" }],
+  "tools": [
+    {
+      "type": "function",
+      "name": "get_weather",
+      "description": "Получить текущую погоду в городе",
+      "parameters": {
+        "type": "object",
+        "properties": { "location": { "type": "string", "description": "Название города" } },
+        "required": ["location"]
+      }
+    }
+  ],
+  "tool_choice": "auto"
+}
+```
+
+### 2. Ответ с вызовом инструмента
+
+```json
+{
+  "id": "gen_581761234567890123",
+  "object": "response",
+  "status": "completed",
+  "output_text": "",
+  "output": [
+    {
+      "type": "function_call",
+      "id": "fc_call_abc123",
+      "call_id": "call_abc123",
+      "name": "get_weather",
+      "arguments": "{\"location\":\"Москва\"}",
+      "status": "completed"
+    }
+  ]
+}
+```
+
+### 3. Возврат результата инструмента
+
+Выполните функцию на своей стороне и отправьте новый запрос со всей историей: исходное сообщение
+пользователя, item `function_call` и item `function_call_output` с тем же `call_id`.
+
+```json
+{
+  "model": "openai/gpt-4o",
+  "input": [
+    { "role": "user", "content": "Какая погода в Москве?" },
+    {
+      "type": "function_call",
+      "call_id": "call_abc123",
+      "name": "get_weather",
+      "arguments": "{\"location\":\"Москва\"}"
+    },
+    {
+      "type": "function_call_output",
+      "call_id": "call_abc123",
+      "output": "{\"temp_c\": -3, \"condition\": \"снег\"}"
+    }
+  ],
+  "tools": []
+}
+```
+
+В поле `tools` второго запроса передайте те же определения инструментов, что и в первом.
+
+<Warning>
+**Item `function_call` обязателен.** Если прислать только `function_call_output` — например,
+рассчитывая, что историю подтянет `previous_response_id`, — модель получит результат инструмента
+без самого вызова и вернёт ошибку вида
+`messages with role 'tool' must be a response to a preceding message with 'tool_calls'`.
+API stateless, историю нужно передавать полностью.
+</Warning>
+
+### Типы input items
+
+| `type` | Описание |
+|---|---|
+| `message` (или объект с `role`) | Сообщение с ролью `user`, `assistant`, `system` или `developer` |
+| `function_call` | Эхо ранее полученного вызова: `call_id`, `name`, `arguments` (JSON-строка) |
+| `function_call_output` | Результат вызова: `call_id` и `output` (строка или произвольный JSON) |
+| `reasoning` | Reasoning-блок предыдущего хода: `content`, `summary`, `encrypted_content` |
+
+### Мультимодальный input
+
+В `content` сообщения можно передать массив частей:
+
+| `type` | Поле с данными |
+|---|---|
+| `input_text` | `text` |
+| `input_image` | `image_url` (URL или data-URI), опционально `detail` |
+| `input_audio` | `input_audio: { data, format }` либо плоские `audio` и `format` |
+| `input_file` | `file_url`, `file_data` (base64) или `file_id`, плюс `filename` |
+| `input_video` | `video_url` |
+
+```json
+{
+  "role": "user",
+  "content": [
+    { "type": "input_text", "text": "Что изображено на картинке?" },
+    { "type": "input_image", "image_url": "https://example.com/photo.jpg", "detail": "auto" }
+  ]
+}
+```
+
 ## Streaming
 
-При `stream: true` ответ приходит в формате SSE с типами событий:
+При `stream: true` ответ приходит в формате SSE. Имена и порядок событий соответствуют
+спецификации OpenAI Responses API, поэтому работают официальный OpenAI SDK и Codex CLI.
 
-| Событие | Описание |
-|---------|----------|
-| `response.created` | Ответ создан |
-| `response.output_item.added` | Новый элемент вывода |
-| `response.content_part.delta` | Инкрементальный контент |
-| `response.content_part.done` | Часть контента завершена |
-| `response.done` | Ответ завершён |
+### События
+
+| Событие | Когда приходит |
+|---------|----------------|
+| `response.created` | Ответ создан (первое событие) |
+| `response.output_item.added` | Начался новый output item (`message`, `reasoning` или `function_call`) |
+| `response.content_part.added` | Начата текстовая часть сообщения |
+| `response.output_text.delta` | Инкремент текста |
+| `response.output_text.done` | Полный текст части |
+| `response.content_part.done` | Часть завершена, здесь же `annotations` |
+| `response.output_item.done` | Output item завершён |
+| `response.function_call_arguments.delta` | Инкремент JSON-аргументов вызова инструмента |
+| `response.function_call_arguments.done` | Полные аргументы вызова |
+| `response.reasoning_text.delta` / `.done` | Reasoning-текст модели |
+| `response.reasoning_summary_part.added` | Начало summary reasoning |
+| `response.reasoning_summary_text.delta` / `.done` | Summary reasoning |
+| `response.completed` | Ответ завершён, содержит полный `output` и `usage` |
+| `response.incomplete` | Ответ оборван по лимиту токенов или фильтру контента |
+| `response.failed` | Ошибка в процессе генерации |
+
+Типовой порядок событий для текстового ответа:
+
+```text
+response.created
+response.output_item.added        (item.type = "message")
+response.content_part.added
+response.output_text.delta        × N
+response.output_text.done
+response.content_part.done
+response.output_item.done
+response.completed
+data: [DONE]
+```
+
+Для вызова инструмента:
+
+```text
+response.created
+response.output_item.added                (item.type = "function_call")
+response.function_call_arguments.delta     × N
+response.function_call_arguments.done
+response.output_item.done                 (item.type = "function_call")
+response.completed
+data: [DONE]
+```
+
+Источник истины для запуска инструмента — событие `response.output_item.done` с
+`item.type = "function_call"`: в нём полные `name`, `arguments` и `call_id`.
+
+### Особенности
+
+- Каждое событие несёт монотонный `sequence_number` — используйте его для упорядочивания.
+- Стрим завершается строкой `data: [DONE]`. Она нужна ChatCompletion-подобным клиентам,
+  каноничные клиенты Responses API её игнорируют.
+- При долгом ожидании ответа провайдера сервер шлёт SSE-комментарии `: processing` — игнорируйте
+  строки, начинающиеся с `:`.
+- Если модель вызывает несколько инструментов параллельно, у каждого свой `output_index`.
+- При ошибке посреди стрима приходит терминальное `response.failed`, стрим не обрывается молча.
+
+```bash cURL
+curl -N -X POST "https://polza.ai/api/v1/responses" \
+  -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-4o",
+    "input": "Расскажи о квантовых компьютерах",
+    "stream": true
+  }'
+```
+
+## Компактизация истории
+
+`POST /v1/responses/compact` укорачивает историю диалога, когда она перестаёт помещаться в
+контекст. Полезно агентским клиентам с длинными сессиями.
+
+Сервер сохраняет все инструкции (`system` и `developer`), последние `keep_last` сообщений и все
+структурные items (`function_call`, `function_call_output`, `reasoning`), а вытесненные текстовые
+сообщения сворачивает в один summary-плейсхолдер. Обращения к модели не происходит — метод
+бесплатный и синхронный.
+
+```json
+{
+  "model": "openai/gpt-4o",
+  "input": [],
+  "keep_last": 6
+}
+```
+
+В `input` передайте полную историю input items. Ответ содержит укороченную историю, которую нужно
+передать в следующий `POST /v1/responses`:
+
+```json
+{
+  "object": "response.compact",
+  "model": "openai/gpt-4o",
+  "input": []
+}
+```
+
+Значение `keep_last` по умолчанию — 6.
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Вызов функций" icon="wrench" href="/gaidy/tool-calling">
+    Tool calling в формате Chat Completions
+  </Card>
+  <Card title="Codex CLI" icon="terminal" href="/integracii/codex">
+    Подключение Codex CLI к Polza.ai
+  </Card>
+  <Card title="Структурный вывод" icon="brackets-curly" href="/gaidy/structured-output">
+    JSON Schema и строгие форматы ответа
+  </Card>
+  <Card title="Выбор провайдера" icon="server" href="/gaidy/provider-selection">
+    Маршрутизация и fallback
+  </Card>
+</CardGroup>
