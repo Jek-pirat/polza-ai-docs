@@ -271,5 +271,12 @@
     "socials": {
       "telegram": "https://t.me/polzaai"
     }
+  },
+  "errors": {
+    "404": {
+      "redirect": false,
+      "title": "Страница не найдена",
+      "description": "Такой страницы в документации нет — возможно, адрес изменился. Начните с [быстрого старта](/glavnoe/quickstart) или напишите в [поддержку](/glavnoe/support)."
+    }
   }
 }
