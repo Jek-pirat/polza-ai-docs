@@ -7,8 +7,11 @@ openapi: POST /v1/audio/transcriptions
 
 <Info>
 Этот эндпоинт совместим с OpenAI SDK и подходит для быстрой миграции существующего кода.
-Если вы разрабатываете новый софт — рекомендуем использовать [Media API](/api-reference/media/create), который предоставляет единый интерфейс для всех медиа-операций.
 </Info>
+
+<Warning>
+Распознавание речи обслуживается **только** этим эндпоинтом. [Media API](/api-reference/media/create) отвечает за генерацию изображений, видео и музыки — опрашивать через `/v1/media/{id}` статус транскрипции нельзя, он вернёт ошибку `RESULT_EXPIRED`, даже когда текст готов.
+</Warning>
 
 ## Доступные модели
 
@@ -27,13 +30,22 @@ openapi: POST /v1/audio/transcriptions
 
 > Тарификация STT — посекундная (`per_second`), по длительности аудио.
 
+### Асинхронные модели
+
+| Модель | ID | Описание |
+|--------|-----|----------|
+| Aiesa Транскрипция | `aiesa/transcribe` | Диаризация по спикерам, обычная очередь. 0,12 ₽/мин |
+| Aiesa Транскрипция (Молния) | `aiesa/transcribe-fast` | То же, ускоренная обработка. 0,40 ₽/мин |
+
+Эти модели работают иначе: запрос возвращает не текст, а `id` задачи, результат забирается опросом статуса. Подробности и примеры — в руководстве [Aiesa Транскрипция](/gaidy/aiesa-transcribe). Тарификация — по целым минутам, минимум одна минута.
+
 ## Параметры запроса
 
 | Параметр | Тип | Обязательный | Описание |
 |----------|-----|--------------|----------|
 | `file` | string | Да | Аудиофайл: base64 (`data:audio/mp3;base64,...`) или URL |
 | `model` | string | Нет | Модель транскрибации (по умолчанию `openai/whisper-1`) |
-| `language` | string | Нет | ISO-639-1: `auto` (по умолчанию), `ru`, `en`, `de`, `fr`, `es`, `it`, `pt`, `pl`, `uk`, `nl`, `sv`, `da`, `fi`, `cs`, `sk`, `ro`, `bg`, `hr`, `el`, `tr`, `ar`, `hi`, `zh`, `ja`, `ko`, `id` |
+| `language` | string | Нет | ISO-639-1: `auto` (по умолчанию), `ru`, `en`, `de`, `fr`, `es`, `it`, `pt`, `pl`, `uk`, `nl`, `sv`, `da`, `fi`, `cs`, `sk`, `ro`, `bg`, `hr`, `el`, `tr`, `ar`, `hi`, `zh`, `ja`, `ko`, `id`. Модели `aiesa/*` значение `auto` не принимают — для них либо укажите язык явно, либо не передавайте параметр |
 | `temperature` | number | Нет | Температура (0–1, по умолчанию 0). В основном для `whisper-1` |
 | `response_format` | enum | Нет | `json` (по умолчанию), `text`, `srt`, `verbose_json`, `vtt`, `diarized_json` |
 | `prompt` | string | Нет | Контекст транскрипции, до ~2048 символов. **Не** поддерживается для `gpt-4o-transcribe-diarize` |
@@ -239,3 +251,53 @@ curl -X POST "https://polza.ai/api/v1/audio/transcriptions" \
 | `segments` | Сегменты с таймкодами (для `verbose_json` и `diarized_json`) |
 | `words` | Слова с таймкодами (при `timestamp_granularities: ["word"]`) |
 | `usage` | Использование: `durationSeconds`, `cost_rub`, `cost` |
+
+## Ответ асинхронных моделей (`aiesa/*`)
+
+Асинхронные модели вместо текста возвращают идентификатор задачи:
+
+```json
+{
+  "id": "gen_1234567890123456789",
+  "object": "transcription",
+  "status": "processing",
+  "model": "aiesa/transcribe"
+}
+```
+
+Результат забирается опросом:
+
+```bash
+curl "https://polza.ai/api/v1/audio/transcriptions/gen_1234567890123456789" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```json
+{
+  "id": "gen_1234567890123456789",
+  "object": "transcription",
+  "status": "completed",
+  "text": "Добрый день, начнём совещание. Да, все на связи.",
+  "duration": 15,
+  "segments": [
+    {
+      "speaker": "SPEAKER_01",
+      "text": "Добрый день, начнём совещание.",
+      "start": 0,
+      "end": 7,
+      "startTime": "00:00:00",
+      "endTime": "00:00:07"
+    }
+  ]
+}
+```
+
+| Поле | Описание |
+|------|----------|
+| `status` | `processing`, `completed` или `failed` |
+| `text` | Полная расшифровка (при `completed`) |
+| `duration` | Длительность аудио в секундах |
+| `segments` | Реплики по спикерам: `speaker`, `text`, `start`/`end`, `startTime`/`endTime` |
+| `error` | Описание ошибки при `status: failed` |
+
+Параметр `response_format` на этих моделях не применяется — диаризация всегда приходит в `segments`. Подробнее: [Aiesa Транскрипция](/gaidy/aiesa-transcribe).
