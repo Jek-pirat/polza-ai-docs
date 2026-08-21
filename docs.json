@@ -105,7 +105,8 @@
                 "icon": "volume-high",
                 "pages": [
                   "gaidy/elevenlabs-tts-turbo",
-                  "gaidy/elevenlabs-tts-multilingual"
+                  "gaidy/elevenlabs-tts-multilingual",
+                  "gaidy/aiesa-transcribe"
                 ]
               },
               {

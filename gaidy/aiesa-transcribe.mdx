@@ -1,0 +1,334 @@
+---
+title: Aiesa Транскрипция
+description: Асинхронная расшифровка аудио с диаризацией и LLM-анализом
+icon: waveform-lines
+---
+
+Российский провайдер расшифровки речи с разбивкой по спикерам (диаризацией). В отличие от Whisper, работает **асинхронно**: запрос ставит задачу в очередь и сразу возвращает `id`, а готовый текст вы забираете отдельным запросом.
+
+<Warning>
+Статус задачи опрашивайте на `GET /api/v1/audio/transcriptions/{id}` — **не** на `/api/v1/media/{id}`. Media API обслуживает картинки, видео и музыку; для транскрипции он вернёт ошибку `RESULT_EXPIRED`, хотя текст на самом деле готов.
+</Warning>
+
+## Обзор
+
+| Характеристика | Значение |
+|----------------|----------|
+| ID моделей | `aiesa/transcribe`, `aiesa/transcribe-fast` |
+| Эндпоинт | `/api/v1/audio/transcriptions` |
+| Режим | Асинхронный: submit → опрос статуса |
+| Диаризация | Включена по умолчанию — поле `segments`, отдельный параметр не нужен |
+| Макс. размер файла | 50 МБ при передаче base64; при передаче ссылкой лимит платформы не действует |
+| Стоимость | `aiesa/transcribe` — 0,12 ₽/мин, `aiesa/transcribe-fast` — 0,40 ₽/мин |
+
+### Какую модель выбрать
+
+| Модель | Приоритет обработки | Цена | Когда использовать |
+|--------|--------------------|------|--------------------|
+| `aiesa/transcribe` | обычная очередь | 0,12 ₽/мин | пакетная обработка, когда ждать не жалко |
+| `aiesa/transcribe-fast` | ускоренный | 0,40 ₽/мин | интерактивные сценарии, когда результат нужен быстро |
+
+<Note>
+Тарификация — по **целым минутам** с округлением вверх, минимум одна минута. Запись на 15 секунд стоит как минута.
+</Note>
+
+## Возможности
+
+<CardGroup cols={2}>
+  <Card title="Диаризация" icon="users">
+    Разбивка расшифровки по спикерам с таймкодами
+  </Card>
+  <Card title="Длинные записи" icon="clock">
+    Совещания и интервью целиком, без нарезки на куски
+  </Card>
+  <Card title="LLM-анализ" icon="wand-magic-sparkles">
+    Саммари и выводы по готовой расшифровке одним запросом
+  </Card>
+  <Card title="Хранение результата" icon="database">
+    Текст доступен по `id` и через неделю, и через месяц
+  </Card>
+</CardGroup>
+
+## Как это работает
+
+<Steps>
+  <Step title="Отправка аудио">
+    `POST /api/v1/audio/transcriptions` возвращает `id` задачи и статус `processing`
+  </Step>
+
+  <Step title="Опрос статуса">
+    `GET /api/v1/audio/transcriptions/{id}` — раз в 5–10 секунд, пока статус `processing`
+  </Step>
+
+  <Step title="Результат">
+    При статусе `completed` в ответе появляются `text`, `duration` и `segments` со спикерами
+  </Step>
+</Steps>
+
+## Полный пример
+
+<CodeGroup>
+```python Python
+import base64
+import time
+import requests
+
+API_KEY = '<POLZA_AI_API_KEY>'
+BASE = 'https://polza.ai/api/v1'
+headers = {'Authorization': f'Bearer {API_KEY}'}
+
+with open('meeting.mp3', 'rb') as f:
+    audio_base64 = base64.b64encode(f.read()).decode('utf-8')
+
+# 1. Ставим задачу
+submit = requests.post(
+    f'{BASE}/audio/transcriptions',
+    headers=headers,
+    json={
+        'model': 'aiesa/transcribe',
+        'file': f'data:audio/mp3;base64,{audio_base64}',
+    },
+).json()
+
+generation_id = submit['id']
+print('Задача создана:', generation_id)
+
+# 2. Опрашиваем статус
+while True:
+    time.sleep(10)
+    result = requests.get(f'{BASE}/audio/transcriptions/{generation_id}', headers=headers).json()
+    if result['status'] in ('completed', 'failed'):
+        break
+    print('Статус:', result['status'])
+
+# 3. Забираем результат
+if result['status'] == 'completed':
+    print('Длительность:', result['duration'], 'сек')
+    print(result['text'])
+    for segment in result.get('segments', []):
+        print(f"[{segment['startTime']}] {segment['speaker']}: {segment['text']}")
+else:
+    print('Ошибка:', result.get('error'))
+```
+
+```typescript TypeScript
+const API_KEY = '<POLZA_AI_API_KEY>';
+const BASE = 'https://polza.ai/api/v1';
+const headers = { Authorization: `Bearer ${API_KEY}`, 'Content-Type': 'application/json' };
+
+// 1. Ставим задачу
+const submit = await fetch(`${BASE}/audio/transcriptions`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({
+    model: 'aiesa/transcribe',
+    file: 'https://example.com/meeting.mp3',
+  }),
+}).then((r) => r.json());
+
+console.log('Задача создана:', submit.id);
+
+// 2. Опрашиваем статус
+let result;
+do {
+  await new Promise((resolve) => setTimeout(resolve, 10_000));
+  result = await fetch(`${BASE}/audio/transcriptions/${submit.id}`, {
+    headers: { Authorization: `Bearer ${API_KEY}` },
+  }).then((r) => r.json());
+  console.log('Статус:', result.status);
+} while (result.status === 'processing');
+
+// 3. Забираем результат
+if (result.status === 'completed') {
+  console.log(result.text);
+  for (const segment of result.segments ?? []) {
+    console.log(`[${segment.startTime}] ${segment.speaker}: ${segment.text}`);
+  }
+}
+```
+
+```bash cURL
+# 1. Ставим задачу
+curl -X POST "https://polza.ai/api/v1/audio/transcriptions" \
+  -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "aiesa/transcribe",
+    "file": "https://example.com/meeting.mp3"
+  }'
+# → {"id":"gen_1234567890123456789","object":"transcription","status":"processing","model":"aiesa/transcribe"}
+
+# 2. Опрашиваем статус (повторять, пока status = processing)
+curl "https://polza.ai/api/v1/audio/transcriptions/gen_1234567890123456789" \
+  -H "Authorization: Bearer <POLZA_AI_API_KEY>"
+```
+</CodeGroup>
+
+## Параметры запроса
+
+| Параметр | Обязательный | Описание |
+|----------|--------------|----------|
+| `model` | Да | `aiesa/transcribe` или `aiesa/transcribe-fast` |
+| `file` | Да | Аудио: data URI с base64 (`data:audio/mp3;base64,...`) или прямая ссылка на файл |
+| `language` | Нет | Язык аудио в ISO-639-1 (`ru`, `en`). Значение `auto` не поддерживается — если язык заранее неизвестен, не передавайте параметр вовсе |
+| `prompt` | Нет | Контекст для расшифровки |
+| `user` | Нет | Идентификатор вашего конечного пользователя |
+
+<Note>
+Параметр `response_format` на асинхронных моделях не применяется: ответ всегда приходит в собственном формате с полем `segments`. Значения вроде `diarized_json` игнорируются — диаризация включена по умолчанию.
+</Note>
+
+### Ссылка или base64
+
+Передать `file` можно двумя способами, и выбор влияет на ограничения:
+
+- **base64** — файл идёт телом запроса, потолок 50 МБ. Подходит для файлов с диска.
+- **прямая ссылка** — провайдер скачивает аудио сам, лимит платформы на размер не действует. Подходит для длинных записей. Ссылка должна быть доступна извне без авторизации: приватные адреса и ссылки из внутренней сети провайдер скачать не сможет, и задача завершится ошибкой.
+
+## Ответ на создание задачи
+
+```json
+{
+  "id": "gen_1234567890123456789",
+  "object": "transcription",
+  "status": "processing",
+  "model": "aiesa/transcribe"
+}
+```
+
+Сохраните `id` — это единственный способ забрать результат.
+
+## Ответ при опросе статуса
+
+```json
+{
+  "id": "gen_1234567890123456789",
+  "object": "transcription",
+  "status": "completed",
+  "text": "Добрый день, начнём совещание. Да, все на связи.",
+  "duration": 15,
+  "segments": [
+    {
+      "speaker": "SPEAKER_01",
+      "text": "Добрый день, начнём совещание.",
+      "start": 0,
+      "end": 7,
+      "startTime": "00:00:00",
+      "endTime": "00:00:07"
+    },
+    {
+      "speaker": "SPEAKER_02",
+      "text": "Да, все на связи.",
+      "start": 7,
+      "end": 9,
+      "startTime": "00:00:07",
+      "endTime": "00:00:09"
+    }
+  ]
+}
+```
+
+### Поля ответа
+
+| Поле | Описание |
+|------|----------|
+| `status` | `processing` — в работе, `completed` — готово, `failed` — ошибка |
+| `text` | Полная расшифровка одной строкой |
+| `duration` | Длительность аудио в секундах |
+| `segments` | Реплики по спикерам: `speaker`, `text`, `start`/`end` в секундах, `startTime`/`endTime` в формате `HH:MM:SS` |
+| `error` | Описание ошибки при `status: failed` |
+
+<Note>
+Метки спикеров (`SPEAKER_01`, `SPEAKER_02`) назначаются автоматически и не сопоставляются с именами людей. Сопоставить их с реальными участниками — задача вашего приложения.
+</Note>
+
+## LLM-анализ расшифровки
+
+По готовой транскрипции можно сразу получить саммари, список решений или любой другой разбор — отдельный запрос, без пересылки текста туда-обратно.
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://polza.ai/api/v1/audio/transcriptions/gen_1234567890123456789/analysis" \
+  -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": ["Сделай краткое саммари встречи и перечисли ключевые решения"],
+    "model": "aiesa/aiesa-mini"
+  }'
+```
+
+```python Python
+analysis = requests.post(
+    f'{BASE}/audio/transcriptions/{generation_id}/analysis',
+    headers=headers,
+    json={
+        'messages': ['Сделай краткое саммари встречи и перечисли ключевые решения'],
+        'model': 'aiesa/aiesa-mini',
+    },
+).json()
+
+print(analysis['content'])
+```
+</CodeGroup>
+
+Ответ:
+
+```json
+{
+  "content": "Ключевые решения: ...",
+  "usage": { "prompt_tokens": 1200, "completion_tokens": 180, "cost_rub": 0.21 }
+}
+```
+
+| Параметр | Обязательный | Описание |
+|----------|--------------|----------|
+| `messages` | Да | Массив инструкций для анализа |
+| `model` | Нет | Модель анализа, по умолчанию `aiesa/aiesa-mini` |
+| `temperature` | Нет | 0–2 |
+| `max_tokens` | Нет | Максимум токенов в ответе |
+
+Анализ доступен только для расшифровок в статусе `completed` и тарифицируется отдельно, по цене выбранной модели.
+
+## Текстовые модели Aiesa
+
+Те же модели доступны и в обычном чате через [Chat Completions](/api-reference/chat/completions):
+
+| Модель | Ввод | Вывод |
+|--------|------|-------|
+| `aiesa/aiesa-mini` | 120 ₽ / млн токенов | 170 ₽ / млн токенов |
+| `aiesa/aiesa-pro` | 350 ₽ / млн токенов | 600 ₽ / млн токенов |
+
+## Частые вопросы
+
+<AccordionGroup>
+  <Accordion title="Пришёл RESULT_EXPIRED — результат пропал?" icon="triangle-exclamation">
+    Нет. Эта ошибка означает, что вы опрашиваете `/api/v1/media/{id}` — эндпоинт для картинок и видео. Расшифровка хранится отдельно: запросите `/api/v1/audio/transcriptions/{id}`, и текст будет на месте. Упоминание про «7 дней» в этом сообщении к расшифровке не относится.
+  </Accordion>
+
+  <Accordion title="Пришёл 404 «Транскрипция не найдена»" icon="key">
+    Задача принадлежит той организации, из-под которой была создана. Убедитесь, что опрашиваете статус тем же API-ключом, которым отправляли аудио.
+  </Accordion>
+
+  <Accordion title="Как долго живёт результат" icon="clock-rotate-left">
+    Текст и сегменты хранятся на нашей стороне вместе с записью о генерации и остаются доступны по `id` после того, как исходные файлы у провайдера будут удалены. Ограничение в 7 дней, о котором говорит Media API, к расшифровке не относится.
+  </Accordion>
+
+  <Accordion title="Сколько ждать результата" icon="hourglass">
+    Обычно — от десятков секунд до нескольких минут, в зависимости от длины записи и загрузки очереди. Если результат не пришёл примерно за 13 минут, задача переходит в `failed`, а зарезервированные средства возвращаются на баланс.
+  </Accordion>
+
+  <Accordion title="Задача завершилась с failed" icon="circle-xmark">
+    Чаще всего причина — недоступная ссылка на аудио либо повреждённый файл. Проверьте, что ссылка открывается из внешней сети без авторизации, а файл проигрывается. Списания за неудачную задачу не происходит.
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Транскрипция аудио" icon="microphone" href="/api-reference/audio/transcriptions">
+    Полное описание эндпоинта и синхронные модели
+  </Card>
+  <Card title="Каталог моделей" icon="list" href="/api-reference/models/list">
+    Все доступные модели и актуальные цены
+  </Card>
+</CardGroup>
