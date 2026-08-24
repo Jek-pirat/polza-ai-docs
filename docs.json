@@ -136,8 +136,9 @@
               "integracii/opencode",
               "integracii/polza-ide",
               "integracii/proxy",
-              "integracii/qwen-code",
-              "integracii/roo-code"
+              "gaidy/rag",
+              "integracii/roo-code",
+              "integracii/qwen-code"
             ]
           }
         ]
