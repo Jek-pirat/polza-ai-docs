@@ -1,0 +1,618 @@
+---
+title: RAG
+description: RAG через Polza.AI — эмбеддинги, поиск и генерация одним ключом
+icon: magnifying-glass
+---
+
+RAG (Retrieval-Augmented Generation) подставляет в контекст модели фрагменты вашей базы знаний. Ответ опирается на найденные документы: меньше галлюцинаций, данные можно обновлять без дообучения.
+
+Два эндпойнта Polza.AI закрывают пайплайн:
+
+* **Эмбеддинги** — `POST /v1/embeddings`: векторы документов и запроса
+* **Чат** — `POST /v1/chat/completions`: ответ по найденному контексту
+
+<Note>
+  В Polza.AI **нет dedicated rerank-эндпойнта** (cross-encoder). Для точного
+  ранжирования используется LLM-as-judge через быструю модель — отдельный
+  запрос к чату с просьбой оценить каждого кандидата. Это работает хуже
+  настоящего cross-encoder rerank, но даёт заметный буст над голым cosine.
+  Подробнее — в [API Reference → Embeddings](/api-reference/embeddings/create).
+</Note>
+
+## Как устроен пайплайн
+
+1. **Индекс.** Делите документы на чанки, считаете эмбеддинги батчем. В прототипе векторы можно держать в памяти, в проде — в векторной базе.
+2. **Поиск.** Эмбеддинг запроса, ближайшие чанки по косинусу. Top-10–20 кандидатов.
+3. **Rerank.** Быстрая модель оценивает релевантность каждого кандидата. Top-3–5 идут в контекст.
+4. **Ответ.** Эти фрагменты уходят в чат как контекст. Модель отвечает только по ним и ссылается на источники.
+
+## Требования
+
+```bash
+pip install -U langchain-openai httpx numpy openai
+```
+
+* `httpx` — прямой вызов `/v1/embeddings` через кастомный класс (обход LangChain-токенизации)
+* `numpy` — cosine similarity
+* `openai` — OpenAI-совместимый клиент для judge-rerank и генерации (опционально, если не используете LangChain для чата)
+
+## Шаг 1. Индекс
+
+Берём `PolzaEmbeddings` из [LangChain-доки](/integracii/langchain#эмбеддинги) — это обёртка над `httpx.post`, которая обходит проблему LangChain-токенизации. Считаем эмбеддинги всех чанков одним батчем.
+
+```python
+import httpx
+import numpy as np
+
+
+class PolzaEmbeddings:
+    """Обход LangChain-токенизации — Polza принимает только строки."""
+
+    def __init__(self, model: str, api_key: str, base_url: str = "https://polza.ai/api/v1/"):
+        self.model = model
+        self.api_key = api_key
+        self.base_url = base_url.rstrip("/")
+
+    def _post(self, input):
+        r = httpx.post(
+            f"{self.base_url}/embeddings",
+            headers={"Authorization": f"Bearer {self.api_key}"},
+            json={"model": self.model, "input": input},
+            timeout=30,
+        )
+        r.raise_for_status()
+        return [d["embedding"] for d in r.json()["data"]]
+
+    def embed_documents(self, texts):
+        return self._post(list(texts))
+
+    def embed_query(self, text):
+        return self._post([text])[0]
+
+
+CHUNKS = [
+    "RAG (Retrieval-Augmented Generation) подставляет в контекст модели фрагменты базы знаний.",
+    "Эмбеддинги превращают текст в вектор. Похожие фрагменты оказываются рядом.",
+    "Polza.AI — единый OpenAI-совместимый API к 200+ LLM. Оплата в рублях.",
+    # ... остальные чанки вашей базы
+]
+
+embeddings = PolzaEmbeddings(
+    model="qwen/qwen3-embedding-8b",
+    api_key="***",
+)
+doc_vecs = np.array(embeddings.embed_documents(CHUNKS))
+print(f"Проиндексировано {len(CHUNKS)} чанков, размерность {doc_vecs.shape[1]}")
+```
+
+<Note>
+  Та же модель для индекса и для запроса. Смешивать нельзя — пространства
+  векторов разных моделей несовместимы.
+</Note>
+
+Для продакшена с большими базами храните эмбеддинги в pgvector, Qdrant, Chroma или FAISS — см. секцию [Продакшен-стек](#продакшен-стек) ниже.
+
+## Шаг 2. Поиск
+
+Косинус similarity через `numpy`. Никакого евклидова расстояния — для эмбеддингов косинус канонический.
+
+```python
+def cosine(a, b):
+    a, b = np.array(a), np.array(b)
+    return float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b)))
+
+
+def retrieve(query_vec, doc_vecs, top_n=10):
+    scored = [
+        (i, cosine(query_vec, vec))
+        for i, vec in enumerate(doc_vecs)
+    ]
+    scored.sort(key=lambda x: -x[1])
+    return scored[:top_n]
+
+
+query = "Как RAG улучшает ответы модели?"
+query_vec = np.array(embeddings.embed_query(query))
+
+matches = retrieve(query_vec, doc_vecs, top_n=10)
+for i, score in matches:
+    print(f"{score:.4f}  {CHUNKS[i][:80]}")
+```
+
+## Шаг 3. LLM-as-judge rerank
+
+Берём быструю и дешёвую модель (рекомендуем `deepseek/deepseek-v4-flash-0731`), просим оценить релевантность каждого кандидата от 0 до 10. Сортируем по оценке, отбрасываем слабые.
+
+<Note>
+  **DeepSeek выбран вместо Gemini/Claude для judge** потому что возвращает чистый
+  JSON-массив без markdown-обёрток и ` ```json ``` ` форматирования. Это убирает
+  необходимость в regex strip — экономит код и снижает риск ошибок парсинга.
+  Gemini тоже работает, но оборачивает ответ в ` ```json ... ``` ` — нужен regex.
+  Claude через Polza параметр `response_format` **игнорирует**.
+</Note>
+
+<Warning>
+  DeepSeek — reasoning-модель. Внутренние `reasoning_tokens` идут сверх `max_tokens`
+  и съедают видимый лимит. Для judge обязательно ставьте `max_tokens >= 1500`,
+  иначе вернётся пустой `content` и JSON парсить будет нечего. Реальный расход
+  reasoning — от 90 до 1000+ токенов в зависимости от сложности промпта.
+</Warning>
+
+```python
+import json
+from openai import OpenAI  # через langchain-openai тоже работает
+
+client = OpenAI(api_key="***", base_url="https://polza.ai/api/v1/")
+
+
+def judge_rerank(query: str, candidates: list[str], top_n: int = 3) -> list[int]:
+    """Возвращает индексы top-n кандидатов после LLM-as-judge rerank."""
+    docs_text = "\n".join(f"[{i+1}] {c}" for i, c in enumerate(candidates))
+
+    prompt = (
+        f"Ты оцениваешь релевантность фрагментов базы знаний запросу.\n\n"
+        f"Запрос: {query}\n\n"
+        f"Документы:\n{docs_text}\n\n"
+        f"Оцени каждый документ по шкале 0–10, где 10 = точно отвечает на запрос, "
+        f"0 = не относится. Верни ТОЛЬКО JSON-массив объектов "
+        f'[{{"i": 1, "score": N}}, ...] без пояснений и markdown-обёрток.'
+    )
+
+    resp = client.chat.completions.create(
+        model="deepseek/deepseek-v4-flash-0731",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=1500,  # >=1500 для DeepSeek — reasoning съедает видимый лимит
+        temperature=0,
+    )
+    content = resp.choices[0].message.content
+
+    # DeepSeek возвращает чистый JSON-массив без обёрток — парсим напрямую.
+    # На всякий случай fallback на regex strip (если модель обновится и начнёт оборачивать).
+    import re
+    match = re.search(r"```(?:json)?\s*(\[.*?\])\s*```", content, re.DOTALL)
+    json_str = match.group(1) if match else content
+    scores = json.loads(json_str)
+    scores.sort(key=lambda x: -x["score"])
+
+    # Порог релевантности — отбрасываем < 5/10, чтобы не путать модель
+    strong = [s for s in scores if s["score"] >= 5][:top_n]
+    return [s["i"] - 1 for s in strong]  # 1-based → 0-based
+
+
+# Применяем к кандидатам из шага 2
+candidates = [CHUNKS[i] for i, _ in matches]
+top_indices = judge_rerank(query, candidates, top_n=3)
+ranked = [candidates[i] for i in top_indices]
+```
+
+<Warning>
+  Стоимость LLM-as-judge на DeepSeek-V4-Flash — порядка `0.03–0.05 ₽` за запрос
+  (зависит от длины кандидатов и reasoning). Это в 30–100 раз дешевле последующего
+  вызова `claude-opus-4.8` для генерации. Для прототипа и небольших баз —
+  приемлемый trade-off.
+</Warning>
+
+Когда LLM-as-judge **не нужен**:
+* База маленькая (< 50 чанков) — косинус уже хорошо попадает.
+* Критична минимальная задержка — judge добавляет один запрос.
+* Собираете прототип без метрик качества.
+
+Когда **стоит использовать**:
+* База большая (1000+ чанков), косинус возвращает шум.
+* Важна точность: клиентский FAQ, юридические или медицинские тексты.
+* Берёте 10–20 кандидатов косинусом и хотите оставить 3–5 релевантных.
+
+## Шаг 4. Ответ по контексту
+
+Top после judge (или сразу после cosine) — в системный промпт. Просим модель ссылаться на источники и молчать, если контекста мало.
+
+```python
+def generate(query: str, context_docs: list[str]) -> str:
+    context = "\n\n".join(
+        f"[{i}] {doc}" for i, doc in enumerate(context_docs, 1)
+    )
+    resp = client.chat.completions.create(
+        model="anthropic/claude-sonnet-4.6",
+        messages=[
+            {
+                "role": "system",
+                "content": (
+                    "Отвечай только по контексту. Ссылайся на источники как [n]. "
+                    "Если в контексте нет ответа — так и скажи."
+                ),
+            },
+            {
+                "role": "user",
+                "content": f"Контекст:\n{context}\n\nВопрос: {query}",
+            },
+        ],
+        max_tokens=600,
+    )
+    return resp.choices[0].message.content
+
+
+print(generate(query, ranked))
+```
+
+Системный промпт «отвечай только по контексту, ссылайся на [n]» держите стабильным — его подхватит [кеш промпта](/osobennosti/caching), и повторные запросы обойдутся дешевле.
+
+## Streaming ответа
+
+Для UI-приложений важно показывать текст по мере генерации. Polza поддерживает стриминг через `stream=True`:
+
+```python
+def generate_stream(query: str, context_docs: list[str]):
+    context = "\n\n".join(f"[{i}] {doc}" for i, doc in enumerate(context_docs, 1))
+    stream = client.chat.completions.create(
+        model="anthropic/claude-sonnet-4.6",
+        messages=[
+            {"role": "system", "content": "Отвечай только по контексту. Ссылайся на [n]."},
+            {"role": "user", "content": f"Контекст:\n{context}\n\nВопрос: {query}"},
+        ],
+        max_tokens=600,
+        stream=True,
+    )
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content
+        if delta:
+            yield delta
+
+
+for token in generate_stream(query, ranked):
+    print(token, end="", flush=True)
+print()
+```
+
+Токены появляются по мере ответа модели — пользователь видит текст сразу, не дожидаясь всего `max_tokens`.
+
+## Async RAG (параллельный retrieve + judge)
+
+Judge добавляет ~1 сек к задержке. Если хочется быстрее — `asyncio.gather` для параллельных вызовов. Удобнее всего через `httpx.AsyncClient`, потому что `openai.AsyncOpenAI` для judge не даёт выигрыша по сравнению с прямым httpx.
+
+```python
+import asyncio
+import httpx
+
+
+async def retrieve_async(emb: PolzaEmbeddings, query: str) -> list[float]:
+    return await asyncio.to_thread(emb.embed_query, query)
+
+
+async def judge_async(query: str, candidates: list[str], top_n: int = 3) -> list[str]:
+    docs_text = "\n".join(f"[{i+1}] {c}" for i, c in enumerate(candidates))
+    prompt = (
+        f"Запрос: {query}\n\nДокументы:\n{docs_text}\n\n"
+        "Оцени каждый по шкале 0–10. Верни JSON: "
+        '[{"i": 1, "score": N}, ...]'
+    )
+    async with httpx.AsyncClient() as http:
+        r = await http.post(
+            f"{BASE}/chat/completions",
+            headers={"Authorization": f"Bearer {KEY}"},
+            json={
+                "model": "google/gemini-2.5-flash",
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": 300,
+                "temperature": 0,
+            },
+            timeout=30,
+        )
+        r.raise_for_status()
+        content = r.json()["choices"][0]["message"]["content"]
+
+    match = re.search(r"```(?:json)?\s*(\[.*?\])\s*```", content, re.DOTALL)
+    scores = json.loads(match.group(1) if match else content)
+    scores.sort(key=lambda x: -x["score"])
+    return [candidates[s["i"] - 1] for s in scores if s["score"] >= 5][:top_n]
+
+
+async def rag_pipeline(query: str, doc_vecs, emb, CHUNKS, top_n=3):
+    # 1. embed query
+    query_vec = np.array(await retrieve_async(emb, query))
+    sims = doc_vecs @ query_vec / (np.linalg.norm(doc_vecs, axis=1) * np.linalg.norm(query_vec))
+    candidates = [CHUNKS[i] for i in np.argsort(-sims)[:10]]
+
+    # 2. judge rerank
+    ranked = await judge_async(query, candidates, top_n)
+
+    # 3. generate
+    return ranked
+
+
+ranked = asyncio.run(rag_pipeline(query, doc_vecs, embeddings, CHUNKS))
+```
+
+При желании можно пойти дальше и запустить judge параллельно с подготовкой контекста через `asyncio.gather`.
+
+## Метаданные: фильтрация по разделу/источнику
+
+Если чанки размечены (раздел документа, URL, автор, дата) — фильтруйте кандидаты **до** judge, чтобы не тратить токены на нерелевантные разделы:
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class Chunk:
+    text: str
+    source: str       # URL или путь к файлу
+    section: str      # раздел/глава
+
+
+# Предположим, что CHUNKS уже стал списком Chunk
+CHUNKS = [
+    Chunk("RAG подставляет в контекст...", "/docs/rag", "Введение"),
+    Chunk("Polza.AI — единый API...", "/docs/api", "API"),
+    Chunk("Оплата в Polza — pay-as-you-go...", "/docs/billing", "Биллинг"),
+]
+
+
+def retrieve_with_filter(query_vec, chunks: list[Chunk], doc_vecs, section: str = None, top_n=10):
+    mask = np.arange(len(chunks))
+    if section:
+        mask = np.array([i for i, c in enumerate(chunks) if c.section == section])
+    sims = doc_vecs[mask] @ query_vec / (
+        np.linalg.norm(doc_vecs[mask], axis=1) * np.linalg.norm(query_vec)
+    )
+    idx = mask[np.argsort(-sims)[:top_n]]
+    return [(chunks[i], float(sims[np.where(mask == i)[0][0]])) for i in idx]
+
+
+matches = retrieve_with_filter(query_vec, CHUNKS, doc_vecs, section="Введение")
+```
+
+Это особенно важно для больших баз: суджаете 10k чанков до 200 в нужном разделе **до** LLM-as-judge.
+
+## Multi-query RAG (переформулировка вопроса)
+
+Один и тот же вопрос можно задать тремя способами: «Как вернуть деньги?», «Возврат средств», «Как отменить заказ и получить refund?». Каждая переформулировка находит разные чанки. Multi-query расширяет покрытие:
+
+```python
+def multi_query_expand(query: str) -> list[str]:
+    """Просим LLM сгенерировать 3 переформулировки запроса."""
+    resp = client.chat.completions.create(
+        model="google/gemini-2.5-flash",
+        messages=[{
+            "role": "user",
+            "content": (
+                f"Переформулируй вопрос 3 разными способами, сохраняя смысл. "
+                f"Верни JSON-массив строк: ["...", "...", "..."]\n\n"
+                f"Вопрос: {query}"
+            ),
+        }],
+        max_tokens=200,
+        temperature=0,
+    )
+    content = resp.choices[0].message.content
+    match = re.search(r"```(?:json)?\s*(\[.*?\])\s*```", content, re.DOTALL)
+    variants = json.loads(match.group(1) if match else content)
+    return [query] + variants
+
+
+queries = multi_query_expand("Как RAG улучшает ответы модели?")
+all_candidates = []
+seen = set()
+for q in queries:
+    qv = np.array(embeddings.embed_query(q))
+    sims = doc_vecs @ qv / (np.linalg.norm(doc_vecs, axis=1) * np.linalg.norm(qv))
+    for i in np.argsort(-sims)[:5]:
+        text = CHUNKS[i] if isinstance(CHUNKS[i], str) else CHUNKS[i].text
+        if text not in seen:
+            seen.add(text)
+            all_candidates.append(text)
+
+# Дальше — judge rerank по объединённому пулу кандидатов
+ranked = judge_rerank(query, all_candidates, top_n=5)
+```
+
+Стоимость: +1 запрос на переформулировку (~0.01 ₽) → +5–10 уникальных кандидатов → выше recall.
+
+## Полный пример
+
+Все четыре шага подряд, end-to-end:
+
+```python
+import json
+import re
+import httpx
+import numpy as np
+from openai import OpenAI
+
+KEY = "***"
+BASE = "https://polza.ai/api/v1/"
+client = OpenAI(api_key=KEY, base_url=BASE)
+
+
+class PolzaEmbeddings:
+    """Обход LangChain-токенизации — Polza принимает только строки."""
+    def __init__(self, model, api_key, base_url=BASE):
+        self.model, self.api_key, self.base_url = model, api_key, base_url.rstrip("/")
+    def _post(self, input):
+        r = httpx.post(
+            f"{self.base_url}/embeddings",
+            headers={"Authorization": f"Bearer {self.api_key}"},
+            json={"model": self.model, "input": input},
+            timeout=30,
+        )
+        r.raise_for_status()
+        return [d["embedding"] for d in r.json()["data"]]
+    def embed_documents(self, texts):
+        return self._post(list(texts))
+    def embed_query(self, text):
+        return self._post([text])[0]
+
+
+def cosine(a, b):
+    a, b = np.array(a), np.array(b)
+    return float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b)))
+
+
+def judge_rerank(query, candidates, top_n=3):
+    docs_text = "\n".join(f"[{i+1}] {c}" for i, c in enumerate(candidates))
+    prompt = (
+        f"Запрос: {query}\n\nДокументы:\n{docs_text}\n\n"
+        "Оцени каждый по шкале 0–10. Верни JSON: "
+        '[{"i": 1, "score": N}, ...]'
+    )
+    resp = client.chat.completions.create(
+        model="deepseek/deepseek-v4-flash-0731",  # чистый JSON без обёрток
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=1500,  # >=1500: reasoning съедает видимый лимит
+        temperature=0,
+    )
+    content = resp.choices[0].message.content
+    match = re.search(r"```(?:json)?\s*(\[.*?\])\s*```", content, re.DOTALL)
+    scores = json.loads(match.group(1) if match else content)
+    scores.sort(key=lambda x: -x["score"])
+    return [candidates[s["i"] - 1] for s in scores if s["score"] >= 5][:top_n]
+
+
+CHUNKS = [
+    "RAG (Retrieval-Augmented Generation) подставляет в контекст модели фрагменты базы знаний. Ответ опирается на найденные документы: меньше галлюцинаций.",
+    "Эмбеддинги превращают текст в вектор. Похожие фрагменты оказываются рядом в векторном пространстве.",
+    "Rerank — отдельный этап RAG. Кросс-энкодер ставит более точные оценки чем косинус. В Polza.AI используется LLM-as-judge через быструю модель.",
+    "Polza.AI — единый OpenAI-совместимый API к 200+ LLM. Один ключ, оплата в рублях.",
+    "Оплата в Polza — pay-as-you-go. Каждый ответ содержит usage.cost_rub с точной стоимостью запроса.",
+    "Рекомендуемый размер чанка — 200–500 токенов с overlap 10–15%. Для русского текста overlap стоит увеличить до 20%.",
+    "Оценка RAG: precision@k, recall@k, faithfulness.",
+]
+
+# 1. Индекс
+embeddings = PolzaEmbeddings(model="qwen/qwen3-embedding-8b", api_key=KEY)
+doc_vecs = np.array(embeddings.embed_documents(CHUNKS))
+
+# 2. Поиск
+query = "Как RAG улучшает ответы модели?"
+query_vec = np.array(embeddings.embed_query(query))
+sims = doc_vecs @ query_vec / (np.linalg.norm(doc_vecs, axis=1) * np.linalg.norm(query_vec))
+candidates = [CHUNKS[i] for i in np.argsort(-sims)[:10]]
+
+# 3. LLM-as-judge rerank
+ranked = judge_rerank(query, candidates, top_n=3)
+
+# 4. Ответ
+context = "\n\n".join(f"[{i}] {doc}" for i, doc in enumerate(ranked, 1))
+resp = client.chat.completions.create(
+    model="anthropic/claude-sonnet-4.6",
+    messages=[
+        {"role": "system", "content": "Отвечай только по контексту. Ссылайся на [n]. Если ответа нет — скажи прямо."},
+        {"role": "user", "content": f"Контекст:\n{context}\n\nВопрос: {query}"},
+    ],
+    max_tokens=600,
+)
+print(resp.choices[0].message.content)
+print(f"\nСтоимость: {resp.usage.cost_rub} ₽")
+```
+
+Реальный прогон этого скрипта выдаёт структурированный ответ Claude со ссылками `[1]`, `[2]`, `[3]`. Стоимость одного шага 4 (Claude Sonnet) — порядка `0.2–0.5 ₽` для 7 чанков; для крупных баз с большим контекстом — до `0.9–1.5 ₽` за запрос. Judge на Gemini добавляет ещё `~0.02 ₽`. Embed запроса — `~0.0001 ₽`. Полный pipeline — обычно в пределах `1 ₽`.
+
+## Нарезка документов
+
+От нарезки зависит качество поиска не меньше, чем от модели:
+
+* **По абзацам и заголовкам** — сохраняет смысл, хорошо для структурированных текстов.
+* **Фиксированный размер с перекрытием** — 200–500 токенов и ~10–15% overlap, чтобы мысль не обрывалась на границе.
+* **По смысловым границам** — предложения, секции, разрывы глав.
+
+**Размер чанка:**
+
+* Мелкие (200–300 токенов) — точнее попадают в запрос, но теряют окружение.
+* Крупные (500–1000) — держат контекст, но размывают сигнал.
+
+Подбирайте на своих данных. Для русского текста используйте overlap 15–20% из-за богатой морфологии.
+
+**Готовый splitter** для русского текста (через `langchain-text-splitters`):
+
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=100,  # 20% для русского
+    separators=["\n\n", "\n", ". ", " ", ""],
+)
+chunks = splitter.split_text(long_doc)
+```
+
+## Продакшен-стек
+
+Для баз больше нескольких сотен чанков in-memory хранилище не подходит. Варианты:
+
+| Хранилище | Когда выбирать |
+|---|---|
+| **pgvector** | Уже есть Postgres. Минимум новой инфры. SQL + векторы в одной базе. |
+| **Qdrant** | Отдельный векторный движок. Быстрый, с фильтрами по метаданным, REST API. |
+| **Chroma** | Embedded вариант для прототипов и small-scale продакшена. |
+| **FAISS** | Когда нужна максимальная скорость поиска и вы готовы писать обвязку сами. |
+| **Weaviate / Pinecone** | Managed-сервисы с автомасштабированием. |
+
+`langchain-postgres` и `langchain-qdrant` реализуют интерфейс `VectorStore` из `langchain-core`, поэтому код шагов 2–4 не меняется — меняется только место хранения `doc_vecs`.
+
+**Кеширование эмбеддингов.** Эмбеддинг одного текста детерминирован — можно кешировать по `hashlib.sha256(text).hexdigest()` в Redis/Postgres. На повторной индексации (CI/CD, обновление одного документа) не пересчитываете тысячи чанков.
+
+**Гибридный поиск (BM25 + vector).** Для коротких запросов и точных терминов (названия моделей, ID, имена) одного cosine мало — добавьте BM25 и combine scores. Готовые движки: Qdrant и Weaviate имеют встроенный hybrid search; в Postgres — `pg_bm25` расширение или ручной BM25 через `rank_bm25`.
+
+## Практика
+
+* **Одна модель для индекса и запроса.** Меняете модель → переиндексируете всё.
+* **Пакет в `input`, не по одному тексту.** До 100 чанков в одном `/v1/embeddings` — дешевле и быстрее.
+* **10–20 кандидатов косинусом → 3–5 после judge.** Больше кандидатов на judge — больше расходы и задержка.
+* **Метаданные в промпт.** Заголовок, раздел, URL рядом с текстом — так проще цитировать.
+* **Threshold релевантности после judge.** Всё что ниже 5/10 — отбрасывайте, иначе модель начнёт «додумывать».
+* **Следите за `usage.cost_rub`.** RAG-pipeline = 3 запроса (embed + judge + chat). В прототипе это ~0.5–1 ₽ за запрос, в продакшене с большими базами — больше.
+* **DeepSeek для judge, а не Gemini/Claude.** DeepSeek-V4-Flash возвращает чистый JSON-массив без markdown-обёрток — regex strip не нужен. Gemini оборачивает в ` ```json ``` `, Claude через Polza параметр `response_format` игнорирует. Используйте DeepSeek с `max_tokens >= 1500` (reasoning съедает лимит).
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Ошибка 400 при эмбеддингах: 'input должен быть непустой строкой либо непустым массивом непустых строк'">
+    LangChain пре-токенизирует тексты и шлёт массив токенов. Используйте класс `PolzaEmbeddings` через `httpx` (см. [LangChain-доку](/integracii/langchain#эмбеддинги)).
+  </Accordion>
+
+  <Accordion title="Judge выдаёт невалидный JSON или текст с пояснениями">
+    `google/gemini-2.5-flash` часто оборачивает JSON в ``` ```json ... ``` ```. Решения:
+    * Переключиться на `deepseek/deepseek-v4-flash-0731` — возвращает чистый JSON без обёрток (рекомендуется, см. шаг 3 выше)
+    * Regex strip (см. `judge_rerank` выше) — fallback для Gemini
+    * `response_format={"type": "json_object"}` работает только для Gemini через Polza. Claude этот параметр игнорирует
+    * `PydanticOutputParser` из `langchain-core` для продакшена
+  </Accordion>
+
+  <Accordion title="Cosine возвращает мусор — релевантные чанки на 5–10 месте">
+    * Уменьшите размер чанка (200–300 токенов вместо 500+).
+    * Попробуйте другую модель: `openai/text-embedding-3-large` (3072d) точнее, но дороже.
+    * Для русского текста: `qwen/qwen3-embedding-8b` лучше `text-embedding-3-small`.
+    * Добавьте BM25 и используйте гибридный поиск.
+  </Accordion>
+
+  <Accordion title="Ответ модели содержит факты, которых нет в контексте">
+    Усильте системный промпт: явно запретите «отвечать по памяти». Если не помогает — переключитесь на более послушную модель (например `anthropic/claude-sonnet-4.6` вместо `openai/gpt-5-mini`).
+  </Accordion>
+
+  <Accordion title="Задержка RAG-pipeline > 3 секунд">
+    Judge добавляет 1–1.5 секунды. Оптимизации:
+    * Параллельный вызов judge и подготовки контекста через `asyncio.gather` (см. секцию «Async RAG» выше).
+    * Пропустить judge для топ-5 cosine (если порог > 0.7).
+    * Заменить judge на cross-encoder локально (sentence-transformers) — но это уже не через Polza.
+  </Accordion>
+
+  <Accordion title="Embeddings работают, но качество низкое на русском">
+    `qwen/qwen3-embedding-8b` обучен на мультиязычных данных и для русского обычно лучше OpenAI-моделей. Если уже используете OpenAI — попробуйте `intfloat/multilingual-e5-large` (1024d, специально для кросс-языкового поиска).
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="LangChain" icon="link" href="/integracii/langchain">
+    Подробнее про ChatOpenAI и embeddings-обёртку через Polza
+  </Card>
+  <Card title="API Reference: Embeddings" icon="code" href="/api-reference/embeddings/create">
+    Полная справка по эндпойнту /v1/embeddings
+  </Card>
+  <Card title="Кеширование промпта" icon="gauge-high" href="/osobennosti/caching">
+    Как удешевить повторяющиеся запросы
+  </Card>
+  <Card title="Structured output" icon="brackets-curly" href="/gaidy/structured-output">
+    JSON по схеме из найденного контекста
+  </Card>
+</CardGroup>
