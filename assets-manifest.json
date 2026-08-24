@@ -22,6 +22,16 @@
       "source_path": "images/n8n/n8n-model-settings.png",
       "uploaded_at": "2026-06-17T16:43:45+00:00"
     },
+    "0f285803c4a48f628fc49d5bc8bb12834f618eb908b9d4e537387596f12f98b4": {
+      "content_type": "image/jpeg",
+      "first_seen_in": "integracii/claude-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/0f285803c4a48f628fc49d5bc8bb12834f618eb908b9d4e537387596f12f98b4.jpg",
+      "s3_key": "polza-docs/images/0f285803c4a48f628fc49d5bc8bb12834f618eb908b9d4e537387596f12f98b4.jpg",
+      "sha256": "0f285803c4a48f628fc49d5bc8bb12834f618eb908b9d4e537387596f12f98b4",
+      "size": 52475,
+      "source_path": "images/claude-desktop/models-list.jpg",
+      "uploaded_at": "2026-08-24T15:08:25+00:00"
+    },
     "1b1526ce5968b69f5c6b3c1cf4a3bc516625d4de5d79b88a0b6aca54fa854ab0": {
       "content_type": "image/png",
       "first_seen_in": "integracii/dify.mdx",
@@ -31,6 +41,16 @@
       "size": 213480,
       "source_path": "images/dify/04-create-agent.png",
       "uploaded_at": "2026-06-17T16:43:42+00:00"
+    },
+    "1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/gemini-cli.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336.png",
+      "s3_key": "polza-docs/images/1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336.png",
+      "sha256": "1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336",
+      "size": 37544,
+      "source_path": "images/gemini-cli/gemini.png",
+      "uploaded_at": "2026-07-15T10:20:03+00:00"
     },
     "2423bf9f438e0ee326e750c576fe389faa295a9ba318d9f59453f958c37134f1": {
       "content_type": "image/png",
@@ -61,6 +81,16 @@
       "size": 32076,
       "source_path": "images/polza-ai-proxy.png",
       "uploaded_at": "2026-06-17T16:43:46+00:00"
+    },
+    "38a82c3561d0a49605953804a2d7651420ab5dfe3ebc671b82f81ba2e3f6212b": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/claude-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/38a82c3561d0a49605953804a2d7651420ab5dfe3ebc671b82f81ba2e3f6212b.png",
+      "s3_key": "polza-docs/images/38a82c3561d0a49605953804a2d7651420ab5dfe3ebc671b82f81ba2e3f6212b.png",
+      "sha256": "38a82c3561d0a49605953804a2d7651420ab5dfe3ebc671b82f81ba2e3f6212b",
+      "size": 66090,
+      "source_path": "images/claude-desktop/configure-third-party.png",
+      "uploaded_at": "2026-08-24T14:58:46+00:00"
     },
     "3baeeb205d449e441c3b293810a35f2ac7a4623ca09d8613a6a2f53a42a0439c": {
       "content_type": "image/png",
@@ -201,6 +231,26 @@
       "size": 1084027,
       "source_path": "images/n8n/n8n-search-openai.png",
       "uploaded_at": "2026-06-17T16:43:44+00:00"
+    },
+    "9696b03395e94c6df4d68c853dde586ae2946dfcec52519d2135f9d30d11a2ec": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/claude-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/9696b03395e94c6df4d68c853dde586ae2946dfcec52519d2135f9d30d11a2ec.png",
+      "s3_key": "polza-docs/images/9696b03395e94c6df4d68c853dde586ae2946dfcec52519d2135f9d30d11a2ec.png",
+      "sha256": "9696b03395e94c6df4d68c853dde586ae2946dfcec52519d2135f9d30d11a2ec",
+      "size": 71007,
+      "source_path": "images/claude-desktop/enable-developer-mode.png",
+      "uploaded_at": "2026-08-24T14:58:46+00:00"
+    },
+    "979132d52e809cbd400212f524a4c30db008e1318d38e610f3c56b3b338fc014": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/claude-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/979132d52e809cbd400212f524a4c30db008e1318d38e610f3c56b3b338fc014.png",
+      "s3_key": "polza-docs/images/979132d52e809cbd400212f524a4c30db008e1318d38e610f3c56b3b338fc014.png",
+      "sha256": "979132d52e809cbd400212f524a4c30db008e1318d38e610f3c56b3b338fc014",
+      "size": 146349,
+      "source_path": "images/claude-desktop/gateway-credentials.png",
+      "uploaded_at": "2026-08-24T14:58:46+00:00"
     },
     "a297e43374b4f86029216cd46c2337890589db27c095212f4cc94ee51fa0339e": {
       "content_type": "image/png",
@@ -361,16 +411,6 @@
       "size": 93267,
       "source_path": "images/dify/03-add-model.png",
       "uploaded_at": "2026-06-17T16:43:41+00:00"
-    },
-    "1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336": {
-      "content_type": "image/png",
-      "first_seen_in": "integracii/gemini-cli.mdx",
-      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336.png",
-      "s3_key": "polza-docs/images/1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336.png",
-      "sha256": "1c02230b70aad80468da8875ce66dfc9e3c5e726985eb24f49ef692317406336",
-      "size": 37544,
-      "source_path": "images/gemini-cli/gemini.png",
-      "uploaded_at": "2026-07-15T10:20:03+00:00"
     }
   },
   "key_prefix": "polza-docs/images",

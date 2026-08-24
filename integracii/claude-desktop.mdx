@@ -1,0 +1,146 @@
+---
+title: Claude Desktop
+description: Подключение десктопного приложения Anthropic к Polza.AI — Claude Opus, Sonnet и Haiku через единый API-ключ
+icon: desktop
+---
+
+Claude Desktop — официальное десктопное приложение Anthropic для Mac, Windows и Linux. Через Polza.AI работает в России без VPN, оплата в рублях, ключ один на все инструменты Anthropic.
+
+<Note>
+  Для терминального агента Anthropic есть отдельное руководство — [Claude Code](/integracii/claude-code). Эта страница про десктопное GUI-приложение.
+</Note>
+
+## Требования
+
+* Claude Desktop последней версии ([скачать](https://claude.ai/download)). Аккаунт Anthropic не обязателен — приложение работает через любой совместимый API endpoint.
+* Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+
+## Подключение к Polza.AI
+
+Claude Desktop поддерживает кастомный backend через панель Third-Party Inference. Никакой локальный прокси не нужен — приложение само ходит на endpoint Polza по протоколу Anthropic Messages API.
+
+<Steps>
+  <Step title="Включите Developer Mode">
+    Запустите Claude Desktop — логиниться в аккаунт Anthropic не нужно.
+
+    В строке меню откройте **Help → Troubleshooting → Enable Developer Mode**.
+
+    В строке меню появится новый пункт **Developer**.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/9696b03395e94c6df4d68c853dde586ae2946dfcec52519d2135f9d30d11a2ec.png"
+           alt="Меню Help → Troubleshooting → Enable Developer Mode в Claude Desktop" />
+    </Frame>
+  </Step>
+
+  <Step title="Откройте панель Third-Party Inference">
+    **Developer → Configure Third-Party Inference…**
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/38a82c3561d0a49605953804a2d7651420ab5dfe3ebc671b82f81ba2e3f6212b.png"
+           alt="Developer → Configure Third-Party Inference в Claude Desktop" />
+    </Frame>
+  </Step>
+
+  <Step title="Заполните Gateway credentials">
+    В поле **Type of connection** выберите **Gateway**, затем заполните поля:
+
+    | Поле | Значение |
+    |---|---|
+    | Gateway base URL | `https://polza.ai/api` |
+    | Gateway API key | ваш ключ из [личного кабинета](https://polza.ai/dashboard/api-keys) |
+    | Gateway auth scheme | `bearer` |
+    | Credential kind | `Static API key` |
+
+    Поля OIDC (Sign-in session lifetime, Client ID, Issuer URL, Authorization URL) оставьте пустыми — Polza.AI аутентифицирует Gateway статическим ключом, не через OAuth.
+
+    Нажмите **Apply Changes** (в старых сборках — **Apply locally**).
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/979132d52e809cbd400212f524a4c30db008e1318d38e610f3c56b3b338fc014.png"
+           alt="Заполненная панель Gateway credentials в Claude Desktop" />
+    </Frame>
+
+    <Note>
+      В поле **Gateway base URL** вводите `https://polza.ai/api` **без** `/v1/messages` в конце — Claude Desktop сам дописывает путь.
+    </Note>
+  </Step>
+
+  <Step title="Перезапустите приложение">
+    Полностью закройте Claude Desktop (**Quit**, а не просто закройте окно) и откройте снова.
+  </Step>
+
+  <Step title="Выберите модель">
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/0f285803c4a48f628fc49d5bc8bb12834f618eb908b9d4e537387596f12f98b4.jpg"
+           alt="Пикер моделей Claude Desktop со списком Anthropic Claude через Gateway" />
+    </Frame>
+  </Step>
+</Steps>
+
+
+<Note>
+  В пикере Claude Desktop показываются только модели с endpoint `/api/v1/messages` — все перечисленные поддерживаются. Если модели нет в списке, проверьте что endpoint указан верно (см. [Решение проблем](#решение-проблем)).
+</Note>
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Ошибка аутентификации (401 Unauthorized)">
+    * Проверьте что **Gateway base URL** = ровно `https://polza.ai/api` (без `/v1`, без trailing slash)
+    * Скопируйте ключ заново из [личного кабинета](https://polza.ai/dashboard/api-keys) — лишние пробелы или Unicode-символы ломают auth
+    * Убедитесь что **Gateway auth scheme** = `bearer`, а не `x-api-key` или другой
+  </Accordion>
+
+  <Accordion title="В пикере нет моделей">
+    * На ключе есть положительный баланс — проверьте в [кабинете](https://polza.ai/dashboard/billing)
+    * Если задан белый список моделей — в нём есть хотя бы одна Claude-модель
+    * Поле **Gateway base URL** введено без опечаток (например, `polza.ai/api` вместо `polza.ai/v1/api`)
+    * Приложение полностью перезапущено (**Quit**, а не просто закрыто)
+  </Accordion>
+
+  <Accordion title="Нет кнопки «Continue with Gateway» на стартовом экране">
+    * Настройки применились — перезапустите приложение ещё раз (**Quit**, не закрывайте окно крестиком)
+    * Если кнопки всё равно нет — попробуйте сбросить настройки: **Developer → Clear Cache and Restart**
+    * Обновите Claude Desktop до последней версии — старые сборки могут не иметь этой опции
+  </Accordion>
+
+  <Accordion title="WebFetch блокирует внешние сайты («Access blocked by network egress settings»)">
+    Claude Desktop по умолчанию изолирует сетевой трафик встроенных инструментов. WebFetch не достанет сайты вне белого списка.
+
+    Откройте **Developer → Configure Third-Party Inference… → Workspace restrictions** и добавьте нужные хосты в **Allowed egress hosts**.
+
+    Это касается и Cowork, и встроенного Claude Code внутри приложения.
+  </Accordion>
+
+  <Accordion title="TLS-ошибки у Claude Code внутри Claude Desktop">
+    Встроенный Claude Code работает в песочнице с изоляцией сети — TLS до Polza.AI может ломаться.
+
+    В файле `~/.claude/settings.json` (или `.claude/settings.local.json` в репозитории) добавьте:
+
+    ```json
+    {
+      "sandbox": {
+        "enableWeakerNetworkIsolation": true
+      }
+    }
+    ```
+
+    Затем полностью перезапустите Claude Desktop.
+
+    <Warning>
+      `enableWeakerNetworkIsolation` ослабляет сетевую изоляцию для всего трафика агента, не только до Polza.AI. Используйте самый узкий scope (`.claude/settings.local.json` в репозитории) и удалите настройку после отладки.
+    </Warning>
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Claude Code" icon="code" href="/integracii/claude-code">
+    Терминальный агент Anthropic — те же модели через переменные окружения
+  </Card>
+  <Card title="Каталог моделей" icon="layer-group" href="/models">
+    Все доступные модели с ценами и контекстом
+  </Card>
+</CardGroup>
