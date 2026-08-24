@@ -1,0 +1,435 @@
+---
+title: LangChain
+description: LangChain + Polza.AI — OpenAI-совместимый API для чата, эмбеддингов и RAG через один ключ
+icon: link
+---
+
+LangChain через Polza.AI: `ChatOpenAI` и эмбеддинги, один ключ, оплата в рублях, VPN не нужен.
+
+<Note>
+  Polza.AI — OpenAI-совместимый API. Подключайте `ChatOpenAI` / `OpenAIEmbeddings`
+  из `langchain-openai` с `base_url=https://polza.ai/api/v1/`.
+
+  Не используйте `ChatAnthropic`, `init_chat_model("claude-...")`
+  или `langchain-openrouter` — они уйдут мимо Polza.AI.
+</Note>
+
+## Требования
+
+* Python 3.10+
+* Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+* Установленные пакеты:
+
+```bash
+pip install -U langchain-openai httpx numpy
+```
+
+`httpx` нужен для обхода проблемы с эмбеддингами (см. ниже), `numpy` — для cosine similarity в `InMemoryVectorStore`.
+
+## Чат
+
+```python
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    model="deepseek/deepseek-v4-flash-0731",
+    api_key="***",
+    base_url="https://polza.ai/api/v1/",
+    max_tokens=600,
+)
+
+response = llm.invoke("Объясни, что такое LangChain, в трёх предложениях.")
+print(response.content)
+```
+
+Имя модели — полный slug из [каталога Polza.AI](https://polza.ai/models) с префиксом провайдера через `/`. **Без префикса** (`claude-sonnet-4.6`) slug не найдётся в Polza и вернётся ошибка 404.
+
+<Note>
+  Для рассуждающих моделей (DeepSeek R1, Claude с thinking, o1/o3) закладывайте `max_tokens` с запасом: внутренний `reasoning_tokens` идёт **сверх** лимита и съедает видимый вывод. Для коротких ответов хватит 600–800, для кода — 1500–2500.
+</Note>
+
+## Эмбеддинги
+
+<Warning>
+  `OpenAIEmbeddings` из `langchain-openai` **не работает с Polza.AI as-is**.
+  LangChain пре-токенизирует тексты через tiktoken и шлёт `{"input": [[15339, 1917]]}`
+  — массив целочисленных токенов. Polza принимает только строки или массив строк
+  и возвращает `400 BAD_REQUEST` с сообщением «input должен быть непустой строкой
+  либо непустым массивом непустых строк». Это особенность Polza — формат `input`
+  строго `string` или `array of strings` (см. [API Reference](/api-reference/embeddings/create)),
+  без автоматической детокенизации.
+</Warning>
+
+Обходной путь — кастомный класс через `httpx`:
+
+```python
+import httpx
+from typing import List
+from langchain_core.embeddings import Embeddings
+
+
+class PolzaEmbeddings(Embeddings):
+    """Embeddings через прямой httpx — обход LangChain-токенизации."""
+
+    def __init__(self, model: str, api_key: str, base_url: str = "https://polza.ai/api/v1/"):
+        self.model = model
+        self.api_key = api_key
+        self.base_url = base_url.rstrip("/")
+
+    def _post(self, input):
+        r = httpx.post(
+            f"{self.base_url}/embeddings",
+            headers={"Authorization": f"Bearer {self.api_key}"},
+            json={"model": self.model, "input": input},
+            timeout=30,
+        )
+        r.raise_for_status()
+        return [d["embedding"] for d in r.json()["data"]]
+
+    def embed_documents(self, texts):
+        return self._post(list(texts))
+
+    def embed_query(self, text):
+        return self._post([text])[0]
+
+
+embeddings = PolzaEmbeddings(
+    model="qwen/qwen3-embedding-8b",
+    api_key="***",
+)
+
+vectors = embeddings.embed_documents([
+    "Искусственный интеллект",
+    "Машинное обучение",
+    "Нейронные сети",
+])
+print(len(vectors), "векторов,", len(vectors[0]), "измерений")
+```
+
+Доступные модели эмбеддингов в каталоге Polza.AI (актуальный список — `GET /v1/models`):
+
+| Slug | Размерность | Назначение |
+|---|---|---|
+| `qwen/qwen3-embedding-8b` | 4096 | Универсальный, хорош для русского и английского |
+| `qwen/qwen3-embedding-4b` | 2560 | Лёгкая альтернатива 8b |
+| `intfloat/multilingual-e5-large` | 1024 | Multilingual, кросс-языковой поиск |
+| `openai/text-embedding-3-small` | 1536 | OpenAI-качество, можно сжать через `dimensions` |
+| `openai/text-embedding-3-large` | 3072 | OpenAI-качество, максимальная точность |
+| `thenlper/gte-base` | 768 | Лёгкий, для прототипов |
+| `thenlper/gte-large` | 1024 | Более точный вариант gte |
+| `google/gemini-embedding-001` | 3072 | Google Gemini embeddings |
+
+`text-embedding-3-small/large` поддерживают параметр `dimensions` — можно запросить сжатый вектор (например, 512d) для экономии места:
+
+```python
+r = httpx.post(
+    "https://polza.ai/api/v1/embeddings",
+    headers={"Authorization": f"Bearer {API_KEY}"},
+    json={"model": "openai/text-embedding-3-small", "input": ["hi"], "dimensions": 512},
+)
+# data[0].embedding → 512 чисел вместо 1536
+```
+
+## Примеры
+
+### Цепочка
+
+```python
+from langchain_core.prompts import ChatPromptTemplate
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "Ты — эксперт по {topic}. Отвечай кратко и по делу."),
+    ("user", "{question}"),
+])
+
+chain = prompt | llm
+
+response = chain.invoke({
+    "topic": "Python",
+    "question": "Какие основные отличия list и tuple?",
+})
+print(response.content)
+```
+
+### Стриминг
+
+```python
+for chunk in llm.stream("Напиши короткий рассказ о роботе"):
+    print(chunk.content, end="", flush=True)
+print()
+```
+
+Стриминг отдаёт токены по мере генерации — используйте в UI для отзывчивости.
+
+### Async: `ainvoke` и `astream`
+
+Для FastAPI / asyncio-приложений LangChain поддерживает async-API:
+
+```python
+import asyncio
+
+async def main():
+    # одиночный запрос
+    r = await llm.ainvoke("Расскажи про RAG")
+    print(r.content)
+
+    # стриминг
+    async for chunk in llm.astream("Сгенерируй 5 идей для стартапа"):
+        print(chunk.content, end="", flush=True)
+
+asyncio.run(main())
+```
+
+### Tool calling
+
+Polza проксирует tool calling по OpenAI-схеме. Через LangChain — стандартный `bind_tools`:
+
+```python
+from langchain_core.tools import tool
+
+
+@tool
+def get_weather(city: str) -> str:
+    """Возвращает текущую погоду в городе."""
+    return f"В {city} +18°C, ясно"
+
+
+llm_with_tools = llm.bind_tools([get_weather])
+response = llm_with_tools.invoke("Какая погода в Москве?")
+
+for call in response.tool_calls:
+    print(f"tool: {call['name']}, args: {call['args']}")
+    # tool: get_weather, args: {'city': 'Москва'}
+    # → дальше вызываете функцию и передаёте результат обратно в llm
+```
+
+Полный цикл с `ToolNode` и агентом — в [документации LangGraph](https://langchain-ai.github.io/langgraph/).
+
+### Structured output
+
+Если нужно получить не строку, а dict по схеме:
+
+```python
+from pydantic import BaseModel
+
+
+class Review(BaseModel):
+    sentiment: str  # positive | neutral | negative
+    score: int      # 1..10
+    summary: str
+
+
+structured = llm.with_structured_output(Review)
+r: Review = structured.invoke("Отзыв: 'Доставка быстрая, но курьер был груб'")
+print(r.sentiment, r.score, r.summary)
+```
+
+### RAG: короткий (5 строк без LangChain vectorstore)
+
+Для простых случаев — `httpx` для эмбеддингов, `numpy` для cosine similarity, без LangChain-обёрток:
+
+```python
+import httpx
+import numpy as np
+
+DOCS = [
+    "Polza — единый OpenAI-совместимый API к 200+ LLM.",
+    "Оплата в Polza — pay-as-you-go, в рублях.",
+    "Polza поддерживает chat, embeddings, images, audio и video.",
+]
+
+
+def embed(texts):
+    r = httpx.post(
+        "https://polza.ai/api/v1/embeddings",
+        headers={"Authorization": f"Bearer {API_KEY}"},
+        json={"model": "qwen/qwen3-embedding-8b", "input": texts},
+    )
+    r.raise_for_status()
+    return [d["embedding"] for d in r.json()["data"]]
+
+
+doc_vecs = embed(DOCS)
+query_vec = embed(["Как работает оплата?"])[0]
+
+sims = np.dot(doc_vecs, query_vec) / (
+    np.linalg.norm(doc_vecs, axis=1) * np.linalg.norm(query_vec)
+)
+top = np.argsort(sims)[::-1][:2]
+context = "\n".join(f"- {DOCS[i]}" for i in top)
+
+answer = llm.invoke(
+    f"Контекст:\n{context}\n\nВопрос: Как работает оплата?\n\nОтветь кратко:"
+)
+print(answer.content)
+```
+
+### RAG: полный (InMemoryVectorStore)
+
+Для продакшена — `InMemoryVectorStore` + кастомные embeddings. Тот же `PolzaEmbeddings` подставляется в LangChain, тот же pipeline работает:
+
+```python
+from langchain_core.vectorstores import InMemoryVectorStore
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+
+vs = InMemoryVectorStore.from_texts(
+    [
+        "Polza — единый OpenAI-совместимый API к 200+ LLM.",
+        "Оплата в Polza — pay-as-you-go, в рублях.",
+        "Polza поддерживает chat, embeddings, images, audio и video.",
+        "В LangChain подключение идёт через ChatOpenAI с base_url=https://polza.ai/api/v1/.",
+    ],
+    embedding=embeddings,  # PolzaEmbeddings сверху
+)
+retriever = vs.as_retriever()
+
+prompt = ChatPromptTemplate.from_template("Контекст: {context}\n\nВопрос: {question}\n\nОтвет:")
+
+chain = (
+    {"context": retriever, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+
+print(chain.invoke("Как подключить LangChain?"))
+```
+
+`InMemoryVectorStore` держит векторы в памяти процесса — подходит для прототипов и небольших датасетов (до ~10k документов). Для продакшена с persistent storage используйте FAISS, Chroma или pgvector (через `langchain-community` / `langchain-postgres`).
+
+### RAG с длинными документами (text splitter)
+
+Для реальных документов разбивайте текст на чанки перед индексацией:
+
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+chunks = splitter.split_text(long_document_text)
+
+vs = InMemoryVectorStore.from_texts(chunks, embedding=embeddings)
+```
+
+### Две модели: fast classify → smart answer
+
+Шаблон «дешёвая модель классифицирует → дорогая генерирует»:
+
+```python
+from langchain_openai import ChatOpenAI
+
+fast = ChatOpenAI(
+    model="google/gemini-2.5-flash",
+    api_key="***",
+    base_url="https://polza.ai/api/v1/",
+    max_tokens=50,
+)
+smart = ChatOpenAI(
+    model="anthropic/claude-sonnet-4.6",
+    api_key="***",
+    base_url="https://polza.ai/api/v1/",
+    max_tokens=400,
+)
+
+classification = fast.invoke(
+    "Классифицируй: 'Хочу вернуть товар' → жалоба/вопрос/благодарность. Одно слово."
+)
+response = smart.invoke(f"Напиши вежливый ответ клиенту: {classification.content}")
+print(response.content)
+```
+
+Gemini 2.5 Flash стоит дёшево и быстро классифицирует, Claude Sonnet 4.6 генерирует финальный ответ — на длинном потоке экономия ×5–10×.
+
+## Polza-специфика
+
+* **Стоимость в рублях.** Каждый ответ содержит `usage.cost_rub` (и дублирующий `usage.cost`) — стоимость запроса в рублях с точностью до 8 знаков. Можно логировать для биллинга.
+
+  ```python
+  r = llm.invoke("...")
+  print(f"cost: {r.usage_metadata.get('cost_rub', 0):.6f}₽")
+  print(f"tokens: in={r.usage_metadata['input_tokens']}, out={r.usage_metadata['output_tokens']}")
+  ```
+
+* **Заголовки ответа.** `x-trace-id` (UUID v4) — для трассировки в [поддержку](https://polza.ai/dashboard): сохраните и приложите к тикету. Polza **не** отдаёт стандартные `x-ratelimit-*` заголовки — для контроля лимитов опирайтесь на статус-коды 429 и собственные счётчики запросов.
+
+* **Reasoning tokens.** Для рассуждающих моделей (DeepSeek R1, Claude с thinking, o1/o3) в `usage.completion_tokens_details.reasoning_tokens` приходит число «мыслей» модели. Они тарифицируются по обычной цене output-токенов, но **не видны** в `response.content` — и при этом считаются в `max_tokens`. Закладывайте запас.
+
+* **Один ключ на всё.** `ChatOpenAI`, эмбеддинги (через обёртку), картинки, аудио — один API-ключ, один аккаунт.
+
+* **Кеширование.** Polza проксирует cache-aware провайдеров (Anthropic, OpenAI, DeepSeek) — при повторных запросах `usage.prompt_tokens_details.cached_tokens` покажет, сколько токенов взято из кеша. У Claude также работает ручной режим `cache_control` — см. [Кеширование промптов](/osobennosti/caching).
+
+## Практика
+
+* **Не дублируйте ключ в коде.** Используйте переменные окружения:
+
+  ```python
+  import os
+  llm = ChatOpenAI(
+      model="anthropic/claude-sonnet-4.6",
+      api_key=os.environ["POLZA_API_KEY"],
+      base_url="https://polza.ai/api/v1/",
+  )
+  ```
+
+  Или ещё проще — задайте `OPENAI_API_KEY` и `OPENAI_BASE_URL=https://polza.ai/api/v1/`, тогда `api_key` и `base_url` в конструкторе можно опустить (LangChain читает их автоматически).
+
+* **Slug модели со слешем.** `anthropic/claude-sonnet-4.6` — правильно. `claude-sonnet-4.6` без префикса вернёт 404.
+* **`max_tokens` подбирайте по задаче.** Для классификации хватит 50, для генерации писем — 400–800, для кода — 1500–2500, для рассуждающих моделей — с запасом ×2.
+* **Embeddings — отдельная модель.** `text-embedding-3-small` работает, но есть и русскоязычные: `qwen/qwen3-embedding-8b` (4096d), `intfloat/multilingual-e5-large` (1024d).
+* **LangSmith tracing.** Для отладки промптов и токенов:
+
+  ```bash
+  export LANGSMITH_TRACING=true
+  export LANGSMITH_API_KEY=lsv2_***
+  export LANGSMITH_PROJECT=polza-langchain
+  ```
+
+  Все вызовы `llm.invoke` / `chain.invoke` начнут логироваться в [smith.langchain.com](https://smith.langchain.com/).
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Ошибка 400 при эмбеддингах: 'input должен быть непустой строкой либо непустым массивом непустых строк'">
+    LangChain шлёт токены вместо строк. Используйте `PolzaEmbeddings` (см. выше) вместо `OpenAIEmbeddings` напрямую.
+  </Accordion>
+
+  <Accordion title="Ошибка 401 Unauthorized">
+    * Проверьте `base_url` — должен быть `https://polza.ai/api/v1/` (со слешем на конце и `/v1`)
+    * Ключ скопирован без пробелов и Unicode-символов
+    * На ключе положительный баланс в [кабинете](https://polza.ai/dashboard/billing)
+  </Accordion>
+
+  <Accordion title="Ошибка 404: model not found">
+    Slug модели устарел или не существует. Проверьте актуальный список через `GET https://polza.ai/api/v1/models` или в [каталоге](https://polza.ai/models).
+  </Accordion>
+
+  <Accordion title="Стриминг обрывается после первого чанка">
+    В некоторых сетях прокси режет SSE. Отключите стриминг (`llm.invoke` вместо `llm.stream`) или используйте прямое HTTP-подключение к `polza.ai` в обход корпоративного прокси.
+  </Accordion>
+
+  <Accordion title="Рассуждающая модель возвращает пустой content, но списывает токены">
+    Это нормально: DeepSeek R1 / Claude thinking / o1 тратит токены на внутренние `reasoning_tokens`, видимый текст генерируется отдельно. Увеличьте `max_tokens` (минимум 600–1000) и проверьте `response.usage_metadata["output_token_details"]["reasoning"]`.
+  </Accordion>
+
+  <Accordion title="ImportError: cosine_similarity requires numpy">
+    Установите `numpy`: `pip install numpy`. `InMemoryVectorStore` использует numpy для cosine similarity.
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="API Reference: Embeddings" icon="code" href="/api-reference/embeddings/create">
+    Полная справка по эндпойнту `/v1/embeddings` — параметры, форматы, лимиты
+  </Card>
+  <Card title="Каталог моделей" icon="layer-group" href="/models">
+    Все доступные модели с ценами и размерностью эмбеддингов
+  </Card>
+  <Card title="Быстрый старт" icon="rocket" href="/glavnoe/quickstart">
+    Создание ключа и первый запрос за 2 минуты
+  </Card>
+  <Card title="Кеширование промптов" icon="database" href="/osobennosti/caching">
+    Снижение стоимости повторных запросов через cache_control и провайдерский кеш
+  </Card>
+</CardGroup>
