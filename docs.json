@@ -130,13 +130,15 @@
               "integracii/gemini-cli",
               "integracii/hermes-agent",
               "integracii/kilo-code",
+              "integracii/langchain",
               "integracii/n8n",
               "integracii/openclaw",
               "integracii/opencode",
               "integracii/polza-ide",
               "integracii/proxy",
-              "integracii/qwen-code",
-              "integracii/roo-code"
+              "gaidy/rag",
+              "integracii/roo-code",
+              "integracii/qwen-code"
             ]
           }
         ]
