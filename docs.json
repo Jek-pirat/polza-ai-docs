@@ -270,8 +270,69 @@
   },
   "footer": {
     "socials": {
-      "telegram": "https://t.me/polzaai"
-    }
+      "telegram": "https://t.me/polzaai",
+      "x": "https://x.com/polza_ai",
+      "instagram": "https://instagram.com/polza_ai",
+      "youtube": "https://www.youtube.com/@polza_ai"
+    },
+    "links": [
+      {
+        "header": "Polza.ai",
+        "items": [
+          {
+            "label": "Главная",
+            "href": "https://polza.ai/"
+          },
+          {
+            "label": "Модели и цены",
+            "href": "https://polza.ai/models"
+          }
+        ]
+      },
+      {
+        "header": "Начать работу",
+        "items": [
+          {
+            "label": "Получить API-ключ",
+            "href": "https://polza.ai/register"
+          },
+          {
+            "label": "Личный кабинет",
+            "href": "https://polza.ai/dashboard"
+          }
+        ]
+      },
+      {
+        "header": "Документы",
+        "items": [
+          {
+            "label": "Политика обработки персональных данных",
+            "href": "https://polza.ai/documents/privacy-policy"
+          },
+          {
+            "label": "Пользовательское соглашение",
+            "href": "https://polza.ai/documents/user-agreement"
+          },
+          {
+            "label": "Сведения о ПО Polza.AI",
+            "href": "https://polza.ai/software-registry"
+          }
+        ]
+      },
+      {
+        "header": "Помощь",
+        "items": [
+          {
+            "label": "Поддержка",
+            "href": "/glavnoe/support"
+          },
+          {
+            "label": "support@polza.ai",
+            "href": "mailto:support@polza.ai"
+          }
+        ]
+      }
+    ]
   },
   "errors": {
     "404": {
