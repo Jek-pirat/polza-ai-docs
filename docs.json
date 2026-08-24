@@ -123,19 +123,20 @@
             "group": "Интеграции",
             "pages": [
               "integracii/claude-code",
+              "integracii/claude-desktop",
               "integracii/cline",
               "integracii/codex",
-              "integracii/hermes-agent",
-              "integracii/gemini-cli",
-              "integracii/kilo-code",
               "integracii/dify",
+              "integracii/gemini-cli",
+              "integracii/hermes-agent",
+              "integracii/kilo-code",
+              "integracii/n8n",
+              "integracii/openclaw",
+              "integracii/opencode",
               "integracii/polza-ide",
               "integracii/proxy",
-              "integracii/roo-code",
-              "integracii/n8n",
-              "integracii/opencode",
-              "integracii/openclaw",
-              "integracii/qwen-code"
+              "integracii/qwen-code",
+              "integracii/roo-code"
             ]
           }
         ]
