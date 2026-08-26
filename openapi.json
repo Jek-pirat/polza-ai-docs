@@ -4083,13 +4083,13 @@
           "cost_rub": {
             "type": "object",
             "description": "Стоимость запроса в рублях",
-            "example": 0.00001,
+            "example": 1e-05,
             "nullable": true
           },
           "cost": {
             "type": "object",
             "description": "Стоимость запроса в рублях (alias для cost_rub)",
-            "example": 0.00001,
+            "example": 1e-05,
             "nullable": true
           }
         },
@@ -4217,10 +4217,6 @@
             "items": {
               "$ref": "#/components/schemas/MediaFileDto"
             }
-          },
-          "callBackUrl": {
-            "type": "string",
-            "description": "URL для callback уведомлений"
           },
           "seed": {
             "type": "number",
@@ -4355,10 +4351,6 @@
               "$ref": "#/components/schemas/MediaFileDto"
             }
           },
-          "callBackUrl": {
-            "type": "string",
-            "description": "URL для callback уведомлений"
-          },
           "seed": {
             "type": "number",
             "description": "Зерно генерации для воспроизводимости",
@@ -4490,10 +4482,6 @@
             "type": "string",
             "description": "Код языка ISO 639-1 (только для Turbo 2.5)",
             "example": "ru"
-          },
-          "callBackUrl": {
-            "type": "string",
-            "description": "URL для callback уведомлений"
           }
         },
         "required": [
@@ -4576,10 +4564,6 @@
               "V3_5"
             ],
             "example": "V5"
-          },
-          "callBackUrl": {
-            "type": "string",
-            "description": "URL для callback уведомлений"
           }
         },
         "required": [
