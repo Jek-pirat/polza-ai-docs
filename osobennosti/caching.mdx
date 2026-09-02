@@ -62,16 +62,82 @@ icon: database
 Claude поддерживает максимум 4 точки кеширования с TTL 5 минут или 1 час.
 </Note>
 
+TTL задаётся полем `ttl` внутри `cache_control`. Отдельный заголовок
+`anthropic-beta: extended-cache-ttl-2025-04-11` не нужен — часовой кеш включается только полем:
+
+```json
+{
+  "type": "text",
+  "text": "[длинный текст]",
+  "cache_control": { "type": "ephemeral", "ttl": "1h" }
+}
+```
+
+## Нативный эндпоинт Anthropic
+
+Кроме OpenAI-совместимого `/v1/chat/completions`, Polza принимает запросы в нативном формате
+Anthropic Messages API — `POST /v1/messages`. Это путь, которым ходит Claude Code.
+
+`cache_control` поддерживается во всех местах, где его допускает Anthropic:
+
+| Куда ставится `cache_control` | Поддержка |
+|-------------------------------|-----------|
+| Блок в `system` | Да |
+| `text` или `image` блок сообщения `user` | Да |
+| `text` блок сообщения `assistant` | Да |
+| Блок `tool_result` | Да |
+| Определение инструмента в `tools[]` | Да |
+
+Кешируемый префикс собирается в порядке `tools` → `system` → `messages`: точка кеширования
+покрывает всё, что стоит выше неё. Изменение инструментов инвалидирует и системный промпт,
+и историю сообщений.
+
+```json
+{
+  "model": "anthropic/claude-sonnet-5",
+  "max_tokens": 1024,
+  "tools": [
+    {
+      "name": "get_docs",
+      "input_schema": { "type": "object", "properties": {} },
+      "cache_control": { "type": "ephemeral" }
+    }
+  ],
+  "system": [
+    { "type": "text", "text": "[инструкции]", "cache_control": { "type": "ephemeral" } }
+  ],
+  "messages": [
+    { "role": "user", "content": "Проверь регламент" },
+    {
+      "role": "assistant",
+      "content": [{ "type": "tool_use", "id": "toolu_1", "name": "get_docs", "input": {} }]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_1",
+          "content": "[длинный результат]",
+          "cache_control": { "type": "ephemeral" }
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Мониторинг кеша
 
-Информация об использовании кеша возвращается в ответе API:
+Для OpenAI-совместимого пути информация об использовании кеша возвращается в `usage`:
 
 ```json
 {
   "usage": {
     "prompt_tokens": 1500,
     "prompt_tokens_details": {
-      "cached_tokens": 1400
+      "cached_tokens": 1400,
+      "cache_write_tokens": 0
     },
     "completion_tokens": 100,
     "total_tokens": 1600,
@@ -79,6 +145,26 @@ Claude поддерживает максимум 4 точки кеширован
   }
 }
 ```
+
+`prompt_tokens` — весь вход целиком; `cached_tokens` и `cache_write_tokens` лишь расшифровывают,
+какая его часть прочитана из кеша и какая в него записана.
+
+Нативный эндпоинт `/v1/messages` отдаёт счётчики в формате Anthropic:
+
+```json
+{
+  "usage": {
+    "input_tokens": 15,
+    "output_tokens": 100,
+    "cache_creation_input_tokens": 17179,
+    "cache_read_input_tokens": 0
+  }
+}
+```
+
+Здесь `input_tokens` — только та часть входа, которая **не** попала в кеш. Полный вход считается как
+`input_tokens + cache_read_input_tokens + cache_creation_input_tokens`. На первом запросе токены
+префикса попадают в `cache_creation_input_tokens`, на последующих — в `cache_read_input_tokens`.
 
 ## Пример экономии
 
