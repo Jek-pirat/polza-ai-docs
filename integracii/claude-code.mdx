@@ -44,9 +44,11 @@ Claude Code использует стандартный Anthropic API. Дост�
     export ANTHROPIC_BASE_URL="https://polza.ai/api"
     export ANTHROPIC_AUTH_TOKEN="ваш-api-ключ"
     export ANTHROPIC_API_KEY=""  # Важно: оставьте пустым
+    export ANTHROPIC_MODEL="anthropic/claude-sonnet-4.6"  # Модель, на которой пойдёт сессия
     ```
 
-    Замените `ваш-api-ключ` на ключ из [личного кабинета](https://polza.ai/dashboard/api-keys).
+    Замените `ваш-api-ключ` на ключ из [личного кабинета](https://polza.ai/dashboard/api-keys),
+    а `anthropic/claude-sonnet-4.6` — на любую модель из [каталога](https://polza.ai/models).
   </Step>
   <Step title="Перезапустите терминал">
     ```bash
@@ -73,6 +75,7 @@ Claude Code использует стандартный Anthropic API. Дост�
 
 ```json
 {
+  "model": "anthropic/claude-sonnet-4.6",
   "env": {
     "ANTHROPIC_BASE_URL": "https://polza.ai/api",
     "ANTHROPIC_AUTH_TOKEN": "ваш-api-ключ",
@@ -81,7 +84,10 @@ Claude Code использует стандартный Anthropic API. Дост�
 }
 ```
 
-Замените `ваш-api-ключ` на ключ из [личного кабинета](https://polza.ai/dashboard/api-keys).
+Замените `ваш-api-ключ` на ключ из [личного кабинета](https://polza.ai/dashboard/api-keys),
+а `anthropic/claude-sonnet-4.6` — на любую модель из [каталога](https://polza.ai/models).
+
+Обратите внимание на уровни вложенности: `model` — поле верхнего уровня, рядом с `env`, а не внутри него.
 
 Это самый простой способ — ничего больше настраивать не нужно. Запустите проект:
 
@@ -99,6 +105,7 @@ claude
 setx ANTHROPIC_BASE_URL "https://polza.ai/api"
 setx ANTHROPIC_AUTH_TOKEN "ваш-api-ключ"
 setx ANTHROPIC_API_KEY ""
+setx ANTHROPIC_MODEL "anthropic/claude-sonnet-4.6"
 ```
 
 <Warning>
@@ -127,6 +134,7 @@ notepad $PROFILE
 $env:ANTHROPIC_BASE_URL = "https://polza.ai/api"
 $env:ANTHROPIC_AUTH_TOKEN = "ваш-api-ключ"
 $env:ANTHROPIC_API_KEY = ""
+$env:ANTHROPIC_MODEL = "anthropic/claude-sonnet-4.6"
 ```
 
 Перезапустите PowerShell, затем:
@@ -154,13 +162,26 @@ claude
 Переменная `ANTHROPIC_API_KEY=""` должна быть явно пустой строкой. Если она не установлена, Claude Code попытается подключиться к серверам Anthropic напрямую.
 </Warning>
 
+<Warning>
+Модель нужно задать явно — полем `model` или переменной `ANTHROPIC_MODEL`. Без них Claude Code запускает сессию на **своей** модели по умолчанию: запросы уходят в Polza и списываются с баланса, но работает не та модель, которую вы выбрали. Никакой ошибки при этом не показывается — проверяйте командой `/status` (см. [Проверка подключения](#проверка-подключения)).
+</Warning>
+
 ## Настройка моделей
 
-По умолчанию Claude Code использует семейство моделей Claude. Вы можете переключить любую роль на любую модель из каталога Polza.AI.
+Модель в Claude Code задаётся на трёх независимых уровнях — их легко перепутать:
+
+* **Основная модель сессии** — то, чем вы работаете по умолчанию. Задаётся полем `model` в `settings.json` или переменной `ANTHROPIC_MODEL`.
+* **Раскрытие алиасов** `opus`, `sonnet`, `haiku` — переменные `ANTHROPIC_DEFAULT_*_MODEL`. Они срабатывают только там, где модель выбрана именно алиасом: `/model opus`, режим планирования, определения субагентов.
+* **Модель субагентов** — `CLAUDE_CODE_SUBAGENT_MODEL`.
+
+<Warning>
+`ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL` и `ANTHROPIC_DEFAULT_HAIKU_MODEL` **не задают модель сессии**. Если прописать только их, Claude Code запустится на своей модели по умолчанию, а слаг Polza будет проигнорирован — молча, без ошибки.
+</Warning>
 
 <Tabs>
   <Tab title="macOS / Linux / WSL">
     ```bash
+    export ANTHROPIC_MODEL="anthropic/claude-sonnet-4.6"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="anthropic/claude-sonnet-4.6"
     export ANTHROPIC_DEFAULT_OPUS_MODEL="anthropic/claude-opus-4.6"
     export ANTHROPIC_DEFAULT_HAIKU_MODEL="anthropic/claude-haiku-4.5"
@@ -169,6 +190,7 @@ claude
   </Tab>
   <Tab title="Windows (cmd.exe)">
     ```cmd
+    setx ANTHROPIC_MODEL "anthropic/claude-sonnet-4.6"
     setx ANTHROPIC_DEFAULT_SONNET_MODEL "anthropic/claude-sonnet-4.6"
     setx ANTHROPIC_DEFAULT_OPUS_MODEL "anthropic/claude-opus-4.6"
     setx ANTHROPIC_DEFAULT_HAIKU_MODEL "anthropic/claude-haiku-4.5"
@@ -178,6 +200,7 @@ claude
   <Tab title="Windows (settings.json)">
     ```json
     {
+      "model": "anthropic/claude-sonnet-4.6",
       "env": {
         "ANTHROPIC_BASE_URL": "https://polza.ai/api",
         "ANTHROPIC_AUTH_TOKEN": "ваш-api-ключ",
@@ -192,14 +215,34 @@ claude
   </Tab>
 </Tabs>
 
-| Переменная | Применяется для |
+| Параметр | Применяется для |
 | --- | --- |
-| `ANTHROPIC_DEFAULT_SONNET_MODEL` | Основные задачи (код, анализ) |
-| `ANTHROPIC_DEFAULT_OPUS_MODEL` | Сложные и ресурсоёмкие задачи |
-| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | Быстрые операции и автодополнение |
+| `model` (поле `settings.json`) | Основная модель сессии |
+| `ANTHROPIC_MODEL` | Основная модель сессии, вариант через переменную окружения |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | Раскрытие алиаса `sonnet` |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | Раскрытие алиаса `opus` |
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | Раскрытие алиаса `haiku` и фоновые служебные вызовы |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | Субагенты внутри сессии |
 
 Полный список доступных моделей — в [каталоге](https://polza.ai/models).
+
+### Приоритет выбора модели
+
+Если модель задана несколькими способами сразу, побеждает тот, что выше в списке:
+
+1. `/model <слаг>` внутри сессии
+2. флаг `claude --model <слаг>` при запуске
+3. переменная `ANTHROPIC_MODEL`
+4. поле `model` в `settings.json`
+5. модель по умолчанию — переменная `ANTHROPIC_DEFAULT_MODEL`, а если её нет, то модель аккаунта. Сюда вы попадаете, если не задали ничего из перечисленного выше
+
+<Note>
+Быстрая проверка без правки конфигов: выполните `/model anthropic/claude-sonnet-4.6` прямо в сессии или запустите `claude --model anthropic/claude-sonnet-4.6`. Команда `/model` дополнительно сохраняет выбор как поле `model` в пользовательских настройках.
+</Note>
+
+<Warning>
+Не задавайте одну и ту же модель двумя способами: `ANTHROPIC_MODEL` перебивает поле `model`, и при расхождении вы будете править не тот параметр, который реально работает. Выберите что-то одно.
+</Warning>
 
 ## Настройка через settings.json
 
@@ -213,6 +256,7 @@ claude
 
 ```json
 {
+  "model": "anthropic/claude-sonnet-4.6",
   "env": {
     "ANTHROPIC_BASE_URL": "https://polza.ai/api",
     "ANTHROPIC_AUTH_TOKEN": "ваш-api-ключ",
@@ -220,6 +264,12 @@ claude
   }
 }
 ```
+
+<Warning>
+Следите за уровнем вложенности. Переменные окружения работают **только внутри** блока `env` — на верхнем уровне файла Claude Code игнорирует их молча, без ошибки и предупреждения. Поле `model`, наоборот, работает **только на верхнем уровне**, рядом с `env`.
+</Warning>
+
+После правки конфига полностью закройте и заново запустите `claude`: переменные окружения и `settings.json` читаются один раз, при старте.
 
 <Warning>
 Не добавляйте `settings.local.json` с API-ключом в git-репозиторий. Добавьте файл в `.gitignore`.
@@ -324,9 +374,16 @@ node --version
 
 ```
 > /status
-Auth token: ANTHROPIC_AUTH_TOKEN
-Anthropic base URL: https://polza.ai/api
+Auth token:          ANTHROPIC_AUTH_TOKEN
+Anthropic base URL:  https://polza.ai/api
+Model:               anthropic/claude-sonnet-4.6
 ```
+
+В строке `Model` должен стоять слаг Polza — значит сессия действительно идёт на выбранной модели, а не только авторизация.
+
+<Warning>
+Если в строке модели написано `Model: Default (claude-…)`, выбранная модель **не применилась**. Подключение при этом рабочее — базовый URL и ключ подхватились, — но запросы уходят на модель Claude Code по умолчанию. Разбор причин — в блоке [Решение проблем](#решение-проблем).
+</Warning>
 
 ## Решение проблем
 
@@ -336,10 +393,23 @@ Anthropic base URL: https://polza.ai/api
     * Проверьте что `ANTHROPIC_API_KEY` явно установлен в пустую строку (`""`)
     * Если ранее выполняли вход через Anthropic — выполните `/logout` внутри Claude Code
   </Accordion>
+  <Accordion title="Запросы идут в Polza, но работает не та модель">
+    Признаки: в `/status` строка `Model: Default (claude-…)`, в приветственном экране — не тот слаг, который вы задавали. Ключ при этом принимается и баланс расходуется, ошибок нигде нет.
+
+    Проверьте по порядку:
+
+    * **Модель вообще не задана.** Нужны поле `model` в `settings.json` или переменная `ANTHROPIC_MODEL` — см. [Настройка моделей](#настройка-моделей)
+    * **Вы понадеялись на `ANTHROPIC_DEFAULT_*_MODEL`.** Эти переменные задают только раскрытие алиасов `opus` / `sonnet` / `haiku` и не выбирают модель сессии
+    * **Поле лежит не на том уровне.** `model` — на верхнем уровне `settings.json`, переменные окружения — внутри блока `env`
+    * **Claude Code не перезапущен.** Конфиг читается только при старте — закройте сессию полностью и откройте заново
+
+    Быстрая проверка, что дело именно в конфиге: выполните `/model anthropic/claude-sonnet-4.6` прямо в сессии. Если модель переключилась — правьте конфиг, слаг и доступ к модели в порядке.
+  </Accordion>
   <Accordion title="Claude Code не видит переменные окружения">
     * **macOS / Linux:** перезапустите терминал после изменения профиля оболочки, проверьте: `echo $ANTHROPIC_BASE_URL`
     * **Windows (setx):** `setx` применяется только в **новом** окне cmd.exe — текущую сессию нужно закрыть и открыть заново
     * **Windows (PowerShell):** переменные могут не передаваться в дочерние процессы — используйте `settings.json` вместо профиля PowerShell
+    * **`settings.json`:** переменные должны лежать внутри блока `env`. На верхнем уровне файла Claude Code их не читает и об этом не сообщает
     * Самый надёжный способ на любой платформе — прописать переменные в `~/.claude/settings.json` (macOS/Linux) или `%USERPROFILE%\.claude\settings.json` (Windows)
   </Accordion>
   <Accordion title="Проблемы с интерфейсом на Windows (цвета, ввод, артефакты)">
