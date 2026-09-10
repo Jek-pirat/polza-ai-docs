@@ -1380,15 +1380,29 @@
     },
     "/v1/balance": {
       "get": {
-        "operationId": "V1LegacyController_getUserBalance[1]",
+        "operationId": "PublicBalanceController_getBalance",
+        "summary": "Получить баланс организации",
+        "description": "Возвращает баланс организации, к которой привязан токен/ключ, и «доступно» — остаток за вычетом резерва под выполняющиеся запросы и с учётом лимитов расходов ключа и участника. Если у участника, на которого выпущен ключ, задан личный лимит расходов — в amount возвращается остаток этого лимита (legacy; в новом коде используйте GET /v2/balance). Ответ кэшируется на 1 секунду.",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Баланс организации",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicBalancePresenter"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "V1Legacy"
+          "Публичный API"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       }
     },
@@ -1540,6 +1554,34 @@
             "description": "Ошибка сервера. Обратитесь к поставщику услуг"
           }
         }
+      }
+    },
+    "/v2/balance": {
+      "get": {
+        "operationId": "PublicBalanceV2Controller_getBalance",
+        "summary": "Получить баланс организации (v2)",
+        "description": "Возвращает баланс организации, к которой привязан токен/ключ. amount — всегда кошелёк организации; available — «сколько можно потратить» с учётом резерва и лимитов расходов ключа и участника. Ответ кэшируется на 1 секунду.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Баланс организации",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicBalanceV2Presenter"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Публичный API"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     }
   },
@@ -6239,6 +6281,78 @@
             }
           }
         }
+      },
+      "PublicBalancePresenter": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "description": "Баланс организации в рублях. Для ключа участника с личным лимитом расходов — остаток этого лимита (для нового кода используйте GET /v2/balance).",
+            "example": "1234.56000000"
+          },
+          "available": {
+            "type": "string",
+            "description": "Доступно к трате в рублях: остаток организации за вычетом резерва под выполняющиеся запросы, не больше остатков лимитов расходов ключа и участника.",
+            "example": "1200.06000000"
+          },
+          "reservedAmount": {
+            "type": "string",
+            "description": "Зарезервировано под выполняющиеся запросы организации. Не возвращается, если у участника задан личный лимит расходов.",
+            "example": "12.50000000"
+          },
+          "spentAmount": {
+            "type": "string",
+            "description": "Всего потрачено организацией за всё время. Не возвращается, если у участника задан личный лимит расходов.",
+            "example": "845.30000000"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время последнего обновления баланса",
+            "example": "2026-04-30T12:00:00.000Z"
+          }
+        },
+        "required": [
+          "amount",
+          "available",
+          "updatedAt"
+        ]
+      },
+      "PublicBalanceV2Presenter": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "description": "Баланс организации в рублях (кошелёк). Всегда полный остаток организации; «сколько можно потратить» — поле available.",
+            "example": "1234.56000000"
+          },
+          "available": {
+            "type": "string",
+            "description": "Доступно к трате в рублях: остаток организации за вычетом резерва под выполняющиеся запросы, не больше остатков лимитов расходов ключа и участника.",
+            "example": "1200.06000000"
+          },
+          "reservedAmount": {
+            "type": "string",
+            "description": "Зарезервировано под выполняющиеся запросы организации. Не возвращается, если у участника задан личный лимит расходов.",
+            "example": "12.50000000"
+          },
+          "spentAmount": {
+            "type": "string",
+            "description": "Всего потрачено организацией за всё время. Не возвращается, если у участника задан личный лимит расходов.",
+            "example": "845.30000000"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время последнего обновления баланса",
+            "example": "2026-04-30T12:00:00.000Z"
+          }
+        },
+        "required": [
+          "amount",
+          "available",
+          "updatedAt"
+        ]
       }
     }
   }
