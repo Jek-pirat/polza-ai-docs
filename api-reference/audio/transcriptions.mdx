@@ -61,7 +61,6 @@ openapi: POST /v1/audio/transcriptions
 
 - `openai/whisper-1` → `json`, `text`, `srt`, `verbose_json`, `vtt`
 - `openai/gpt-4o-transcribe`, `openai/gpt-4o-mini-transcribe` → `json`, `text`
-- `openai/gpt-4o-transcribe-diarize` → `json`, `text`, `diarized_json`
 - `elevenlabs/speech-to-text` → стандартный набор + `diarized_json`
 
 ### Объект `chunking_strategy` типа `server_vad`
@@ -162,7 +161,6 @@ curl -X POST "https://polza.ai/api/v1/audio/transcriptions" \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "openai/gpt-4o-transcribe-diarize",
     "file": "BASE64_ENCODED_AUDIO",
     "response_format": "diarized_json",
     "chunking_strategy": "auto",
