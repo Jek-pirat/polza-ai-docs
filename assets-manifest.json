@@ -82,6 +82,16 @@
       "source_path": "images/claude-code/welcome-screen.png",
       "uploaded_at": "2026-06-17T16:43:39+00:00"
     },
+    "2c1fa994c50ccf7c22d4b42c3ae028763f4faafceca6764b3fb9b7a0dd7feeec": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/chatgpt-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/2c1fa994c50ccf7c22d4b42c3ae028763f4faafceca6764b3fb9b7a0dd7feeec.png",
+      "s3_key": "polza-docs/images/2c1fa994c50ccf7c22d4b42c3ae028763f4faafceca6764b3fb9b7a0dd7feeec.png",
+      "sha256": "2c1fa994c50ccf7c22d4b42c3ae028763f4faafceca6764b3fb9b7a0dd7feeec",
+      "size": 117469,
+      "source_path": "images/chatgpt-desktop/chatgpt-desktop-first-task.png",
+      "uploaded_at": "2026-09-16T20:50:37+00:00"
+    },
     "2cfbbb9815051c9f8ccc50727cb3f3c360ceaea7e70e1c16592b63a87d0897d8": {
       "content_type": "image/png",
       "first_seen_in": "integracii/proxy.mdx",
@@ -461,6 +471,12 @@
       "size": 93267,
       "source_path": "images/dify/03-add-model.png",
       "uploaded_at": "2026-06-17T16:43:41+00:00"
+    },
+    "42429269fd5c87fd053eedb649836d1e794227e9d7c51fd7e220d93475cd34de": {
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/examples/42429269fd5c87fd053eedb649836d1e794227e9d7c51fd7e220d93475cd34de.toml",
+      "source_path": "examples/chatgpt-desktop/config-example.toml",
+      "uploaded_at": "2026-09-16",
+      "note": "Обезличенный пример config.toml для интеграции с ChatGPT Desktop"
     }
   },
   "key_prefix": "polza-docs/images",

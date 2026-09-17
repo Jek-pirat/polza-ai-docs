@@ -1,0 +1,189 @@
+---
+title: ChatGPT Desktop
+description: Подключение десктопного приложения ChatGPT (Windows и Linux) к Polza.ai через конфиг Polza-провайдера
+icon: desktop
+---
+
+ChatGPT Desktop — официальное десктопное приложение OpenAI для Windows (Microsoft Store) и Linux (preview: Ubuntu, Debian, Fedora, Arch). Поддерживает ChatGPT Work и Codex в одном приложении. Через единый конфиг можно подключить Polza.ai как провайдер моделей.
+
+<Note>
+  Эта страница — про **десктопное приложение ChatGPT**. Терминальный агент OpenAI (без GUI) — отдельная страница: [Codex CLI](/integracii/codex).
+</Note>
+
+
+## Требования
+
+<Tabs>
+  <Tab title="Windows">
+
+    Перед установкой убедитесь, что:
+
+
+    - Windows 10 или новее
+    - ChatGPT Desktop — установите через [Microsoft Store](https://apps.microsoft.com/detail/9PLM9XGG6VKS) или прямую ссылку
+    - Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+    - Права на запись в `C:\Users\<ИМЯ_ПОЛЬЗОВАТЕЛЯ>\.codex\config.toml`
+
+  </Tab>
+  <Tab title="Linux">
+
+Приложение ChatGPT Desktop для Linux в режиме preview. Поддерживаются:
+
+- Ubuntu 24.04 LTS / 26.04 LTS
+- Debian 13
+- Fedora 43 / 44
+- Arch Linux (текущий rolling)
+
+Для каждого дистрибутива есть пакеты для **x64** и **ARM64**. Определите архитектуру командой `uname -m` (`x86_64` → x64, `aarch64` / `arm64` → ARM64).
+
+Дополнительно: аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ, права на запись в `~/.codex/config.toml`.
+
+  </Tab>
+</Tabs>
+
+## Подключение к Polza.ai
+
+Подключение через единый конфиг приложения: добавьте модель по умолчанию и секцию провайдера Polza.
+
+<Steps>
+  <Step title="Установите ChatGPT Desktop">
+    <Tabs>
+      <Tab title="Windows">
+
+    Перед установкой убедитесь, что:
+
+
+        Скачайте и установите приложение через [Microsoft Store](https://apps.microsoft.com/detail/9PLM9XGG6VKS). После запуска пройдите базовую настройку.
+
+      </Tab>
+      <Tab title="Linux">
+
+        Полная пошаговая инструкция (Ubuntu / Debian / Fedora / Arch, x64 и ARM64) — на официальной странице: [learn.chatgpt.com/docs/linux/linux-app](https://learn.chatgpt.com/docs/linux/linux-app).
+
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Откройте файл конфигурации">
+    ChatGPT Desktop использует тот же `config.toml`, что и [Codex CLI](/integracii/codex). Откройте его в текстовом редакторе:
+
+    - **Windows:** `C:\\Users\\<ИМЯ_ПОЛЬЗОВАТЕЛЯ>\\.codex\\config.toml`
+    - **macOS / Linux:** `~/.codex/config.toml`
+
+    Если файла ещё нет — создайте папку `.codex` и пустой `config.toml`.
+  </Step>
+
+  <Step title="Отредактируйте config.toml">
+    В файле `config.toml` оставьте только две вещи: корневые ключи `model` и `model_provider` (в начале файла) и секцию `[model_providers.polza]` (в конце). Остальные секции и плагины ChatGPT Desktop приложение проигнорирует — но для чистоты примера ниже минимум.
+
+    Полный минимальный пример:
+
+    ```toml
+    model_provider = "polza"
+    model = "deepseek/deepseek-v4.1-flash"
+
+    [model_providers.polza]
+    name = "Polza.ai"
+    base_url = "https://polza.ai/api/v1/"
+    wire_api = "responses"
+    experimental_bearer_token = "POLZA_API_KEY"
+    ```
+
+    Замените `POLZA_API_KEY` на свой ключ с [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys) в **обоих** строках.
+
+    Скачать готовый файл: [config-example.toml](https://storage.yandexcloud.net/polza-docs/polza-docs/examples/42429269fd5c87fd053eedb649836d1e794227e9d7c51fd7e220d93475cd34de.toml).
+
+
+
+
+
+
+    <Warning>
+      Ключ хранится в открытом виде в конфиг-файле. Не публикуйте конфиг и не коммитьте его в публичные репозитории — добавьте файл в `.gitignore` при работе с проектом.
+    </Warning>
+  </Step>
+
+  <Step title="Сохраните и перезапустите">
+    Сохраните конфиг, полностью закройте ChatGPT Desktop и откройте заново. Создайте новую задачу — приложение должно подключиться к Polza.ai через указанного провайдера.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/2c1fa994c50ccf7c22d4b42c3ae028763f4faafceca6764b3fb9b7a0dd7feeec.png"
+           alt="Новая задача в ChatGPT Desktop, подключённая к Polza.ai" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Какие модели доступны в пикере
+
+ChatGPT Desktop автоматически подтягивает из каталога Polza пять моделей для пикера. На сентябрь 2026 это:
+
+| Модель | ID | Контекст |
+|---|---|---|
+| GPT-5.5 | `openai/gpt-5.5` | 1.05M |
+| GPT-5.6 Terra | `openai/gpt-5.6-terra` | 1.05M |
+| GPT-5.6 Sol | `openai/gpt-5.6-sol` | 1.05M |
+| GPT-5.6 Luna | `openai/gpt-5.6-luna` | 1.05M |
+| GPT-6 Astra | `openai/gpt-6-astra` | 1.05M |
+
+Изменить этот список через `config.toml` нельзя — он фиксируется на стороне ChatGPT Desktop.
+
+<Note>
+  Этот список не ограничивает то, какие модели можно поставить в `config.toml`. Поле `model = "..."` принимает **любую чатовую модель** из [каталога Polza](https://polza.ai/models) — text-in/text-out, с поддержкой `wire_api = "responses"` или `chat/completions`. Это включает Anthropic, Google, DeepSeek, Kimi и других вендоров. В пикере такой модели не будет, но при запуске сессии она будет работать.
+
+</Note>
+
+## Возможности
+
+- **Чат и Work** — повседневные задачи, документы, презентации, таблицы через модели Polza.ai
+- **Codex внутри приложения** — встроенный агент для написания и редактирования кода
+- **Контекст экрана** — приложение видит скриншоты и файлы на экране для более точных ответов
+
+## Рекомендуемые модели
+
+ChatGPT Desktop и встроенный Codex активно вызывают инструменты (правка, терминал, браузер), поэтому для стабильной работы подходят модели с надёжной поддержкой `tools`. Полный список — в [каталоге Polza.ai](https://polza.ai/models).
+
+| Модель | ID | Контекст | Особенности |
+|---|---|---|---|
+| Claude Opus 5 | `anthropic/claude-opus-5` | 1M | Свежий флагман Anthropic, лучший выбор для сложных агентских задач |
+| Claude Sonnet 5 | `anthropic/claude-sonnet-5` | 1M | Оптимальный баланс скорости и качества, основной рабочий вариант |
+| OpenAI: GPT-6 Astra | `openai/gpt-6-astra` | 1.05M | Frontier для reasoning-задач, стабильный tool calling |
+| Google: Gemini 3.8 Flash | `google/gemini-3.8-flash` | 1M | Очень быстрая, мультимодальная, хороша для коротких сессий |
+| DeepSeek V4.1 Flash | `deepseek/deepseek-v4.1-flash` | 1M | Самая дешёвая в списке, подходит для типовых правок и теста подключения |
+| MoonshotAI: Kimi K3 | `moonshotai/kimi-k3` | 1M | Свежий релиз, сильная альтернатива Claude по соотношению цена/качество |
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Приложение не видит провайдера polza">
+    * Проверьте что `model_provider = "polza"` точно совпадает с именем секции `[model_providers.polza]`
+    * Убедитесь что конфиг-файл сохранён в формате TOML, без ошибок синтаксиса
+    * Полностью закройте приложение (**Quit**) и откройте заново
+  </Accordion>
+
+  <Accordion title="Ошибка аутентификации (401 Unauthorized)">
+    * Скопируйте ключ заново из [личного кабинета](https://polza.ai/dashboard/api-keys) — лишние пробелы и Unicode-символы ломают auth
+    * На балансе есть положительный остаток
+    * Поле называется именно `experimental_bearer_token` (без опечаток)
+  </Accordion>
+
+  <Accordion title="Модель не найдена">
+    * Проверьте что `model` существует в [каталоге Polza.ai](https://polza.ai/models)
+    * Замените `defaultModelId` на нужную модель и перезапустите приложение
+  </Accordion>
+
+  <Accordion title="stream disconnected before completion">
+    * Убедитесь что в конфиге `wire_api = "responses"`
+    * Проверьте что `base_url` заканчивается на `/v1/` (с trailing slash)
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Codex CLI" icon="code" href="/integracii/codex">
+    Терминальный вариант OpenAI Codex — та же конфигурация без GUI
+  </Card>
+  <Card title="Выбор провайдера" icon="server" href="/gaidy/provider-selection">
+    Как выбирать и переключаться между провайдерами моделей
+  </Card>
+</CardGroup>

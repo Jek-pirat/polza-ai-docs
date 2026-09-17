@@ -1,0 +1,21 @@
+# Минимальный пример config.toml для подключения Polza.ai в ChatGPT Desktop (Windows)
+#
+# Полный путь: C:\\Users\\<ИМЯ_ПОЛЬЗОВАТЕЛЯ>\\.codex\\config.toml
+#
+# Подключение Polza.ai — два блока:
+# 1) В начале файла (или там, где у вас уже заданы model / model_provider):
+#    замените/добавьте model и model_provider.
+# 2) В конец файла добавьте секцию [model_providers.polza] с API-ключом.
+
+model_provider = "polza"
+model = "deepseek/deepseek-v4.1-flash"
+
+# Polza.ai custom provider
+[model_providers.polza]
+name = "Polza.ai"
+base_url = "https://polza.ai/api/v1/"
+wire_api = "responses"
+experimental_bearer_token = "POLZA_API_KEY"
+
+# После правки — сохраните файл, полностью закройте ChatGPT Desktop
+# и откройте заново. Новая задача должна пойти через Polza.ai.
