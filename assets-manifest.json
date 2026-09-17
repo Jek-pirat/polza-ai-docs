@@ -32,6 +32,16 @@
       "source_path": "images/claude-desktop/models-list.jpg",
       "uploaded_at": "2026-08-24T15:08:25+00:00"
     },
+    "17817d1341260db39452f204a4eb8c4075521a77a347199f71156f012a14f985": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cline-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/17817d1341260db39452f204a4eb8c4075521a77a347199f71156f012a14f985.png",
+      "s3_key": "polza-docs/images/17817d1341260db39452f204a4eb8c4075521a77a347199f71156f012a14f985.png",
+      "sha256": "17817d1341260db39452f204a4eb8c4075521a77a347199f71156f012a14f985",
+      "size": 168091,
+      "source_path": "images/cline-desktop/cline-desktop-provider.png",
+      "uploaded_at": "2026-09-16T15:30:04+00:00"
+    },
     "1b1526ce5968b69f5c6b3c1cf4a3bc516625d4de5d79b88a0b6aca54fa854ab0": {
       "content_type": "image/png",
       "first_seen_in": "integracii/dify.mdx",
@@ -331,6 +341,16 @@
       "size": 80775,
       "source_path": "images/deepseek-harness/model_work.png",
       "uploaded_at": "2026-09-02T15:45:51+00:00"
+    },
+    "cba9790df6a9a0339cd5a824407b00688190528384b930188fb2564888b30b5a": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cline-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/cba9790df6a9a0339cd5a824407b00688190528384b930188fb2564888b30b5a.png",
+      "s3_key": "polza-docs/images/cba9790df6a9a0339cd5a824407b00688190528384b930188fb2564888b30b5a.png",
+      "sha256": "cba9790df6a9a0339cd5a824407b00688190528384b930188fb2564888b30b5a",
+      "size": 136853,
+      "source_path": "images/cline-desktop/cline-desktop-first-request.png",
+      "uploaded_at": "2026-09-16T15:30:04+00:00"
     },
     "cf4f40fb7de0db0940be22cdaf495982cf649d249e1dfc7e4a1db99d58fd5ce6": {
       "content_type": "image/png",

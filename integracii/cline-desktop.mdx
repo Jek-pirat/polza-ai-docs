@@ -1,0 +1,175 @@
+---
+title: Cline Desktop
+description: Подключение десктопного приложения Cline к Polza.ai через OpenAI Compatible API
+icon: desktop
+---
+
+Cline Desktop — десктоп-приложение от команды Cline с поддержкой автономного выполнения задач: создание и редактирование файлов, запуск команд, работа с браузером. Подключается к Polza.ai по протоколу OpenAI Compatible.
+
+<Note>
+  Эта страница про **десктоп-приложение** Cline. Расширение для VS Code / Cursor описано в [интеграции с Cline](/integracii/cline).
+</Note>
+
+## Требования
+
+- Cline Desktop последней версии ([скачать](https://cline.bot/desktop) или установить через пакетный менеджер)
+- Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+- Права на запись в `~/.cline/data/settings/models.json`
+
+## Подключение к Polza.ai
+
+Подключение состоит из двух частей: сначала регистрируем провайдера в GUI, затем правим `models.json`, чтобы Cline корректно подтянул каталог моделей.
+
+<Steps>
+  <Step title="Откройте Settings → API Providers">
+    В Cline Desktop перейдите в **Settings**, затем на вкладку **API Providers**.
+  </Step>
+
+  <Step title="Зарегистрируйте OpenAI Compatible">
+    Найдите в списке **OpenAI Compatible** и заполните поля:
+    - **Base URL:** `https://polza.ai/api/v1`
+    - **API Key:** ваш ключ из [личного кабинета](https://polza.ai/dashboard/api-keys)
+
+    Статус провайдера в списке должен смениться на **Configured**.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/17817d1341260db39452f204a4eb8c4075521a77a347199f71156f012a14f985.png"
+           alt="Список API Providers в Cline Desktop со статусом Configured у OpenAI Compatible" />
+    </Frame>
+  </Step>
+
+  <Step title="Закройте Cline Desktop">
+    Полностью выйдите из приложения — изменения в `models.json` подхватываются только при следующем старте.
+  </Step>
+
+  <Step title="Откройте models.json">
+    Перейдите в папку с настройками:
+    - **Windows:** `C:\Users\<ИМЯ_ПОЛЬЗОВАТЕЛЯ>\.cline\data\settings\models.json`
+    - **macOS / Linux:** `~/.cline/data/settings/models.json`
+
+    Откройте файл `models.json` в любом текстовом редакторе.
+  </Step>
+
+  <Step title="Замените секцию openai-compatible">
+    Приведите секцию провайдера `openai-compatible` к виду:
+
+    ```json
+    {
+      "version": 1,
+      "providers": {
+        "openai-compatible": {
+          "provider": {
+            "name": "Polza.ai",
+            "baseUrl": "https://polza.ai/api/v1",
+            "defaultModelId": "deepseek/deepseek-v4.1-flash",
+            "protocol": "openai-chat",
+            "client": "openai-compatible",
+            "modelsSourceUrl": "https://polza.ai/api/v1/models",
+            "capabilities": [
+              "tools",
+              "popular",
+              "reasoning",
+              "vision",
+              "prompt-cache"
+            ]
+          },
+          "models": {
+          }
+        }
+      }
+    }
+    ```
+
+    <Note>
+      `defaultModelId` — это модель, которая подставляется в пикер по умолчанию. Можно заменить на любую из [каталога](https://polza.ai/models), например `anthropic/claude-sonnet-4.6`. Пустой объект `"models": {}` заставляет Cline подтянуть полный список с `modelsSourceUrl` при старте.
+    </Note>
+
+    <Warning>
+      Указанные `capabilities` — это **заявленные** возможности провайдера. Реальный набор зависит от выбранной модели. Если модель не поддерживает, например, vision — Cline всё равно покажет её как vision-capable, а ошибка вылезет уже на запросе.
+    </Warning>
+  </Step>
+
+  <Step title="Запустите Cline и сделайте первый запрос">
+    Откройте Cline Desktop заново, в пикере моделей выберите провайдера **Polza.ai** и нужную модель, затем отправьте первый запрос.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/cba9790df6a9a0339cd5a824407b00688190528384b930188fb2564888b30b5a.png"
+           alt="Пикер моделей в Cline Desktop с провайдером Polza.ai и первый успешный запрос" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Возможности
+
+- **Автономные задачи** — Cline Desktop сам создаёт и редактирует файлы, запускает команды в терминале, исправляет ошибки
+- **Написание кода** — генерация и рефакторинг по описанию на естественном языке
+- **Работа с браузером** — взаимодействие с веб-страницами без участия пользователя
+- **Tool calling** — поддерживается всеми моделями с capability `tools`
+
+## Рекомендуемые модели
+
+Cline Desktop активно использует tool calling, поэтому для стабильной работы подходят модели с надёжной поддержкой `tools`. Полный список — в [каталоге Polza.ai](https://polza.ai/models).
+
+| Модель | ID | Контекст | Особенности |
+|---|---|---|---|
+| Claude Opus 5 | `anthropic/claude-opus-5` | 1M | Свежий флагман Anthropic, лучший выбор для сложных агентских задач |
+| Claude Sonnet 5 | `anthropic/claude-sonnet-5` | 1M | Оптимальный баланс скорости и качества, основной рабочий вариант |
+| OpenAI: GPT-6 Astra | `openai/gpt-6-astra` | 1.05M | Frontier для reasoning-задач, стабильный tool calling |
+| Google: Gemini 3.8 Flash | `google/gemini-3.8-flash` | 1M | Очень быстрая, мультимодальная, хороша для коротких сессий |
+| DeepSeek V4.1 Flash | `deepseek/deepseek-v4.1-flash` | 1M | Самая дешёвая в списке, подходит для типовых правок и теста подключения |
+| MoonshotAI: Kimi K3 | `moonshotai/kimi-k3` | 1M | Свежий релиз, сильная альтернатива Claude по соотношению цена/качество |
+
+<Warning>
+  Cline Desktop активно вызывает инструменты (правка файлов, терминал, браузер). Модели со слабой поддержкой tool use зависают или выдают ошибки формата. Все модели в таблице выше стабильно работают с `tools` — если хотите другую модель, проверьте её на простом запросе перед длинной агентской задачей.
+</Warning>
+
+<Note>
+  В `models.json` по умолчанию уже стоит `deepseek/deepseek-v4.1-flash` — этого достаточно для проверки подключения. Дальше выбирайте модель из таблицы в пикере Cline Desktop.
+</Note>
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Каталог моделей пустой после правки models.json">
+    - Полностью закройте Cline Desktop (**Quit**, а не просто закрыть окно) и откройте снова
+    - Проверьте что JSON валиден — лишняя запятая или пропущенная кавычка ломают парсинг целиком
+    - Убедитесь что `modelsSourceUrl` отдаёт 200: `curl -I https://polza.ai/api/v1/models` (с заголовком `Authorization: Bearer <ваш-ключ>`)
+    - Проверьте что `capabilities` записаны в правильном порядке — это JSON-массив строк, а не объект
+  </Accordion>
+
+  <Accordion title="Ошибка аутентификации (401 Unauthorized)">
+    - Скопируйте ключ заново из [личного кабинета](https://polza.ai/dashboard/api-keys) — лишние пробелы и Unicode-символы ломают auth
+    - Проверьте что в **Settings → API Providers** статус OpenAI Compatible — **Configured**, а не **Not configured**
+    - На балансе есть положительный остаток
+  </Accordion>
+
+  <Accordion title="Модель из каталога Polza не появляется в пикере">
+    - `modelsSourceUrl` подтягивает список при каждом старте — перезапустите Cline Desktop
+    - Если используете белый список моделей — проверьте что нужная модель в нём разрешена
+    - Cline Desktop может кешировать список моделей на диске — удалите `~/.cline/data/cache/` и перезапустите
+  </Accordion>
+
+  <Accordion title="Tool calling работает нестабильно">
+    Cline Desktop активно вызывает инструменты (правка, терминал, браузер). Модели со слабой поддержкой tool use зависают или выдают ошибки формата.
+
+    - Используйте модели с capability `tools` (по умолчанию все модели в Polza.ai поддерживают)
+    - Если модель работает в чате, но не в агенте — попробуйте более сильную модель той же линейки
+  </Accordion>
+
+  <Accordion title="Приложение не запускается после правки models.json">
+    - Откройте `~/.cline/logs/` (или `%USERPROFILE%\.cline\logs\` на Windows) — последняя строка покажет, какой ключ JSON невалиден
+    - Скопируйте содержимое через `cat ~/.cline/data/settings/models.json | jq .` — `jq` сразу покажет, где синтаксическая ошибка
+    - Если файл не восстановить — удалите его, Cline Desktop пересоздаст конфиг при старте, и настройку можно повторить
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Выбор провайдера" icon="server" href="/gaidy/provider-selection">
+    Как выбирать и переключаться между провайдерами моделей
+  </Card>
+  <Card title="MCP-сервер" icon="plug" href="/gaidy/mcp">
+    Подключение AI-агентов к аккаунту Polza.AI через Model Context Protocol
+  </Card>
+</CardGroup>
