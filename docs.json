@@ -60,6 +60,14 @@
             ]
           },
           {
+            "group": "Классификация и оценка",
+            "pages": [
+              "gaidy/jev",
+              "gaidy/jev-questions",
+              "gaidy/jev-recipes"
+            ]
+          },
+          {
             "group": "Генерация медиа",
             "pages": [
               {
@@ -187,6 +195,12 @@
             "group": "Эмбеддинги",
             "pages": [
               "api-reference/embeddings/create"
+            ]
+          },
+          {
+            "group": "Классификация и оценка",
+            "pages": [
+              "api-reference/systemone/create"
             ]
           },
           {

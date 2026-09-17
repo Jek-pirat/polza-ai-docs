@@ -40,6 +40,7 @@ GET https://polza.ai/api/v1/models
 | `video` | Модели генерации видео |
 | `tts` | Модели синтеза речи (Text-to-Speech) |
 | `stt` | Модели распознавания речи (Speech-to-Text) |
+| `classification` | Классификация и оценка текста: модель отвечает на вопросы «да/нет», выбирает из вариантов и оценивает по шкале ([Jev](/gaidy/jev)) |
 
 ## Примеры запросов
 
@@ -157,7 +158,7 @@ curl "https://polza.ai/api/v1/models?type=chat&include_providers=true" \
 |------|-----|----------|
 | `id` | string | Идентификатор модели для использования в API запросах |
 | `name` | string | Человекочитаемое название модели |
-| `type` | string | Тип модели: `chat`, `image`, `embedding`, `audio`, `video`, `tts`, `stt` |
+| `type` | string | Тип модели: `chat`, `image`, `embedding`, `audio`, `video`, `tts`, `stt`, `classification` |
 | `short_description` | string? | Краткое описание модели |
 | `created` | number | Unix timestamp создания модели |
 | `architecture` | object | Информация об архитектуре модели |
