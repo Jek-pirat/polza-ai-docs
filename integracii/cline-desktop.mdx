@@ -99,6 +99,44 @@ Cline Desktop — десктоп-приложение от команды Cline 
   </Step>
 </Steps>
 
+<Note>
+  **Селектор усилия размышления (reasoning effort) в UI Cline Desktop по умолчанию выключен**, если модели в `models.json` не помечены явно. Чтобы селектор заработал, **каждая** модель в секции `[models.<id>]` должна иметь поле `supportsReasoning: true`.
+</Note>
+
+<Warning>
+  Cline Desktop читает только модели, перечисленные в `[models.<id>]` — модели, пришедшие из `/v1/models` провайдера, игнорируются, если их нет в `models.json`. Минимальный ручной пример, который включает reasoning:
+
+  ```json
+  {
+    "version": 1,
+    "providers": {
+      "openai-compatible": {
+        "provider": {
+          "name": "Polza.ai",
+          "baseUrl": "https://polza.ai/api/v1",
+          "defaultModelId": "anthropic/claude-sonnet-4.6",
+          "protocol": "openai-chat",
+          "client": "openai-compatible",
+          "modelsSourceUrl": "https://polza.ai/api/v1/models",
+          "capabilities": ["tools", "popular", "reasoning", "vision", "prompt-cache"]
+        },
+        "models": {
+          "anthropic/claude-sonnet-4.6": {
+            "id": "anthropic/claude-sonnet-4.6",
+            "name": "anthropic/claude-sonnet-4.6",
+            "supportsVision": true,
+            "supportsAttachments": true,
+            "supportsReasoning": true
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  Полный пример со **всеми моделями** каталога Polza (398 шт.) и флагами — [models-example.json](https://storage.yandexcloud.net/polza-docs/polza-docs/images/96d16ebdff46d7110736b5598162c1cdce45ed6389bd54e2b5a9043530a16a40.json). Скачайте и поместите в `~/.cline/data/settings/models.json`.
+</Warning>
+
 ## Возможности
 
 - **Автономные задачи** — Cline Desktop сам создаёт и редактирует файлы, запускает команды в терминале, исправляет ошибки
