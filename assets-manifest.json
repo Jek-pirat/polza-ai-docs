@@ -477,6 +477,12 @@
       "source_path": "examples/chatgpt-desktop/config-example.toml",
       "uploaded_at": "2026-09-16",
       "note": "Обезличенный пример config.toml для интеграции с ChatGPT Desktop"
+    },
+    "96d16ebdff46d7110736b5598162c1cdce45ed6389bd54e2b5a9043530a16a40": {
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/96d16ebdff46d7110736b5598162c1cdce45ed6389bd54e2b5a9043530a16a40.json",
+      "source_path": "images/cline-desktop/models-example.json",
+      "uploaded_at": "2026-09-16",
+      "note": "Полный models.json (398 моделей) с флагами reasoning для Cline"
     }
   },
   "key_prefix": "polza-docs/images",

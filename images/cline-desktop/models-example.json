@@ -1,0 +1,2810 @@
+{
+  "version": 1,
+  "providers": {
+    "openai-compatible": {
+      "provider": {
+        "name": "Polza.ai",
+        "baseUrl": "https://polza.ai/api/v1",
+        "defaultModelId": "deepseek/deepseek-v4.1-flash",
+        "protocol": "openai-chat",
+        "client": "openai-compatible",
+        "modelsSourceUrl": "https://polza.ai/api/v1/models",
+        "capabilities": [
+          "tools",
+          "popular",
+          "reasoning",
+          "vision",
+          "prompt-cache"
+        ]
+      },
+      "models": {
+        "GigaChat/GigaChat-3-Pro": {
+          "id": "GigaChat/GigaChat-3-Pro",
+          "name": "GigaChat/GigaChat-3-Pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sakana/fugu-ultra-v2": {
+          "id": "sakana/fugu-ultra-v2",
+          "name": "sakana/fugu-ultra-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sakana/fugu-max": {
+          "id": "sakana/fugu-max",
+          "name": "sakana/fugu-max",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "inference-net/schematron-v2-small": {
+          "id": "inference-net/schematron-v2-small",
+          "name": "inference-net/schematron-v2-small",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-image-2.5-sunburst": {
+          "id": "openai/gpt-image-2.5-sunburst",
+          "name": "openai/gpt-image-2.5-sunburst",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "gpt-image-2-5-flare": {
+          "id": "gpt-image-2-5-flare",
+          "name": "gpt-image-2-5-flare",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v4.1-flash": {
+          "id": "deepseek/deepseek-v4.1-flash",
+          "name": "deepseek/deepseek-v4.1-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-6-astra-pro": {
+          "id": "openai/gpt-6-astra-pro",
+          "name": "openai/gpt-6-astra-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-6-astra": {
+          "id": "openai/gpt-6-astra",
+          "name": "openai/gpt-6-astra",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "tencent/hy-mt2-7b": {
+          "id": "tencent/hy-mt2-7b",
+          "name": "tencent/hy-mt2-7b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "tencent/hy4-preview": {
+          "id": "tencent/hy4-preview",
+          "name": "tencent/hy4-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.8-flash": {
+          "id": "google/gemini-3.8-flash",
+          "name": "google/gemini-3.8-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-fable-5.1": {
+          "id": "anthropic/claude-fable-5.1",
+          "name": "anthropic/claude-fable-5.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "alibaba/wan-3.0-prime": {
+          "id": "alibaba/wan-3.0-prime",
+          "name": "alibaba/wan-3.0-prime",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.8-flash": {
+          "id": "qwen/qwen3.8-flash",
+          "name": "qwen/qwen3.8-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-5.3-flash": {
+          "id": "z-ai/glm-5.3-flash",
+          "name": "z-ai/glm-5.3-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "alibaba/wan-3.0": {
+          "id": "alibaba/wan-3.0",
+          "name": "alibaba/wan-3.0",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedance-2-5": {
+          "id": "bytedance/seedance-2-5",
+          "name": "bytedance/seedance-2-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "grok-imagine-video-1-5": {
+          "id": "grok-imagine-video-1-5",
+          "name": "grok-imagine-video-1-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v4-flash-vision-exp": {
+          "id": "deepseek/deepseek-v4-flash-vision-exp",
+          "name": "deepseek/deepseek-v4-flash-vision-exp",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "tencent/hy-mt2-1.8b": {
+          "id": "tencent/hy-mt2-1.8b",
+          "name": "tencent/hy-mt2-1.8b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "tencent/hy-mt2-30b-a3b": {
+          "id": "tencent/hy-mt2-30b-a3b",
+          "name": "tencent/hy-mt2-30b-a3b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-5.3": {
+          "id": "z-ai/glm-5.3",
+          "name": "z-ai/glm-5.3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.8-27b": {
+          "id": "qwen/qwen3.8-27b",
+          "name": "qwen/qwen3.8-27b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.7-flash": {
+          "id": "google/gemini-3.7-flash",
+          "name": "google/gemini-3.7-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "nvidia/nemotron-3.5-lightning": {
+          "id": "nvidia/nemotron-3.5-lightning",
+          "name": "nvidia/nemotron-3.5-lightning",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "x-ai/grok-4.6": {
+          "id": "x-ai/grok-4.6",
+          "name": "x-ai/grok-4.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v4-pro-0813": {
+          "id": "deepseek/deepseek-v4-pro-0813",
+          "name": "deepseek/deepseek-v4-pro-0813",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v4-flash-0731": {
+          "id": "deepseek/deepseek-v4-flash-0731",
+          "name": "deepseek/deepseek-v4-flash-0731",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.8-max": {
+          "id": "qwen/qwen3.8-max",
+          "name": "qwen/qwen3.8-max",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-opus-5": {
+          "id": "anthropic/claude-opus-5",
+          "name": "anthropic/claude-opus-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "thinkingmachines/inkling": {
+          "id": "thinkingmachines/inkling",
+          "name": "thinkingmachines/inkling",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "microsoft/mai-voice-2-flash": {
+          "id": "microsoft/mai-voice-2-flash",
+          "name": "microsoft/mai-voice-2-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "poolside/laguna-s-2.1": {
+          "id": "poolside/laguna-s-2.1",
+          "name": "poolside/laguna-s-2.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.6-flash": {
+          "id": "google/gemini-3.6-flash",
+          "name": "google/gemini-3.6-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.5-flash-lite": {
+          "id": "google/gemini-3.5-flash-lite",
+          "name": "google/gemini-3.5-flash-lite",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/speech-2.8-turbo": {
+          "id": "minimax/speech-2.8-turbo",
+          "name": "minimax/speech-2.8-turbo",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/speech-2.8-hd": {
+          "id": "minimax/speech-2.8-hd",
+          "name": "minimax/speech-2.8-hd",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepgram/aura-2": {
+          "id": "deepgram/aura-2",
+          "name": "deepgram/aura-2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "moonshotai/kimi-k3": {
+          "id": "moonshotai/kimi-k3",
+          "name": "moonshotai/kimi-k3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "kwaipilot/kat-coder-pro-v2.5": {
+          "id": "kwaipilot/kat-coder-pro-v2.5",
+          "name": "kwaipilot/kat-coder-pro-v2.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "seedream/5-pro-text-to-image": {
+          "id": "seedream/5-pro-text-to-image",
+          "name": "seedream/5-pro-text-to-image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.6-luna-pro": {
+          "id": "openai/gpt-5.6-luna-pro",
+          "name": "openai/gpt-5.6-luna-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.6-terra-pro": {
+          "id": "openai/gpt-5.6-terra-pro",
+          "name": "openai/gpt-5.6-terra-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.6-sol-pro": {
+          "id": "openai/gpt-5.6-sol-pro",
+          "name": "openai/gpt-5.6-sol-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.6-luna": {
+          "id": "openai/gpt-5.6-luna",
+          "name": "openai/gpt-5.6-luna",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.6-terra": {
+          "id": "openai/gpt-5.6-terra",
+          "name": "openai/gpt-5.6-terra",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.6-sol": {
+          "id": "openai/gpt-5.6-sol",
+          "name": "openai/gpt-5.6-sol",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "x-ai/grok-4.5": {
+          "id": "x-ai/grok-4.5",
+          "name": "x-ai/grok-4.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aion-labs/aion-3.0-mini": {
+          "id": "aion-labs/aion-3.0-mini",
+          "name": "aion-labs/aion-3.0-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aion-labs/aion-3.0": {
+          "id": "aion-labs/aion-3.0",
+          "name": "aion-labs/aion-3.0",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "tencent/hy3": {
+          "id": "tencent/hy3",
+          "name": "tencent/hy3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "poolside/laguna-xs-2.1": {
+          "id": "poolside/laguna-xs-2.1",
+          "name": "poolside/laguna-xs-2.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedance-2-mini": {
+          "id": "bytedance/seedance-2-mini",
+          "name": "bytedance/seedance-2-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-sonnet-5": {
+          "id": "anthropic/claude-sonnet-5",
+          "name": "anthropic/claude-sonnet-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-flash-lite-image": {
+          "id": "google/gemini-3.1-flash-lite-image",
+          "name": "google/gemini-3.1-flash-lite-image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "ai-sage/gigaam-v3": {
+          "id": "ai-sage/gigaam-v3",
+          "name": "ai-sage/gigaam-v3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sakana/fugu-ultra": {
+          "id": "sakana/fugu-ultra",
+          "name": "sakana/fugu-ultra",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "alibaba/happyhorse-1.1": {
+          "id": "alibaba/happyhorse-1.1",
+          "name": "alibaba/happyhorse-1.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "alibaba/happyhorse-1.0": {
+          "id": "alibaba/happyhorse-1.0",
+          "name": "alibaba/happyhorse-1.0",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-flash-image": {
+          "id": "google/gemini-3.1-flash-image",
+          "name": "google/gemini-3.1-flash-image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aiesa/transcribe-fast": {
+          "id": "aiesa/transcribe-fast",
+          "name": "aiesa/transcribe-fast",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aiesa/transcribe": {
+          "id": "aiesa/transcribe",
+          "name": "aiesa/transcribe",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aiesa/aiesa-pro": {
+          "id": "aiesa/aiesa-pro",
+          "name": "aiesa/aiesa-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aiesa/aiesa-mini": {
+          "id": "aiesa/aiesa-mini",
+          "name": "aiesa/aiesa-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-5.2": {
+          "id": "z-ai/glm-5.2",
+          "name": "z-ai/glm-5.2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-flash-tts-preview": {
+          "id": "google/gemini-3.1-flash-tts-preview",
+          "name": "google/gemini-3.1-flash-tts-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "microsoft/mai-voice-2": {
+          "id": "microsoft/mai-voice-2",
+          "name": "microsoft/mai-voice-2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/whisper-large-v3": {
+          "id": "openai/whisper-large-v3",
+          "name": "openai/whisper-large-v3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/whisper-large-v3-turbo": {
+          "id": "openai/whisper-large-v3-turbo",
+          "name": "openai/whisper-large-v3-turbo",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/chirp-3": {
+          "id": "google/chirp-3",
+          "name": "google/chirp-3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-asr-flash-2026-02-10": {
+          "id": "qwen/qwen3-asr-flash-2026-02-10",
+          "name": "qwen/qwen3-asr-flash-2026-02-10",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/voxtral-mini-transcribe": {
+          "id": "mistralai/voxtral-mini-transcribe",
+          "name": "mistralai/voxtral-mini-transcribe",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "nvidia/parakeet-tdt-0.6b-v3": {
+          "id": "nvidia/parakeet-tdt-0.6b-v3",
+          "name": "nvidia/parakeet-tdt-0.6b-v3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "moonshotai/kimi-k2.7-code": {
+          "id": "moonshotai/kimi-k2.7-code",
+          "name": "moonshotai/kimi-k2.7-code",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-fable-5": {
+          "id": "anthropic/claude-fable-5",
+          "name": "anthropic/claude-fable-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "nvidia/nemotron-3-ultra-550b-a55b": {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b",
+          "name": "nvidia/nemotron-3-ultra-550b-a55b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "yandex/text-search-query": {
+          "id": "yandex/text-search-query",
+          "name": "yandex/text-search-query",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "yandex/text-search-doc": {
+          "id": "yandex/text-search-doc",
+          "name": "yandex/text-search-doc",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sber/gigachat-2-max": {
+          "id": "sber/gigachat-2-max",
+          "name": "sber/gigachat-2-max",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sber/gigachat-2-pro": {
+          "id": "sber/gigachat-2-pro",
+          "name": "sber/gigachat-2-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sber/gigachat-2": {
+          "id": "sber/gigachat-2",
+          "name": "sber/gigachat-2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sber/gigachat-max": {
+          "id": "sber/gigachat-max",
+          "name": "sber/gigachat-max",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sber/gigachat-pro": {
+          "id": "sber/gigachat-pro",
+          "name": "sber/gigachat-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sber/gigachat-plus": {
+          "id": "sber/gigachat-plus",
+          "name": "sber/gigachat-plus",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sber/gigachat": {
+          "id": "sber/gigachat",
+          "name": "sber/gigachat",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "gemini-omni-video": {
+          "id": "gemini-omni-video",
+          "name": "gemini-omni-video",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-m3": {
+          "id": "minimax/minimax-m3",
+          "name": "minimax/minimax-m3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "stepfun/step-3.7-flash": {
+          "id": "stepfun/step-3.7-flash",
+          "name": "stepfun/step-3.7-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-opus-4.8": {
+          "id": "anthropic/claude-opus-4.8",
+          "name": "anthropic/claude-opus-4.8",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "suno/sounds": {
+          "id": "suno/sounds",
+          "name": "suno/sounds",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "suno/mashup": {
+          "id": "suno/mashup",
+          "name": "suno/mashup",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "x-ai/grok-build-0.1": {
+          "id": "x-ai/grok-build-0.1",
+          "name": "x-ai/grok-build-0.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.7-max": {
+          "id": "qwen/qwen3.7-max",
+          "name": "qwen/qwen3.7-max",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.5-flash": {
+          "id": "google/gemini-3.5-flash",
+          "name": "google/gemini-3.5-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perceptron/perceptron-mk1": {
+          "id": "perceptron/perceptron-mk1",
+          "name": "perceptron/perceptron-mk1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-flash-lite": {
+          "id": "google/gemini-3.1-flash-lite",
+          "name": "google/gemini-3.1-flash-lite",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-medium-3-5": {
+          "id": "mistralai/mistral-medium-3-5",
+          "name": "mistralai/mistral-medium-3-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "x-ai/grok-4.3": {
+          "id": "x-ai/grok-4.3",
+          "name": "x-ai/grok-4.3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-plus-20260420": {
+          "id": "qwen/qwen3.5-plus-20260420",
+          "name": "qwen/qwen3.5-plus-20260420",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.6-flash": {
+          "id": "qwen/qwen3.6-flash",
+          "name": "qwen/qwen3.6-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.6-35b-a3b": {
+          "id": "qwen/qwen3.6-35b-a3b",
+          "name": "qwen/qwen3.6-35b-a3b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.6-max-preview": {
+          "id": "qwen/qwen3.6-max-preview",
+          "name": "qwen/qwen3.6-max-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.6-27b": {
+          "id": "qwen/qwen3.6-27b",
+          "name": "qwen/qwen3.6-27b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.5-pro": {
+          "id": "openai/gpt-5.5-pro",
+          "name": "openai/gpt-5.5-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.5": {
+          "id": "openai/gpt-5.5",
+          "name": "openai/gpt-5.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v4-pro": {
+          "id": "deepseek/deepseek-v4-pro",
+          "name": "deepseek/deepseek-v4-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v4-flash": {
+          "id": "deepseek/deepseek-v4-flash",
+          "name": "deepseek/deepseek-v4-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "xiaomi/mimo-v2.5-pro": {
+          "id": "xiaomi/mimo-v2.5-pro",
+          "name": "xiaomi/mimo-v2.5-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "xiaomi/mimo-v2.5": {
+          "id": "xiaomi/mimo-v2.5",
+          "name": "xiaomi/mimo-v2.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.4-image-2": {
+          "id": "openai/gpt-5.4-image-2",
+          "name": "openai/gpt-5.4-image-2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "moonshotai/kimi-k2.6": {
+          "id": "moonshotai/kimi-k2.6",
+          "name": "moonshotai/kimi-k2.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-embedding-2-preview": {
+          "id": "google/gemini-embedding-2-preview",
+          "name": "google/gemini-embedding-2-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-opus-4.7": {
+          "id": "anthropic/claude-opus-4.7",
+          "name": "anthropic/claude-opus-4.7",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedance-2-fast": {
+          "id": "bytedance/seedance-2-fast",
+          "name": "bytedance/seedance-2-fast",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedance-2": {
+          "id": "bytedance/seedance-2",
+          "name": "bytedance/seedance-2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.6-plus": {
+          "id": "qwen/qwen3.6-plus",
+          "name": "qwen/qwen3.6-plus",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemma-4-26b-a4b-it": {
+          "id": "google/gemma-4-26b-a4b-it",
+          "name": "google/gemma-4-26b-a4b-it",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-5.1": {
+          "id": "z-ai/glm-5.1",
+          "name": "z-ai/glm-5.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "yandex/yandexgpt-5-lite": {
+          "id": "yandex/yandexgpt-5-lite",
+          "name": "yandex/yandexgpt-5-lite",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "yandex/yandexgpt-5.1-pro": {
+          "id": "yandex/yandexgpt-5.1-pro",
+          "name": "yandex/yandexgpt-5.1-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "yandex/yandexgpt-5-pro": {
+          "id": "yandex/yandexgpt-5-pro",
+          "name": "yandex/yandexgpt-5-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "yandex/aliceai-llm": {
+          "id": "yandex/aliceai-llm",
+          "name": "yandex/aliceai-llm",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemma-4-31b-it": {
+          "id": "google/gemma-4-31b-it",
+          "name": "google/gemma-4-31b-it",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-5v-turbo": {
+          "id": "z-ai/glm-5v-turbo",
+          "name": "z-ai/glm-5v-turbo",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "arcee-ai/trinity-large-thinking": {
+          "id": "arcee-ai/trinity-large-thinking",
+          "name": "arcee-ai/trinity-large-thinking",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "x-ai/grok-4.20-multi-agent": {
+          "id": "x-ai/grok-4.20-multi-agent",
+          "name": "x-ai/grok-4.20-multi-agent",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "x-ai/grok-4.20": {
+          "id": "x-ai/grok-4.20",
+          "name": "x-ai/grok-4.20",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/lyria-3-pro-preview": {
+          "id": "google/lyria-3-pro-preview",
+          "name": "google/lyria-3-pro-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perplexity/pplx-embed-v1-4b": {
+          "id": "perplexity/pplx-embed-v1-4b",
+          "name": "perplexity/pplx-embed-v1-4b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perplexity/pplx-embed-v1-0.6b": {
+          "id": "perplexity/pplx-embed-v1-0.6b",
+          "name": "perplexity/pplx-embed-v1-0.6b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "rekaai/reka-edge": {
+          "id": "rekaai/reka-edge",
+          "name": "rekaai/reka-edge",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/lyria-3-clip-preview": {
+          "id": "google/lyria-3-clip-preview",
+          "name": "google/lyria-3-clip-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "kwaipilot/kat-coder-pro-v2": {
+          "id": "kwaipilot/kat-coder-pro-v2",
+          "name": "kwaipilot/kat-coder-pro-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-m2.7": {
+          "id": "minimax/minimax-m2.7",
+          "name": "minimax/minimax-m2.7",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.4-nano": {
+          "id": "openai/gpt-5.4-nano",
+          "name": "openai/gpt-5.4-nano",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.4-mini": {
+          "id": "openai/gpt-5.4-mini",
+          "name": "openai/gpt-5.4-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-small-2603": {
+          "id": "mistralai/mistral-small-2603",
+          "name": "mistralai/mistral-small-2603",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/image-2": {
+          "id": "qwen/image-2",
+          "name": "qwen/image-2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-5-turbo": {
+          "id": "z-ai/glm-5-turbo",
+          "name": "z-ai/glm-5-turbo",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "kling/v3-motion-control": {
+          "id": "kling/v3-motion-control",
+          "name": "kling/v3-motion-control",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "suno/generate": {
+          "id": "suno/generate",
+          "name": "suno/generate",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance-seed/seed-2.0-lite": {
+          "id": "bytedance-seed/seed-2.0-lite",
+          "name": "bytedance-seed/seed-2.0-lite",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-9b": {
+          "id": "qwen/qwen3.5-9b",
+          "name": "qwen/qwen3.5-9b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.4-pro": {
+          "id": "openai/gpt-5.4-pro",
+          "name": "openai/gpt-5.4-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.4": {
+          "id": "openai/gpt-5.4",
+          "name": "openai/gpt-5.4",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "inception/mercury-2": {
+          "id": "inception/mercury-2",
+          "name": "inception/mercury-2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.3-chat": {
+          "id": "openai/gpt-5.3-chat",
+          "name": "openai/gpt-5.3-chat",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-flash-lite-preview": {
+          "id": "google/gemini-3.1-flash-lite-preview",
+          "name": "google/gemini-3.1-flash-lite-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-35b-a3b": {
+          "id": "qwen/qwen3.5-35b-a3b",
+          "name": "qwen/qwen3.5-35b-a3b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-27b": {
+          "id": "qwen/qwen3.5-27b",
+          "name": "qwen/qwen3.5-27b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-122b-a10b": {
+          "id": "qwen/qwen3.5-122b-a10b",
+          "name": "qwen/qwen3.5-122b-a10b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-flash-02-23": {
+          "id": "qwen/qwen3.5-flash-02-23",
+          "name": "qwen/qwen3.5-flash-02-23",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-pro-preview-customtools": {
+          "id": "google/gemini-3.1-pro-preview-customtools",
+          "name": "google/gemini-3.1-pro-preview-customtools",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aion-labs/aion-2.0": {
+          "id": "aion-labs/aion-2.0",
+          "name": "aion-labs/aion-2.0",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "upstage/solar-pro-3": {
+          "id": "upstage/solar-pro-3",
+          "name": "upstage/solar-pro-3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedream-5-lite": {
+          "id": "bytedance/seedream-5-lite",
+          "name": "bytedance/seedream-5-lite",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance-seed/seed-2.0-mini": {
+          "id": "bytedance-seed/seed-2.0-mini",
+          "name": "bytedance-seed/seed-2.0-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-flash-image-preview": {
+          "id": "google/gemini-3.1-flash-image-preview",
+          "name": "google/gemini-3.1-flash-image-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.3-codex": {
+          "id": "openai/gpt-5.3-codex",
+          "name": "openai/gpt-5.3-codex",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "stepfun/step-3.5-flash": {
+          "id": "stepfun/step-3.5-flash",
+          "name": "stepfun/step-3.5-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "topaz/video-upscale": {
+          "id": "topaz/video-upscale",
+          "name": "topaz/video-upscale",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "topaz/image-upscale": {
+          "id": "topaz/image-upscale",
+          "name": "topaz/image-upscale",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/image": {
+          "id": "qwen/image",
+          "name": "qwen/image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-sonnet-4.6": {
+          "id": "anthropic/claude-sonnet-4.6",
+          "name": "anthropic/claude-sonnet-4.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "tongyi-mai/z-image": {
+          "id": "tongyi-mai/z-image",
+          "name": "tongyi-mai/z-image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "kling/v2.6-motion-control": {
+          "id": "kling/v2.6-motion-control",
+          "name": "kling/v2.6-motion-control",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedance-1.5-pro": {
+          "id": "bytedance/seedance-1.5-pro",
+          "name": "bytedance/seedance-1.5-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "wan/2.6": {
+          "id": "wan/2.6",
+          "name": "wan/2.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "wan/2.5": {
+          "id": "wan/2.5",
+          "name": "wan/2.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "kling/v3": {
+          "id": "kling/v3",
+          "name": "kling/v3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "kling/v2.6": {
+          "id": "kling/v2.6",
+          "name": "kling/v2.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "x-ai/grok-imagine-image": {
+          "id": "x-ai/grok-imagine-image",
+          "name": "x-ai/grok-imagine-image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "black-forest-labs/flux.2-pro": {
+          "id": "black-forest-labs/flux.2-pro",
+          "name": "black-forest-labs/flux.2-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "black-forest-labs/flux.2-flex": {
+          "id": "black-forest-labs/flux.2-flex",
+          "name": "black-forest-labs/flux.2-flex",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedream-4.5": {
+          "id": "bytedance/seedream-4.5",
+          "name": "bytedance/seedream-4.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/seedream-4": {
+          "id": "bytedance/seedream-4",
+          "name": "bytedance/seedream-4",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-image-1.5": {
+          "id": "openai/gpt-image-1.5",
+          "name": "openai/gpt-image-1.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/veo3_fast": {
+          "id": "google/veo3_fast",
+          "name": "google/veo3_fast",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/veo3": {
+          "id": "google/veo3",
+          "name": "google/veo3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-mini-tts": {
+          "id": "openai/gpt-4o-mini-tts",
+          "name": "openai/gpt-4o-mini-tts",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-mini-transcribe": {
+          "id": "openai/gpt-4o-mini-transcribe",
+          "name": "openai/gpt-4o-mini-transcribe",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-transcribe": {
+          "id": "openai/gpt-4o-transcribe",
+          "name": "openai/gpt-4o-transcribe",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/tts-1-hd": {
+          "id": "openai/tts-1-hd",
+          "name": "openai/tts-1-hd",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/tts-1": {
+          "id": "openai/tts-1",
+          "name": "openai/tts-1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/whisper-1": {
+          "id": "openai/whisper-1",
+          "name": "openai/whisper-1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3.1-pro-preview": {
+          "id": "google/gemini-3.1-pro-preview",
+          "name": "google/gemini-3.1-pro-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-plus-02-15": {
+          "id": "qwen/qwen3.5-plus-02-15",
+          "name": "qwen/qwen3.5-plus-02-15",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3.5-397b-a17b": {
+          "id": "qwen/qwen3.5-397b-a17b",
+          "name": "qwen/qwen3.5-397b-a17b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-max-thinking": {
+          "id": "qwen/qwen3-max-thinking",
+          "name": "qwen/qwen3-max-thinking",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-m2.5": {
+          "id": "minimax/minimax-m2.5",
+          "name": "minimax/minimax-m2.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-5": {
+          "id": "z-ai/glm-5",
+          "name": "z-ai/glm-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-opus-4.6": {
+          "id": "anthropic/claude-opus-4.6",
+          "name": "anthropic/claude-opus-4.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-coder-next": {
+          "id": "qwen/qwen3-coder-next",
+          "name": "qwen/qwen3-coder-next",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-4.7-flash": {
+          "id": "z-ai/glm-4.7-flash",
+          "name": "z-ai/glm-4.7-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-4.7": {
+          "id": "z-ai/glm-4.7",
+          "name": "z-ai/glm-4.7",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-4.6v": {
+          "id": "z-ai/glm-4.6v",
+          "name": "z-ai/glm-4.6v",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-4.6": {
+          "id": "z-ai/glm-4.6",
+          "name": "z-ai/glm-4.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-4.5v": {
+          "id": "z-ai/glm-4.5v",
+          "name": "z-ai/glm-4.5v",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-4.5-air": {
+          "id": "z-ai/glm-4.5-air",
+          "name": "z-ai/glm-4.5-air",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "z-ai/glm-4.5": {
+          "id": "z-ai/glm-4.5",
+          "name": "z-ai/glm-4.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "writer/palmyra-x5": {
+          "id": "writer/palmyra-x5",
+          "name": "writer/palmyra-x5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "undi95/remm-slerp-l2-13b": {
+          "id": "undi95/remm-slerp-l2-13b",
+          "name": "undi95/remm-slerp-l2-13b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "thenlper/gte-large": {
+          "id": "thenlper/gte-large",
+          "name": "thenlper/gte-large",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "thenlper/gte-base": {
+          "id": "thenlper/gte-base",
+          "name": "thenlper/gte-base",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "thedrummer/unslopnemo-12b": {
+          "id": "thedrummer/unslopnemo-12b",
+          "name": "thedrummer/unslopnemo-12b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "thedrummer/skyfall-36b-v2": {
+          "id": "thedrummer/skyfall-36b-v2",
+          "name": "thedrummer/skyfall-36b-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "thedrummer/cydonia-24b-v4.1": {
+          "id": "thedrummer/cydonia-24b-v4.1",
+          "name": "thedrummer/cydonia-24b-v4.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "tencent/hunyuan-a13b-instruct": {
+          "id": "tencent/hunyuan-a13b-instruct",
+          "name": "tencent/hunyuan-a13b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sentence-transformers/paraphrase-minilm-l6-v2": {
+          "id": "sentence-transformers/paraphrase-minilm-l6-v2",
+          "name": "sentence-transformers/paraphrase-minilm-l6-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sentence-transformers/multi-qa-mpnet-base-dot-v1": {
+          "id": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+          "name": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sentence-transformers/all-mpnet-base-v2": {
+          "id": "sentence-transformers/all-mpnet-base-v2",
+          "name": "sentence-transformers/all-mpnet-base-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sentence-transformers/all-minilm-l6-v2": {
+          "id": "sentence-transformers/all-minilm-l6-v2",
+          "name": "sentence-transformers/all-minilm-l6-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sentence-transformers/all-minilm-l12-v2": {
+          "id": "sentence-transformers/all-minilm-l12-v2",
+          "name": "sentence-transformers/all-minilm-l12-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sao10k/l3.3-euryale-70b": {
+          "id": "sao10k/l3.3-euryale-70b",
+          "name": "sao10k/l3.3-euryale-70b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sao10k/l3.1-euryale-70b": {
+          "id": "sao10k/l3.1-euryale-70b",
+          "name": "sao10k/l3.1-euryale-70b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "sao10k/l3-lunaris-8b": {
+          "id": "sao10k/l3-lunaris-8b",
+          "name": "sao10k/l3-lunaris-8b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "relace/relace-search": {
+          "id": "relace/relace-search",
+          "name": "relace/relace-search",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "relace/relace-apply-3": {
+          "id": "relace/relace-apply-3",
+          "name": "relace/relace-apply-3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-vl-8b-thinking": {
+          "id": "qwen/qwen3-vl-8b-thinking",
+          "name": "qwen/qwen3-vl-8b-thinking",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-vl-8b-instruct": {
+          "id": "qwen/qwen3-vl-8b-instruct",
+          "name": "qwen/qwen3-vl-8b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-vl-32b-instruct": {
+          "id": "qwen/qwen3-vl-32b-instruct",
+          "name": "qwen/qwen3-vl-32b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-vl-30b-a3b-thinking": {
+          "id": "qwen/qwen3-vl-30b-a3b-thinking",
+          "name": "qwen/qwen3-vl-30b-a3b-thinking",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-vl-30b-a3b-instruct": {
+          "id": "qwen/qwen3-vl-30b-a3b-instruct",
+          "name": "qwen/qwen3-vl-30b-a3b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-vl-235b-a22b-thinking": {
+          "id": "qwen/qwen3-vl-235b-a22b-thinking",
+          "name": "qwen/qwen3-vl-235b-a22b-thinking",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-vl-235b-a22b-instruct": {
+          "id": "qwen/qwen3-vl-235b-a22b-instruct",
+          "name": "qwen/qwen3-vl-235b-a22b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-next-80b-a3b-thinking": {
+          "id": "qwen/qwen3-next-80b-a3b-thinking",
+          "name": "qwen/qwen3-next-80b-a3b-thinking",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-next-80b-a3b-instruct": {
+          "id": "qwen/qwen3-next-80b-a3b-instruct",
+          "name": "qwen/qwen3-next-80b-a3b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-max": {
+          "id": "qwen/qwen3-max",
+          "name": "qwen/qwen3-max",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-embedding-8b": {
+          "id": "qwen/qwen3-embedding-8b",
+          "name": "qwen/qwen3-embedding-8b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-embedding-4b": {
+          "id": "qwen/qwen3-embedding-4b",
+          "name": "qwen/qwen3-embedding-4b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-coder-plus": {
+          "id": "qwen/qwen3-coder-plus",
+          "name": "qwen/qwen3-coder-plus",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-coder-flash": {
+          "id": "qwen/qwen3-coder-flash",
+          "name": "qwen/qwen3-coder-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-coder-30b-a3b-instruct": {
+          "id": "qwen/qwen3-coder-30b-a3b-instruct",
+          "name": "qwen/qwen3-coder-30b-a3b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-coder": {
+          "id": "qwen/qwen3-coder",
+          "name": "qwen/qwen3-coder",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-8b": {
+          "id": "qwen/qwen3-8b",
+          "name": "qwen/qwen3-8b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-32b": {
+          "id": "qwen/qwen3-32b",
+          "name": "qwen/qwen3-32b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-30b-a3b-thinking-2507": {
+          "id": "qwen/qwen3-30b-a3b-thinking-2507",
+          "name": "qwen/qwen3-30b-a3b-thinking-2507",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "id": "qwen/qwen3-30b-a3b-instruct-2507",
+          "name": "qwen/qwen3-30b-a3b-instruct-2507",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-30b-a3b": {
+          "id": "qwen/qwen3-30b-a3b",
+          "name": "qwen/qwen3-30b-a3b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-235b-a22b-thinking-2507": {
+          "id": "qwen/qwen3-235b-a22b-thinking-2507",
+          "name": "qwen/qwen3-235b-a22b-thinking-2507",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-235b-a22b-2507": {
+          "id": "qwen/qwen3-235b-a22b-2507",
+          "name": "qwen/qwen3-235b-a22b-2507",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-235b-a22b": {
+          "id": "qwen/qwen3-235b-a22b",
+          "name": "qwen/qwen3-235b-a22b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen3-14b": {
+          "id": "qwen/qwen3-14b",
+          "name": "qwen/qwen3-14b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen2.5-vl-72b-instruct": {
+          "id": "qwen/qwen2.5-vl-72b-instruct",
+          "name": "qwen/qwen2.5-vl-72b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen-plus-2025-07-28": {
+          "id": "qwen/qwen-plus-2025-07-28",
+          "name": "qwen/qwen-plus-2025-07-28",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen-plus": {
+          "id": "qwen/qwen-plus",
+          "name": "qwen/qwen-plus",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen-2.5-coder-32b-instruct": {
+          "id": "qwen/qwen-2.5-coder-32b-instruct",
+          "name": "qwen/qwen-2.5-coder-32b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen-2.5-7b-instruct": {
+          "id": "qwen/qwen-2.5-7b-instruct",
+          "name": "qwen/qwen-2.5-7b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "qwen/qwen-2.5-72b-instruct": {
+          "id": "qwen/qwen-2.5-72b-instruct",
+          "name": "qwen/qwen-2.5-72b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perplexity/sonar-reasoning-pro": {
+          "id": "perplexity/sonar-reasoning-pro",
+          "name": "perplexity/sonar-reasoning-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perplexity/sonar-pro-search": {
+          "id": "perplexity/sonar-pro-search",
+          "name": "perplexity/sonar-pro-search",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perplexity/sonar-pro": {
+          "id": "perplexity/sonar-pro",
+          "name": "perplexity/sonar-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perplexity/sonar-deep-research": {
+          "id": "perplexity/sonar-deep-research",
+          "name": "perplexity/sonar-deep-research",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "perplexity/sonar": {
+          "id": "perplexity/sonar",
+          "name": "perplexity/sonar",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/text-embedding-ada-002": {
+          "id": "openai/text-embedding-ada-002",
+          "name": "openai/text-embedding-ada-002",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/text-embedding-3-small": {
+          "id": "openai/text-embedding-3-small",
+          "name": "openai/text-embedding-3-small",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/text-embedding-3-large": {
+          "id": "openai/text-embedding-3-large",
+          "name": "openai/text-embedding-3-large",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o4-mini-high": {
+          "id": "openai/o4-mini-high",
+          "name": "openai/o4-mini-high",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o4-mini": {
+          "id": "openai/o4-mini",
+          "name": "openai/o4-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o3-pro": {
+          "id": "openai/o3-pro",
+          "name": "openai/o3-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o3-mini-high": {
+          "id": "openai/o3-mini-high",
+          "name": "openai/o3-mini-high",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o3-mini": {
+          "id": "openai/o3-mini",
+          "name": "openai/o3-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o3": {
+          "id": "openai/o3",
+          "name": "openai/o3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o1-pro": {
+          "id": "openai/o1-pro",
+          "name": "openai/o1-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/o1": {
+          "id": "openai/o1",
+          "name": "openai/o1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-oss-safeguard-20b": {
+          "id": "openai/gpt-oss-safeguard-20b",
+          "name": "openai/gpt-oss-safeguard-20b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-oss-20b": {
+          "id": "openai/gpt-oss-20b",
+          "name": "openai/gpt-oss-20b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-oss-120b": {
+          "id": "openai/gpt-oss-120b",
+          "name": "openai/gpt-oss-120b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.2-pro": {
+          "id": "openai/gpt-5.2-pro",
+          "name": "openai/gpt-5.2-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.2-codex": {
+          "id": "openai/gpt-5.2-codex",
+          "name": "openai/gpt-5.2-codex",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.2-chat": {
+          "id": "openai/gpt-5.2-chat",
+          "name": "openai/gpt-5.2-chat",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.2": {
+          "id": "openai/gpt-5.2",
+          "name": "openai/gpt-5.2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.1-codex-mini": {
+          "id": "openai/gpt-5.1-codex-mini",
+          "name": "openai/gpt-5.1-codex-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.1-codex-max": {
+          "id": "openai/gpt-5.1-codex-max",
+          "name": "openai/gpt-5.1-codex-max",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.1-codex": {
+          "id": "openai/gpt-5.1-codex",
+          "name": "openai/gpt-5.1-codex",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5.1": {
+          "id": "openai/gpt-5.1",
+          "name": "openai/gpt-5.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5-pro": {
+          "id": "openai/gpt-5-pro",
+          "name": "openai/gpt-5-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5-nano": {
+          "id": "openai/gpt-5-nano",
+          "name": "openai/gpt-5-nano",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5-mini": {
+          "id": "openai/gpt-5-mini",
+          "name": "openai/gpt-5-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5-image-mini": {
+          "id": "openai/gpt-5-image-mini",
+          "name": "openai/gpt-5-image-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5-image": {
+          "id": "openai/gpt-5-image",
+          "name": "openai/gpt-5-image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5-codex": {
+          "id": "openai/gpt-5-codex",
+          "name": "openai/gpt-5-codex",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-5": {
+          "id": "openai/gpt-5",
+          "name": "openai/gpt-5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-mini-2024-07-18": {
+          "id": "openai/gpt-4o-mini-2024-07-18",
+          "name": "openai/gpt-4o-mini-2024-07-18",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-mini": {
+          "id": "openai/gpt-4o-mini",
+          "name": "openai/gpt-4o-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-2024-11-20": {
+          "id": "openai/gpt-4o-2024-11-20",
+          "name": "openai/gpt-4o-2024-11-20",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-2024-08-06": {
+          "id": "openai/gpt-4o-2024-08-06",
+          "name": "openai/gpt-4o-2024-08-06",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o-2024-05-13": {
+          "id": "openai/gpt-4o-2024-05-13",
+          "name": "openai/gpt-4o-2024-05-13",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4o": {
+          "id": "openai/gpt-4o",
+          "name": "openai/gpt-4o",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4.1-nano": {
+          "id": "openai/gpt-4.1-nano",
+          "name": "openai/gpt-4.1-nano",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4.1-mini": {
+          "id": "openai/gpt-4.1-mini",
+          "name": "openai/gpt-4.1-mini",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4.1": {
+          "id": "openai/gpt-4.1",
+          "name": "openai/gpt-4.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4-turbo": {
+          "id": "openai/gpt-4-turbo",
+          "name": "openai/gpt-4-turbo",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-4": {
+          "id": "openai/gpt-4",
+          "name": "openai/gpt-4",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-3.5-turbo-instruct": {
+          "id": "openai/gpt-3.5-turbo-instruct",
+          "name": "openai/gpt-3.5-turbo-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-3.5-turbo-16k": {
+          "id": "openai/gpt-3.5-turbo-16k",
+          "name": "openai/gpt-3.5-turbo-16k",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-3.5-turbo-0613": {
+          "id": "openai/gpt-3.5-turbo-0613",
+          "name": "openai/gpt-3.5-turbo-0613",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/gpt-3.5-turbo": {
+          "id": "openai/gpt-3.5-turbo",
+          "name": "openai/gpt-3.5-turbo",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "openai/chatgpt-4o-latest": {
+          "id": "openai/chatgpt-4o-latest",
+          "name": "openai/chatgpt-4o-latest",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "id": "nvidia/nemotron-3-nano-30b-a3b",
+          "name": "nvidia/nemotron-3-nano-30b-a3b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "nousresearch/hermes-4-405b": {
+          "id": "nousresearch/hermes-4-405b",
+          "name": "nousresearch/hermes-4-405b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "nousresearch/hermes-3-llama-3.1-70b": {
+          "id": "nousresearch/hermes-3-llama-3.1-70b",
+          "name": "nousresearch/hermes-3-llama-3.1-70b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "nousresearch/hermes-3-llama-3.1-405b": {
+          "id": "nousresearch/hermes-3-llama-3.1-405b",
+          "name": "nousresearch/hermes-3-llama-3.1-405b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "morph/morph-v3-large": {
+          "id": "morph/morph-v3-large",
+          "name": "morph/morph-v3-large",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "morph/morph-v3-fast": {
+          "id": "morph/morph-v3-fast",
+          "name": "morph/morph-v3-fast",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "moonshotai/kimi-k2.5": {
+          "id": "moonshotai/kimi-k2.5",
+          "name": "moonshotai/kimi-k2.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "moonshotai/kimi-k2-thinking": {
+          "id": "moonshotai/kimi-k2-thinking",
+          "name": "moonshotai/kimi-k2-thinking",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "moonshotai/kimi-k2-0905": {
+          "id": "moonshotai/kimi-k2-0905",
+          "name": "moonshotai/kimi-k2-0905",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "moonshotai/kimi-k2": {
+          "id": "moonshotai/kimi-k2",
+          "name": "moonshotai/kimi-k2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/voxtral-small-24b-2507": {
+          "id": "mistralai/voxtral-small-24b-2507",
+          "name": "mistralai/voxtral-small-24b-2507",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mixtral-8x22b-instruct": {
+          "id": "mistralai/mixtral-8x22b-instruct",
+          "name": "mistralai/mixtral-8x22b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-small-3.2-24b-instruct": {
+          "id": "mistralai/mistral-small-3.2-24b-instruct",
+          "name": "mistralai/mistral-small-3.2-24b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-small-3.1-24b-instruct": {
+          "id": "mistralai/mistral-small-3.1-24b-instruct",
+          "name": "mistralai/mistral-small-3.1-24b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-small-24b-instruct-2501": {
+          "id": "mistralai/mistral-small-24b-instruct-2501",
+          "name": "mistralai/mistral-small-24b-instruct-2501",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-saba": {
+          "id": "mistralai/mistral-saba",
+          "name": "mistralai/mistral-saba",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-nemo": {
+          "id": "mistralai/mistral-nemo",
+          "name": "mistralai/mistral-nemo",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-medium-3.1": {
+          "id": "mistralai/mistral-medium-3.1",
+          "name": "mistralai/mistral-medium-3.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-medium-3": {
+          "id": "mistralai/mistral-medium-3",
+          "name": "mistralai/mistral-medium-3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-large-2512": {
+          "id": "mistralai/mistral-large-2512",
+          "name": "mistralai/mistral-large-2512",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-large-2407": {
+          "id": "mistralai/mistral-large-2407",
+          "name": "mistralai/mistral-large-2407",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-large": {
+          "id": "mistralai/mistral-large",
+          "name": "mistralai/mistral-large",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/mistral-embed-2312": {
+          "id": "mistralai/mistral-embed-2312",
+          "name": "mistralai/mistral-embed-2312",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/ministral-8b-2512": {
+          "id": "mistralai/ministral-8b-2512",
+          "name": "mistralai/ministral-8b-2512",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/ministral-3b-2512": {
+          "id": "mistralai/ministral-3b-2512",
+          "name": "mistralai/ministral-3b-2512",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/ministral-14b-2512": {
+          "id": "mistralai/ministral-14b-2512",
+          "name": "mistralai/ministral-14b-2512",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/devstral-2512": {
+          "id": "mistralai/devstral-2512",
+          "name": "mistralai/devstral-2512",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/codestral-embed-2505": {
+          "id": "mistralai/codestral-embed-2505",
+          "name": "mistralai/codestral-embed-2505",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mistralai/codestral-2508": {
+          "id": "mistralai/codestral-2508",
+          "name": "mistralai/codestral-2508",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-m2.1": {
+          "id": "minimax/minimax-m2.1",
+          "name": "minimax/minimax-m2.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-m2-her": {
+          "id": "minimax/minimax-m2-her",
+          "name": "minimax/minimax-m2-her",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-m2": {
+          "id": "minimax/minimax-m2",
+          "name": "minimax/minimax-m2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-m1": {
+          "id": "minimax/minimax-m1",
+          "name": "minimax/minimax-m1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "minimax/minimax-01": {
+          "id": "minimax/minimax-01",
+          "name": "minimax/minimax-01",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "microsoft/wizardlm-2-8x22b": {
+          "id": "microsoft/wizardlm-2-8x22b",
+          "name": "microsoft/wizardlm-2-8x22b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "microsoft/phi-4": {
+          "id": "microsoft/phi-4",
+          "name": "microsoft/phi-4",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-guard-4-12b": {
+          "id": "meta-llama/llama-guard-4-12b",
+          "name": "meta-llama/llama-guard-4-12b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-4-scout": {
+          "id": "meta-llama/llama-4-scout",
+          "name": "meta-llama/llama-4-scout",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-4-maverick": {
+          "id": "meta-llama/llama-4-maverick",
+          "name": "meta-llama/llama-4-maverick",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-3.3-70b-instruct": {
+          "id": "meta-llama/llama-3.3-70b-instruct",
+          "name": "meta-llama/llama-3.3-70b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-3.2-3b-instruct": {
+          "id": "meta-llama/llama-3.2-3b-instruct",
+          "name": "meta-llama/llama-3.2-3b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-3.2-1b-instruct": {
+          "id": "meta-llama/llama-3.2-1b-instruct",
+          "name": "meta-llama/llama-3.2-1b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-3.1-8b-instruct": {
+          "id": "meta-llama/llama-3.1-8b-instruct",
+          "name": "meta-llama/llama-3.1-8b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "meta-llama/llama-3.1-70b-instruct": {
+          "id": "meta-llama/llama-3.1-70b-instruct",
+          "name": "meta-llama/llama-3.1-70b-instruct",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "mancer/weaver": {
+          "id": "mancer/weaver",
+          "name": "mancer/weaver",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "intfloat/multilingual-e5-large": {
+          "id": "intfloat/multilingual-e5-large",
+          "name": "intfloat/multilingual-e5-large",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "intfloat/e5-large-v2": {
+          "id": "intfloat/e5-large-v2",
+          "name": "intfloat/e5-large-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "intfloat/e5-base-v2": {
+          "id": "intfloat/e5-base-v2",
+          "name": "intfloat/e5-base-v2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "ibm-granite/granite-4.0-h-micro": {
+          "id": "ibm-granite/granite-4.0-h-micro",
+          "name": "ibm-granite/granite-4.0-h-micro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "gryphe/mythomax-l2-13b": {
+          "id": "gryphe/mythomax-l2-13b",
+          "name": "gryphe/mythomax-l2-13b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemma-3-4b-it": {
+          "id": "google/gemma-3-4b-it",
+          "name": "google/gemma-3-4b-it",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemma-3-27b-it": {
+          "id": "google/gemma-3-27b-it",
+          "name": "google/gemma-3-27b-it",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemma-3-12b-it": {
+          "id": "google/gemma-3-12b-it",
+          "name": "google/gemma-3-12b-it",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemma-2-27b-it": {
+          "id": "google/gemma-2-27b-it",
+          "name": "google/gemma-2-27b-it",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-embedding-001": {
+          "id": "google/gemini-embedding-001",
+          "name": "google/gemini-embedding-001",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3-pro-preview": {
+          "id": "google/gemini-3-pro-preview",
+          "name": "google/gemini-3-pro-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3-pro-image-preview": {
+          "id": "google/gemini-3-pro-image-preview",
+          "name": "google/gemini-3-pro-image-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-3-flash-preview": {
+          "id": "google/gemini-3-flash-preview",
+          "name": "google/gemini-3-flash-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-2.5-pro-preview-05-06": {
+          "id": "google/gemini-2.5-pro-preview-05-06",
+          "name": "google/gemini-2.5-pro-preview-05-06",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-2.5-pro-preview": {
+          "id": "google/gemini-2.5-pro-preview",
+          "name": "google/gemini-2.5-pro-preview",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-2.5-pro": {
+          "id": "google/gemini-2.5-pro",
+          "name": "google/gemini-2.5-pro",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-2.5-flash-lite": {
+          "id": "google/gemini-2.5-flash-lite",
+          "name": "google/gemini-2.5-flash-lite",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-2.5-flash-image": {
+          "id": "google/gemini-2.5-flash-image",
+          "name": "google/gemini-2.5-flash-image",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "google/gemini-2.5-flash": {
+          "id": "google/gemini-2.5-flash",
+          "name": "google/gemini-2.5-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v3.2-exp": {
+          "id": "deepseek/deepseek-v3.2-exp",
+          "name": "deepseek/deepseek-v3.2-exp",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v3.2": {
+          "id": "deepseek/deepseek-v3.2",
+          "name": "deepseek/deepseek-v3.2",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-v3.1-terminus": {
+          "id": "deepseek/deepseek-v3.1-terminus",
+          "name": "deepseek/deepseek-v3.1-terminus",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-r1-distill-llama-70b": {
+          "id": "deepseek/deepseek-r1-distill-llama-70b",
+          "name": "deepseek/deepseek-r1-distill-llama-70b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-r1-0528": {
+          "id": "deepseek/deepseek-r1-0528",
+          "name": "deepseek/deepseek-r1-0528",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-r1": {
+          "id": "deepseek/deepseek-r1",
+          "name": "deepseek/deepseek-r1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-chat-v3.1": {
+          "id": "deepseek/deepseek-chat-v3.1",
+          "name": "deepseek/deepseek-chat-v3.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-chat-v3-0324": {
+          "id": "deepseek/deepseek-chat-v3-0324",
+          "name": "deepseek/deepseek-chat-v3-0324",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "deepseek/deepseek-chat": {
+          "id": "deepseek/deepseek-chat",
+          "name": "deepseek/deepseek-chat",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "cohere/command-r7b-12-2024": {
+          "id": "cohere/command-r7b-12-2024",
+          "name": "cohere/command-r7b-12-2024",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "cohere/command-r-plus-08-2024": {
+          "id": "cohere/command-r-plus-08-2024",
+          "name": "cohere/command-r-plus-08-2024",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "cohere/command-r-08-2024": {
+          "id": "cohere/command-r-08-2024",
+          "name": "cohere/command-r-08-2024",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "cohere/command-a": {
+          "id": "cohere/command-a",
+          "name": "cohere/command-a",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance/ui-tars-1.5-7b": {
+          "id": "bytedance/ui-tars-1.5-7b",
+          "name": "bytedance/ui-tars-1.5-7b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance-seed/seed-1.6-flash": {
+          "id": "bytedance-seed/seed-1.6-flash",
+          "name": "bytedance-seed/seed-1.6-flash",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "bytedance-seed/seed-1.6": {
+          "id": "bytedance-seed/seed-1.6",
+          "name": "bytedance-seed/seed-1.6",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "baidu/ernie-4.5-vl-424b-a47b": {
+          "id": "baidu/ernie-4.5-vl-424b-a47b",
+          "name": "baidu/ernie-4.5-vl-424b-a47b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "baai/bge-m3": {
+          "id": "baai/bge-m3",
+          "name": "baai/bge-m3",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "baai/bge-large-en-v1.5": {
+          "id": "baai/bge-large-en-v1.5",
+          "name": "baai/bge-large-en-v1.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "baai/bge-base-en-v1.5": {
+          "id": "baai/bge-base-en-v1.5",
+          "name": "baai/bge-base-en-v1.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-sonnet-4.5": {
+          "id": "anthropic/claude-sonnet-4.5",
+          "name": "anthropic/claude-sonnet-4.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-sonnet-4": {
+          "id": "anthropic/claude-sonnet-4",
+          "name": "anthropic/claude-sonnet-4",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-opus-4.5": {
+          "id": "anthropic/claude-opus-4.5",
+          "name": "anthropic/claude-opus-4.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-opus-4.1": {
+          "id": "anthropic/claude-opus-4.1",
+          "name": "anthropic/claude-opus-4.1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-opus-4": {
+          "id": "anthropic/claude-opus-4",
+          "name": "anthropic/claude-opus-4",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-haiku-4.5": {
+          "id": "anthropic/claude-haiku-4.5",
+          "name": "anthropic/claude-haiku-4.5",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthropic/claude-3-haiku": {
+          "id": "anthropic/claude-3-haiku",
+          "name": "anthropic/claude-3-haiku",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "anthracite-org/magnum-v4-72b": {
+          "id": "anthracite-org/magnum-v4-72b",
+          "name": "anthracite-org/magnum-v4-72b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "amazon/nova-pro-v1": {
+          "id": "amazon/nova-pro-v1",
+          "name": "amazon/nova-pro-v1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "amazon/nova-premier-v1": {
+          "id": "amazon/nova-premier-v1",
+          "name": "amazon/nova-premier-v1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "amazon/nova-micro-v1": {
+          "id": "amazon/nova-micro-v1",
+          "name": "amazon/nova-micro-v1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "amazon/nova-lite-v1": {
+          "id": "amazon/nova-lite-v1",
+          "name": "amazon/nova-lite-v1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "amazon/nova-2-lite-v1": {
+          "id": "amazon/nova-2-lite-v1",
+          "name": "amazon/nova-2-lite-v1",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        },
+        "aion-labs/aion-rp-llama-3.1-8b": {
+          "id": "aion-labs/aion-rp-llama-3.1-8b",
+          "name": "aion-labs/aion-rp-llama-3.1-8b",
+          "supportsVision": true,
+          "supportsAttachments": true,
+          "supportsReasoning": true
+        }
+      }
+    }
+  }
+}
