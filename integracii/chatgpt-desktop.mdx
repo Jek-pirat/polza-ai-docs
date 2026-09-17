@@ -1,10 +1,10 @@
 ---
 title: ChatGPT Desktop
-description: Подключение десктопного приложения ChatGPT (Windows и Linux) к Polza.ai через конфиг Polza-провайдера
+description: Подключение десктопного приложения ChatGPT (Windows, macOS и Linux) к Polza.ai через конфиг Polza-провайдера
 icon: desktop
 ---
 
-ChatGPT Desktop — официальное десктопное приложение OpenAI для Windows (Microsoft Store) и Linux (preview: Ubuntu, Debian, Fedora, Arch). Поддерживает ChatGPT Work и Codex в одном приложении. Через единый конфиг можно подключить Polza.ai как провайдер моделей.
+ChatGPT Desktop — официальное десктопное приложение OpenAI для Windows (Microsoft Store), macOS и Linux (preview: Ubuntu, Debian, Fedora, Arch). Поддерживает ChatGPT Work и Codex в одном приложении. Через единый конфиг можно подключить Polza.ai как провайдер моделей.
 
 <Note>
   Эта страница — про **десктопное приложение ChatGPT**. Терминальный агент OpenAI (без GUI) — отдельная страница: [Codex CLI](/integracii/codex).
@@ -39,6 +39,16 @@ ChatGPT Desktop — официальное десктопное приложен
 Дополнительно: аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ, права на запись в `~/.codex/config.toml`.
 
   </Tab>
+  <Tab title="macOS">
+
+    Перед установкой убедитесь, что:
+
+    - macOS 14 или новее (Apple Silicon M1+ или Intel)
+    - ChatGPT Desktop — скачайте с [chatgpt.com/download](https://chatgpt.com/download/) (страница сама определит архитектуру)
+    - Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+    - Права на запись в `~/.codex/config.toml`
+
+  </Tab>
 </Tabs>
 
 ## Подключение к Polza.ai
@@ -59,6 +69,11 @@ ChatGPT Desktop — официальное десктопное приложен
       <Tab title="Linux">
 
         Полная пошаговая инструкция (Ubuntu / Debian / Fedora / Arch, x64 и ARM64) — на официальной странице: [learn.chatgpt.com/docs/linux/linux-app](https://learn.chatgpt.com/docs/linux/linux-app).
+
+      </Tab>
+      <Tab title="macOS">
+
+        Скачайте с [chatgpt.com/download](https://chatgpt.com/download/) — страница определит архитектуру (Apple Silicon / Intel) и подберёт нужный .dmg. Подробная официальная инструкция — [help.openai.com](https://help.openai.com/en/articles/9275200-downloading-the-chatgpt-macos-app).
 
       </Tab>
     </Tabs>
