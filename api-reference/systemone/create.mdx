@@ -1,0 +1,166 @@
+---
+title: POST Systemone
+description: Ответы на типизированные вопросы к тексту — да/нет, выбор из вариантов, оценка по шкале — с вероятностями
+icon: scale-balanced
+openapi: POST /v1/systemone
+---
+
+Ручка модели [Jev](/gaidy/jev): вы отправляете текст (`state`) и вопросы с известными вариантами ответа (`questions`) — получаете значения и вероятности, готовые для кода. Текст модель не генерирует.
+
+<Note>
+Впервые видите Jev? Начните с гайда [«Решения вместо текста»](/gaidy/jev): там объяснено, что это за модель, и разобран первый запрос.
+</Note>
+
+Контракт совпадает с [TypeSafe API](https://docs.typesafe.ai/api.md): официальные SDK TypeSafe работают со сменой адреса на `https://polza.ai/api` (без `/v1`) и ключом Polza.AI.
+
+## Доступные модели
+
+| Модель | ID | Также принимаются |
+|--------|-----|-------------------|
+| TypeSafe Jev | `typesafe/jev` | `jev-latest`, `jev-preview`, `jev-1.13.0` |
+
+## Параметры запроса
+
+| Параметр | Тип | Обязательный | Описание |
+|----------|-----|--------------|----------|
+| `model` | string | Да | ID модели |
+| `state` | string / object / array | Да | Оцениваемый текст. До 400 000 символов |
+| `questions` | object | Да | Вопросы: ключ — имя вопроса (придумываете сами), значение — объект вопроса. От 1 до 256 вопросов |
+| `provider` | object | Нет | [Выбор провайдера](/gaidy/provider-selection) |
+
+### Объект вопроса
+
+| Поле | Тип | Обязательный | Описание |
+|------|-----|--------------|----------|
+| `type` | string | Да | `noul`, `choice` или `score` |
+| `instructions` | string / object / array | Да | Сам вопрос |
+| `criteria` | зависит от типа | Для `choice` и `score` | Варианты ответа |
+
+| `type` | `criteria` | Поля ответа |
+|--------|-----------|-------------|
+| `noul` | Необязательно: `{ "true": "...", "false": "..." }` | `noul` — вероятность «да», от 0 до 1 |
+| `choice` | Объект `{ "вариант": "описание" }`; описание может быть `null`. До 255 вариантов | `choice`, `probabilities`, `confidence` |
+| `score` | Массив описаний уровней по возрастанию, от 2 до 10 | `score`, `legend`, `probabilities`, `confidence` |
+
+Как формулировать вопросы и критерии — в гайде [«Как задавать вопросы»](/gaidy/jev-questions).
+
+## Пример
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://polza.ai/api/v1/systemone" \
+  -H "Authorization: Bearer $POLZA_AI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafe/jev",
+    "state": "Кроссовки пришли не того размера. Можно обменять на 43-й? Это срочно, у меня соревнования в субботу.",
+    "questions": {
+      "is_urgent": {
+        "type": "noul",
+        "instructions": "Клиент сообщает о срочной проблеме?"
+      },
+      "department": {
+        "type": "choice",
+        "instructions": "Какая команда должна заняться обращением?",
+        "criteria": {
+          "returns": "Обмен, возврат, не тот или повреждённый товар",
+          "shipping": "Статус доставки, задержки, потерянные посылки",
+          "billing": "Списания, счета, проблемы с оплатой",
+          "other": "Ничего из перечисленного"
+        }
+      }
+    }
+  }'
+```
+
+```typescript TypeScript
+import { TypeSafeClient, choice, noul } from '@typesafe-ai/sdk';
+
+const client = new TypeSafeClient({
+  baseURL: 'https://polza.ai/api',
+  apiKey: '<POLZA_AI_API_KEY>',
+  defaultModel: 'typesafe/jev',
+});
+
+const response = await client.systemOne({
+  state: 'Кроссовки пришли не того размера. Можно обменять на 43-й? Это срочно, у меня соревнования в субботу.',
+  questions: {
+    is_urgent: noul('Клиент сообщает о срочной проблеме?'),
+    department: choice('Какая команда должна заняться обращением?', {
+      returns: 'Обмен, возврат, не тот или повреждённый товар',
+      shipping: 'Статус доставки, задержки, потерянные посылки',
+      billing: 'Списания, счета, проблемы с оплатой',
+      other: 'Ничего из перечисленного',
+    }),
+  },
+});
+```
+
+```python Python
+from typesafe_sdk import Choice, Noul, TypeSafeClient
+
+client = TypeSafeClient(
+    base_url="https://polza.ai/api",
+    api_key="<POLZA_AI_API_KEY>",
+    model="typesafe/jev",
+)
+
+response = client.system_one(
+    state="Кроссовки пришли не того размера. Можно обменять на 43-й? Это срочно, у меня соревнования в субботу.",
+    questions={
+        "is_urgent": Noul(instructions="Клиент сообщает о срочной проблеме?"),
+        "department": Choice(
+            instructions="Какая команда должна заняться обращением?",
+            criteria={
+                "returns": "Обмен, возврат, не тот или повреждённый товар",
+                "shipping": "Статус доставки, задержки, потерянные посылки",
+                "billing": "Списания, счета, проблемы с оплатой",
+                "other": "Ничего из перечисленного",
+            },
+        ),
+    },
+)
+```
+</CodeGroup>
+
+## Ответ
+
+```json
+{
+  "model": "jev-1.13.0",
+  "answers": {
+    "is_urgent": { "type": "noul", "noul": 0.97 },
+    "department": {
+      "type": "choice",
+      "choice": "returns",
+      "confidence": 1.0,
+      "probabilities": { "returns": 1.0, "shipping": 0.0, "billing": 0.0, "other": 0.0 }
+    }
+  },
+  "usage": { "input_tokens": 548, "output_tokens": 64, "cost_rub": 0.0115 }
+}
+```
+
+| Поле | Описание |
+|------|----------|
+| `model` | Версия модели, которая ответила |
+| `answers` | Ответы под именами ваших вопросов |
+| `usage.input_tokens` | Входные токены — тарифицируются только они |
+| `usage.output_tokens` | Выходные токены — бесплатны |
+| `usage.cost_rub` | Стоимость запроса в рублях. Python SDK TypeSafe это поле отбрасывает; в TypeScript SDK и в HTTP-ответе оно есть |
+
+К каждому запросу провайдер добавляет около 280 служебных входных токенов, поэтому несколько вопросов выгоднее отправлять одним запросом.
+
+## Ошибки
+
+Ошибки приходят в [стандартном формате Polza.AI](/api-reference/introduction#формат-ошибок) (`error.code`, `error.message`, `trace_id`). Дополнительно в поле `detail` дублируется форма TypeSafe — `{ "error_type", "message" }`.
+
+| Статус | Когда |
+|--------|-------|
+| `400` | Запрос не прошёл проверку — нашу или провайдера (у TypeSafe это `422`); превышен контекст модели; модель не поддерживает эту ручку |
+| `401` | Неверный API-ключ |
+| `402` | Недостаточно средств (`detail.error_type`: `insufficient_balance`) |
+| `429` | Превышен лимит запросов. SDK TypeSafe повторяют запрос сами |
+| `503` | Провайдер недоступен или перегружен |
+
+Тексты запросов и ответов на стороне Polza.AI не сохраняются и не логируются.
