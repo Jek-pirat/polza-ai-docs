@@ -144,6 +144,7 @@
               "integracii/langchain",
               "integracii/n8n",
               "integracii/openclaw",
+              "integracii/openclaw-desktop",
               "integracii/opencode",
               "integracii/polza-ide",
               "integracii/proxy",
