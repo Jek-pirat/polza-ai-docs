@@ -1,0 +1,144 @@
+---
+title: "OpenClaw Desktop"
+description: "Подключение десктопного приложения OpenClaw к Polza.ai через встроенный мастер настройки"
+icon: "desktop"
+---
+
+OpenClaw Desktop — кросс-платформенное десктопное приложение для работы с AI-агентами. Поддерживает несколько провайдеров и подключается к Polza.ai через **Custom Provider** по OpenAI-совместимому протоколу — без правки конфигов вручную.
+
+<Note>
+  Это инструкция для **десктопного приложения OpenClaw**. Серверное решение — отдельная страница: [OpenClaw](/integracii/openclaw).
+</Note>
+
+## Требования
+
+* Установленное приложение OpenClaw Desktop (Windows, macOS или Linux)
+* Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+
+## Подключение к Polza.ai
+
+Все шаги выполняются в самом приложении через мастер настройки — отдельный конфиг-файл править не нужно.
+
+<Steps>
+  <Step title="Пройдите начальную настройку приложения самостоятельно">
+    Откройте OpenClaw Desktop. Приложение проведёт вас через собственную первоначальную настройку. Дойдите до экрана **Choose an option** — это первый шаг мастера, относящийся к подключению провайдера моделей.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/d07ae1ee28192e592b0d469e969352bcacedbd8b786b36fc75c0f953dfb74fa2.png" alt="Экран Choose an option в мастере настройки OpenClaw Desktop" />
+    </Frame>
+  </Step>
+
+  <Step title="Выберите Custom Provider">
+    На экране **Choose an option** выберите пункт **Custom Provider** — он позволяет подключить любой OpenAI-совместимый endpoint, в том числе Polza.ai.
+  </Step>
+
+  <Step title="Укажите Base URL">
+    На следующем экране введите базовый URL Polza.ai:
+
+    ```
+    https://polza.ai/api/v1
+    ```
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/17b7a5b479aecdeba782efef6163a9e182e68bb7865f4d80ffb267ea98739770.png" alt="Поле ввода Base URL со значением https://polza.ai/api/v1" />
+    </Frame>
+  </Step>
+
+  <Step title="Выберите Paste API key now">
+    На экране выбора способа авторизации выберите **Paste API key now** и вставьте ключ, полученный на [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys).
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/1fa28c53e3365cf84d502a51ae712f1837437f8e72f4682cd12c6f67cb6c5cad.png" alt="Экран с опцией Paste API key now и полем для ввода ключа" />
+    </Frame>
+
+    <Warning>
+      Ключ хранится локально в настройках приложения. Не публикуйте скриншоты и дампы конфигурации с ключом.
+    </Warning>
+  </Step>
+
+  <Step title="Выберите OpenAI-compatible">
+    На экране выбора протокола выберите **OpenAI-compatible** — Polza.ai поддерживает этот стандарт для всех чатовых моделей.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/119728ec909728bc14a822da1522573f470d5bbac6bedc21a9f232b541aae955.png" alt="Экран выбора протокола с пунктом OpenAI-compatible" />
+    </Frame>
+  </Step>
+
+  <Step title="Введите model id">
+    На экране добавления модели введите идентификатор в формате `<vendor>/<model-id>` — например, `anthropic/claude-sonnet-5`. Шаг можно повторить, чтобы добавить несколько моделей как **алиасы** для быстрого переключения.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/34d8c1f8779502e78c9b6df6d0981e97f13c3c01c60dc16a8e1d1821f6993973.png" alt="Экран ввода model id, пример anthropic/claude-sonnet-4.6" />
+    </Frame>
+
+    <Tip>
+      Список доступных slug-ов — на [polza.ai/models](https://polza.ai/models). Каждая добавленная модель становится алиасом: переключаться можно прямо из чата.
+    </Tip>
+  </Step>
+
+  <Step title="Проверьте подключение">
+    После добавления модели появится окно теста подключения.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/c4caa246d7b4309c14bbce2adf2abd25906863212654706661c51b307cedfb02.png" alt="Окно теста подключения с кнопкой Test connection" />
+    </Frame>
+  </Step>
+
+  <Step title="Готово">
+    Если тест прошёл успешно — настройка завершена. Можно начинать чат.
+
+    <Frame>
+      <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/05764fbedb25e9a9b31ec27831411d346bcaab703d379a67483350fc827d98ef.png" alt="Главный экран OpenClaw Desktop после успешной настройки Polza.ai" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Рекомендуемые модели
+
+Polza.ai поддерживает сотни моделей; ниже подборка для типовых задач в десктоп-клиенте. Полный список — на [polza.ai/models](https://polza.ai/models).
+
+| Модель | ID | Для чего подходит |
+|---|---|---|
+| Claude Sonnet 5 | `anthropic/claude-sonnet-5` | Фронтир-качества среди Sonnet-класса: кодинг, агенты, профессиональные задачи. Универсальный рабочий выбор |
+| Claude Opus 5.5 | `anthropic/claude-opus-5.5` | Флагман Anthropic: сложные рассуждения, многошаговые изменения в больших кодовых базах, длинные агенты |
+| GPT-6 Luna | `openai/gpt-6-luna` | Быстрая и самая дешёвая в линейке GPT-6: чат, классификация, лёгкие агенты, сценарии с жёсткими лимитами по latency |
+| GPT-6 Sol | `openai/gpt-6-sol` | Средний ярус GPT-6 между Luna и Astra: профессиональные задачи без максимальных требований |
+| GPT-6 Astra | `openai/gpt-6-astra` | Флагман OpenAI: продвинутая аналитика, software engineering, deep research, длинные end-to-end сценарии |
+| Gemini 3.8 Flash | `google/gemini-3.8-flash` | Самая интеллектуальная модель линейки Flash: software engineering, агентные задачи, мультимодальный ввод (текст/картинки/видео/аудио) |
+| DeepSeek V4.1 Flash | `deepseek/deepseek-v4.1-flash` | Самая экономичная модель в подборке: черновики, рутинные правки, проверка подключения |
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Test connection падает на 401 Unauthorized">
+    * Скопируйте ключ заново из [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys) — лишние пробелы и Unicode-символы ломают auth
+    * Проверьте что на балансе есть положительный остаток
+    * Убедитесь что Base URL — ровно `https://polza.ai/api/v1` (без trailing slash, без `/chat/completions` на конце)
+  </Accordion>
+  <Accordion title="Test connection падает на 404 Not Found">
+    * Проверьте model id — он должен быть в формате `<vendor>/<model-id>` и существовать в [каталоге Polza.ai](https://polza.ai/models)
+    * Опечатки в slug-е (например, `claude-sonnet-4-6` через дефис вместо `claude-sonnet-4.6` через точку) — самая частая причина
+  </Accordion>
+  <Accordion title="В мастере нет пункта Custom Provider">
+    Возможно, у вас устаревшая версия OpenClaw Desktop. Обновите приложение до последней — пункт **Custom Provider** доступен начиная с определённого релиза (см. release notes OpenClaw).
+  </Accordion>
+  <Accordion title="Не появляется опция OpenAI-compatible">
+    После выбора Custom Provider и ввода Base URL Polza.ai приложение должно автоматически определить протокол. Если опции нет — проверьте что Base URL указан корректно (предыдущий шаг).
+  </Accordion>
+  <Accordion title="Модель добавлена, но чат не отвечает">
+    * Проверьте интернет-соединение до `polza.ai`
+    * Попробуйте другую модель из списка — некоторые вендоры могут быть временно недоступны
+    * Посмотрите логи приложения (раздел Settings → Logs) — там будет HTTP-код ответа
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Cline Desktop" icon="desktop" href="/integracii/cline-desktop">
+    Десктоп-вариант Cline — то же подключение через конфиг
+  </Card>
+  <Card title="Claude Code Desktop" icon="desktop" href="/integracii/claude-desktop">
+    Десктоп-вариант Claude Code
+  </Card>
+</CardGroup>

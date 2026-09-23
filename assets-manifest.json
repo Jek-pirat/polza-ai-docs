@@ -2,6 +2,16 @@
   "bucket": "polza-docs",
   "endpoint": "https://storage.yandexcloud.net",
   "items": {
+    "05764fbedb25e9a9b31ec27831411d346bcaab703d379a67483350fc827d98ef": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/openclaw-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/05764fbedb25e9a9b31ec27831411d346bcaab703d379a67483350fc827d98ef.png",
+      "s3_key": "polza-docs/images/05764fbedb25e9a9b31ec27831411d346bcaab703d379a67483350fc827d98ef.png",
+      "sha256": "05764fbedb25e9a9b31ec27831411d346bcaab703d379a67483350fc827d98ef",
+      "size": 124482,
+      "source_path": "images/openclaw-desktop/07-ready.png",
+      "uploaded_at": "2026-09-23T11:49:36+00:00"
+    },
     "0896ea91ac7a54497cbaee05170378ce122e8039814721c49442c89ed8c7ffa4": {
       "content_type": "image/png",
       "first_seen_in": "integracii/dify.mdx",
@@ -32,6 +42,16 @@
       "source_path": "images/claude-desktop/models-list.jpg",
       "uploaded_at": "2026-08-24T15:08:25+00:00"
     },
+    "119728ec909728bc14a822da1522573f470d5bbac6bedc21a9f232b541aae955": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/openclaw-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/119728ec909728bc14a822da1522573f470d5bbac6bedc21a9f232b541aae955.png",
+      "s3_key": "polza-docs/images/119728ec909728bc14a822da1522573f470d5bbac6bedc21a9f232b541aae955.png",
+      "sha256": "119728ec909728bc14a822da1522573f470d5bbac6bedc21a9f232b541aae955",
+      "size": 58166,
+      "source_path": "images/openclaw-desktop/04-openai-compatible.png",
+      "uploaded_at": "2026-09-23T11:49:35+00:00"
+    },
     "17817d1341260db39452f204a4eb8c4075521a77a347199f71156f012a14f985": {
       "content_type": "image/png",
       "first_seen_in": "integracii/cline-desktop.mdx",
@@ -41,6 +61,16 @@
       "size": 168091,
       "source_path": "images/cline-desktop/cline-desktop-provider.png",
       "uploaded_at": "2026-09-16T15:30:04+00:00"
+    },
+    "17b7a5b479aecdeba782efef6163a9e182e68bb7865f4d80ffb267ea98739770": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/openclaw-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/17b7a5b479aecdeba782efef6163a9e182e68bb7865f4d80ffb267ea98739770.png",
+      "s3_key": "polza-docs/images/17b7a5b479aecdeba782efef6163a9e182e68bb7865f4d80ffb267ea98739770.png",
+      "sha256": "17b7a5b479aecdeba782efef6163a9e182e68bb7865f4d80ffb267ea98739770",
+      "size": 50134,
+      "source_path": "images/openclaw-desktop/02-base-url.png",
+      "uploaded_at": "2026-09-23T11:49:35+00:00"
     },
     "1b1526ce5968b69f5c6b3c1cf4a3bc516625d4de5d79b88a0b6aca54fa854ab0": {
       "content_type": "image/png",
@@ -61,6 +91,16 @@
       "size": 37544,
       "source_path": "images/gemini-cli/gemini.png",
       "uploaded_at": "2026-07-15T10:20:03+00:00"
+    },
+    "1fa28c53e3365cf84d502a51ae712f1837437f8e72f4682cd12c6f67cb6c5cad": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/openclaw-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/1fa28c53e3365cf84d502a51ae712f1837437f8e72f4682cd12c6f67cb6c5cad.png",
+      "s3_key": "polza-docs/images/1fa28c53e3365cf84d502a51ae712f1837437f8e72f4682cd12c6f67cb6c5cad.png",
+      "sha256": "1fa28c53e3365cf84d502a51ae712f1837437f8e72f4682cd12c6f67cb6c5cad",
+      "size": 61294,
+      "source_path": "images/openclaw-desktop/03-paste-api-key.png",
+      "uploaded_at": "2026-09-23T11:49:35+00:00"
     },
     "2423bf9f438e0ee326e750c576fe389faa295a9ba318d9f59453f958c37134f1": {
       "content_type": "image/png",
@@ -112,6 +152,16 @@
       "source_path": "images/deepseek-harness/main.png",
       "uploaded_at": "2026-09-02T15:45:50+00:00"
     },
+    "34d8c1f8779502e78c9b6df6d0981e97f13c3c01c60dc16a8e1d1821f6993973": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/openclaw-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/34d8c1f8779502e78c9b6df6d0981e97f13c3c01c60dc16a8e1d1821f6993973.png",
+      "s3_key": "polza-docs/images/34d8c1f8779502e78c9b6df6d0981e97f13c3c01c60dc16a8e1d1821f6993973.png",
+      "sha256": "34d8c1f8779502e78c9b6df6d0981e97f13c3c01c60dc16a8e1d1821f6993973",
+      "size": 50612,
+      "source_path": "images/openclaw-desktop/05-model-id.png",
+      "uploaded_at": "2026-09-23T11:49:36+00:00"
+    },
     "38a82c3561d0a49605953804a2d7651420ab5dfe3ebc671b82f81ba2e3f6212b": {
       "content_type": "image/png",
       "first_seen_in": "integracii/claude-desktop.mdx",
@@ -131,6 +181,12 @@
       "size": 64384,
       "source_path": "images/codex/codex.png",
       "uploaded_at": "2026-06-17T16:43:41+00:00"
+    },
+    "42429269fd5c87fd053eedb649836d1e794227e9d7c51fd7e220d93475cd34de": {
+      "note": "Обезличенный пример config.toml для интеграции с ChatGPT Desktop",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/examples/42429269fd5c87fd053eedb649836d1e794227e9d7c51fd7e220d93475cd34de.toml",
+      "source_path": "examples/chatgpt-desktop/config-example.toml",
+      "uploaded_at": "2026-09-16"
     },
     "47510d314b9001820dec096c8880b224e31fdb7e1c73a31fec8adaaf9d98b710": {
       "content_type": "image/png",
@@ -282,6 +338,12 @@
       "source_path": "images/claude-desktop/enable-developer-mode.png",
       "uploaded_at": "2026-08-24T14:58:46+00:00"
     },
+    "96d16ebdff46d7110736b5598162c1cdce45ed6389bd54e2b5a9043530a16a40": {
+      "note": "Полный models.json (398 моделей) с флагами reasoning для Cline",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/96d16ebdff46d7110736b5598162c1cdce45ed6389bd54e2b5a9043530a16a40.json",
+      "source_path": "images/cline-desktop/models-example.json",
+      "uploaded_at": "2026-09-16"
+    },
     "979132d52e809cbd400212f524a4c30db008e1318d38e610f3c56b3b338fc014": {
       "content_type": "image/png",
       "first_seen_in": "integracii/claude-desktop.mdx",
@@ -352,6 +414,16 @@
       "source_path": "images/deepseek-harness/model_work.png",
       "uploaded_at": "2026-09-02T15:45:51+00:00"
     },
+    "c4caa246d7b4309c14bbce2adf2abd25906863212654706661c51b307cedfb02": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/openclaw-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/c4caa246d7b4309c14bbce2adf2abd25906863212654706661c51b307cedfb02.png",
+      "s3_key": "polza-docs/images/c4caa246d7b4309c14bbce2adf2abd25906863212654706661c51b307cedfb02.png",
+      "sha256": "c4caa246d7b4309c14bbce2adf2abd25906863212654706661c51b307cedfb02",
+      "size": 48505,
+      "source_path": "images/openclaw-desktop/06-test-connection.png",
+      "uploaded_at": "2026-09-23T11:49:36+00:00"
+    },
     "cba9790df6a9a0339cd5a824407b00688190528384b930188fb2564888b30b5a": {
       "content_type": "image/png",
       "first_seen_in": "integracii/cline-desktop.mdx",
@@ -371,6 +443,16 @@
       "size": 162584,
       "source_path": "images/kilo-code/kilocode-pycharm-marketplace.png",
       "uploaded_at": "2026-06-17T16:43:43+00:00"
+    },
+    "d07ae1ee28192e592b0d469e969352bcacedbd8b786b36fc75c0f953dfb74fa2": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/openclaw-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/d07ae1ee28192e592b0d469e969352bcacedbd8b786b36fc75c0f953dfb74fa2.png",
+      "s3_key": "polza-docs/images/d07ae1ee28192e592b0d469e969352bcacedbd8b786b36fc75c0f953dfb74fa2.png",
+      "sha256": "d07ae1ee28192e592b0d469e969352bcacedbd8b786b36fc75c0f953dfb74fa2",
+      "size": 55686,
+      "source_path": "images/openclaw-desktop/01-choose-option.png",
+      "uploaded_at": "2026-09-23T11:49:35+00:00"
     },
     "d6787089fec75c0564b48e0b942cc7935a676be614882b1025459f95af1aab15": {
       "content_type": "image/png",
@@ -471,18 +553,6 @@
       "size": 93267,
       "source_path": "images/dify/03-add-model.png",
       "uploaded_at": "2026-06-17T16:43:41+00:00"
-    },
-    "42429269fd5c87fd053eedb649836d1e794227e9d7c51fd7e220d93475cd34de": {
-      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/examples/42429269fd5c87fd053eedb649836d1e794227e9d7c51fd7e220d93475cd34de.toml",
-      "source_path": "examples/chatgpt-desktop/config-example.toml",
-      "uploaded_at": "2026-09-16",
-      "note": "Обезличенный пример config.toml для интеграции с ChatGPT Desktop"
-    },
-    "96d16ebdff46d7110736b5598162c1cdce45ed6389bd54e2b5a9043530a16a40": {
-      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/96d16ebdff46d7110736b5598162c1cdce45ed6389bd54e2b5a9043530a16a40.json",
-      "source_path": "images/cline-desktop/models-example.json",
-      "uploaded_at": "2026-09-16",
-      "note": "Полный models.json (398 моделей) с флагами reasoning для Cline"
     }
   },
   "key_prefix": "polza-docs/images",
