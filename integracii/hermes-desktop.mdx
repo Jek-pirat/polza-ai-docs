@@ -1,0 +1,124 @@
+---
+title: "Hermes Desktop"
+description: "Подключение десктопного приложения Hermes Agent к Polza.ai через Custom Endpoint"
+icon: "desktop"
+---
+
+Hermes Desktop — кросс-платформенное десктопное приложение Hermes Agent от Nous Research с графическим интерфейсом. Поддерживает несколько провайдеров моделей и подключается к Polza.ai через собственный Custom Endpoint — без правки конфигов вручную.
+
+<Note>
+  Это инструкция для **десктопного приложения Hermes Agent**. Терминальная версия — отдельная страница: [Hermes Agent](/integracii/hermes-agent).
+</Note>
+
+## Требования
+
+* Установленное приложение Hermes Desktop (Windows, macOS или Linux)
+* Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+
+## Подключение к Polza.ai
+
+Все шаги выполняются в самом приложении.
+
+<Steps>
+  <Step title="Установите Hermes Desktop">
+    Скачайте и установите десктопное приложение с официальной страницы:
+
+    [https://hermes-agent.nousresearch.com/](https://hermes-agent.nousresearch.com/)
+
+    После запуска откроется начальный экран — нажмите **«Выберу провайдера позже»**, чтобы пропустить встроенный онбординг провайдера. Провайдера Polza.ai мы добавим вручную на следующем шаге.
+
+    <Frame>
+      <img src="/images/hermes-desktop/01-skip-provider.png" alt="Начальный экран Hermes Desktop с кнопкой Выберу провайдера позже" />
+    </Frame>
+  </Step>
+
+  <Step title="Откройте Настройки → Провайдеры → Свои эндпоинты">
+    Перейдите в раздел **Settings** → вкладку **Провайдеры** → **Свои эндпоинты** и создайте новый endpoint с параметрами Polza.ai.
+
+    | Поле | Значение |
+    |---|---|
+    | Name | `Polza.ai` |
+    | Provider id | `polza` |
+    | BaseURL | `https://polza.ai/api/v1` |
+    | Api Mode | `ChatCompletions` |
+    | Default model | `deepseek/deepseek-v4.1-flash` |
+    | API ключ | ваш ключ из [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys) |
+
+    <Frame>
+      <img src="/images/hermes-desktop/02-endpoint-form.png" alt="Форма Custom Endpoint в Hermes Desktop с заполненными полями для Polza.ai" />
+    </Frame>
+
+    <Warning>
+      Ключ хранится локально в настройках приложения. Не публикуйте скриншоты и дампы конфигурации с ключом.
+    </Warning>
+  </Step>
+
+  <Step title="Проверьте подключение и сохраните">
+    Нажмите **Test** — приложение отправит запрос к Polza.ai и убедится, что API-ключ и модель валидны. После успешного теста нажмите **Save**, чтобы сохранить endpoint.
+
+    <Frame>
+      <img src="/images/hermes-desktop/03-ready.png" alt="Окно успешного теста подключения в Hermes Desktop" />
+    </Frame>
+  </Step>
+
+  <Step title="Готово">
+    После сохранения endpoint готов к использованию — выберите его в пикере моделей и начинайте чат.
+  </Step>
+</Steps>
+
+## Рекомендуемые модели
+
+Polza.ai поддерживает сотни моделей; ниже подборка для типовых задач в Hermes Desktop. Полный — на [polza.ai/models](https://polza.ai/models).
+
+| Модель | ID | Для чего подходит |
+|---|---|---|
+| DeepSeek V4.1 Flash | `deepseek/deepseek-v4.1-flash` | Самая экономичная, хороша для теста подключения и рутинных правок |
+| Claude Sonnet 5 | `anthropic/claude-sonnet-5` | Фронтир Sonnet-класса: кодинг, агенты, профессиональные задачи |
+| Claude Opus 5.5 | `anthropic/claude-opus-5.5` | Сложные рассуждения, многошаговые изменения в больших кодобазах |
+| GPT-6 Sol | `openai/gpt-6-sol` | Средний ярус GPT-6: баланс скорости и качества для повседневных задач |
+| GPT-6 Astra | `openai/gpt-6-astra` | Флагман OpenAI: продвинутая аналитика, deep research, длинные end-to-end |
+| Gemini 3.8 Flash | `google/gemini-3.8-flash` | Быстрая и дешёвая, мультимодальная (текст/картинки/видео/аудио) |
+
+## Переключение моделей
+
+Hermes Desktop поддерживает работу со всеми чатовыми моделями из каталога Polza.ai. Переключать можно в настройках чата.
+
+<Frame>
+  <img src="/images/hermes-desktop/04-model-switcher.png" alt="Переключение модели в настройках чата Hermes Desktop" />
+</Frame>
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Test падает на 401 Unauthorized">
+    * Скопируйте ключ заново из [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys) — лишние пробелы и Unicode-символы ломают auth
+    * Проверьте что на балансе есть положительный остаток
+    * Убедитесь что BaseURL — ровно `https://polza.ai/api/v1` (без trailing slash, без `/chat/completions` на конце)
+  </Accordion>
+  <Accordion title="Test падает на 404 Not Found">
+    * Проверьте Default model — он должен существовать в [каталоге Polza.ai](https://polza.ai/models) в формате `<vendor>/<model-id>`
+    * Опечатки в slug-е (например, `claude-sonnet-4-6` через дефис вместо `claude-sonnet-4.6` через точку) — самая частая причина
+  </Accordion>
+  <Accordion title="Не появляется вкладка Свои эндпоинты">
+    Убедитесь что вы в разделе **Settings** → вкладка **Провайдеры** (не **Модели** и не **Аккаунт**). Вкладка «Свои эндпоинты» находится внутри раздела «Провайдеры».
+  </Accordion>
+  <Accordion title="В Api Mode нет ChatCompletions">
+    В некоторых сборках поле называется иначе (например, `OpenAI Compatible` или `chat-completions`). Выберите любой OpenAI-совместимый режим — Polza.ai работает со всеми.
+  </Accordion>
+  <Accordion title="Endpoint сохранён, но чат не отвечает">
+    * Переключитесь на другой endpoint из пикера и обратно
+    * Проверьте интернет-соединение до `polza.ai`
+    * Посмотрите логи приложения (раздел Settings → Logs) — там будет HTTP-код ответа
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Hermes Agent (CLI)" icon="terminal" href="/integracii/hermes-agent">
+    Терминальный вариант Hermes Agent — подключение через `hermes setup` или `config.yaml`
+  </Card>
+  <Card title="OpenClaw Desktop" icon="desktop" href="/integracii/openclaw-desktop">
+    Ещё одно десктоп-приложение с подключением к Polza.ai через мастер настройки
+  </Card>
+</CardGroup>
