@@ -1,0 +1,200 @@
+---
+title: "Gemini Omni 1.1 Flash"
+description: "Генерация видео моделью Gemini Omni 1.1 Flash от Google — лёгкая версия линейки Gemini Omni"
+icon: "video"
+---
+
+Gemini Omni 1.1 Flash — лёгкая модель генерации видео от Google DeepMind из линейки Gemini Omni. Поддерживает text-to-video, image-to-video, video-to-video и first-and-last-frames → video, длительность 4 / 6 / 8 / 10 сек, разрешения 360p / 720p / 1080p / 4k, генерация со звуком.
+
+<Note>
+  Полная документация API: [Генерация медиа](/api-reference/media/create)
+</Note>
+
+## Обзор
+
+| Характеристика | Значение |
+|---|---|
+| ID модели | `google/gemini-omni-1.1-flash` |
+| prompt | Текстовое описание желаемого видео (до 20 000 символов) |
+| aspect_ratio | `16:9`, `9:16` (по умолчанию `16:9`) |
+| resolution | `360p`, `720p`, `1080p`, `4k` (по умолчанию `720p`) |
+| duration | `4`, `6`, `8`, `10` (секунды; по умолчанию `4`) |
+| images | Массив референсных изображений (0–7) для image-to-video |
+| videos | Массив исходных видео (0–1, фрагмент до 10 с) для video-to-video |
+| audio_ids | Массив ID аудио из `gemini-omni-audio` (0–3) |
+| character_ids | Массив ID персонажей из `gemini-omni-character` (0–7) |
+| first_frame_url | URL первого кадра (не сочетается с `images`/`videos`/`audio_ids`/`character_ids`) |
+| last_frame_url | URL последнего кадра (только вместе с `first_frame_url`) |
+| seed | `int` 0–2147483647 для воспроизводимости |
+| async | `true` (асинхронная генерация) |
+
+## Режимы работы
+
+<Tabs>
+  <Tab title="Text-to-Video">
+    Только текстовый промпт — модель генерирует ролик с нуля.
+
+    ```json
+    {
+      "model": "google/gemini-omni-1.1-flash",
+      "input": {
+        "prompt": "человек скачет на лошади по степи, со звуком ветра",
+        "aspect_ratio": "16:9",
+        "resolution": "1080p",
+        "duration": "6"
+      },
+      "async": true
+    }
+    ```
+  </Tab>
+  <Tab title="Image-to-Video">
+    Анимация статичного изображения. Промпт описывает, что должно произойти.
+
+    ```json
+    {
+      "model": "google/gemini-omni-1.1-flash",
+      "input": {
+        "prompt": "Анимируй логотип: лёгкое вращение и мягкое свечение",
+        "aspect_ratio": "9:16",
+        "resolution": "720p",
+        "duration": "6",
+        "images": [
+          {
+            "type": "url",
+            "data": "https://example.com/example.png"
+          }
+        ]
+      },
+      "async": true
+    }
+    ```
+  </Tab>
+  <Tab title="Video-to-Video">
+    Редактирование существующего видео — например, добавление динамики, смена стиля или доработка движения. Длительность при этом выбирает сама модель.
+
+    ```json
+    {
+      "model": "google/gemini-omni-1.1-flash",
+      "input": {
+        "prompt": "Добавь динамичности в видео",
+        "aspect_ratio": "16:9",
+        "resolution": "1080p",
+        "videos": [
+          {
+            "type": "url",
+            "data": "https://example.com/example.mp4"
+          }
+        ]
+      },
+      "async": true
+    }
+    ```
+  </Tab>
+  <Tab title="First/Last Frames">
+    Генерация видео между двумя заданными кадрами. Параметры `first_frame_url` и `last_frame_url` не сочетаются с `images`, `videos`, `audio_ids`, `character_ids`.
+
+    ```json
+    {
+      "model": "google/gemini-omni-1.1-flash",
+      "input": {
+        "first_frame_url": "https://example.com/start.png",
+        "last_frame_url": "https://example.com/end.png",
+        "aspect_ratio": "16:9",
+        "resolution": "1080p",
+        "duration": "6"
+      },
+      "async": true
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Параметры
+
+| Параметр | Тип | Обязательный | По умолчанию | Описание |
+|---|---|---|---|---|
+| `prompt` | string | Да | — | Текстовое описание видео (до 20 000 символов) |
+| `aspect_ratio` | string | Нет | `16:9` | `16:9`, `9:16` |
+| `resolution` | string | Нет | `720p` | `360p`, `720p`, `1080p`, `4k` |
+| `duration` | string | Да | `4` | `4`, `6`, `8`, `10` секунд. При видео на входе длительность выбирает модель |
+| `images` | array | Нет | — | Референсные изображения (0–7). Общая квота: `images + videos×2 + character_ids ≤ 7` |
+| `videos` | array | Нет | — | Референсное видео, фрагмент до 10 с (0–1). Передаётся в KIE как `video_list` |
+| `audio_ids` | array | Нет | — | ID аудио, созданные через `gemini-omni-audio` (0–3) |
+| `character_ids` | array | Нет | — | ID персонажей, созданные через `gemini-omni-character` (0–7; с видео — не больше 3) |
+| `first_frame_url` | string | Нет | — | URL первого кадра. Не сочетается с `images`, `videos`, `audio_ids`, `character_ids` |
+| `last_frame_url` | string | Нет | — | URL последнего кадра. Только вместе с `first_frame_url` |
+| `seed` | int | Нет | — | Seed для воспроизводимости (0–2147483647) |
+| `async` | bool | Нет | `true` | Запустить генерацию асинхронно |
+
+<Note>
+  Параметр `async: true` — обязателен для всех запросов: генерация видео возвращает `id` сразу, а готовый ролик приходит позже.
+</Note>
+
+## Пример запроса (cURL)
+
+```bash
+curl -X POST "https://polza.ai/api/v1/media" \\
+  -H "Authorization: Bearer <POLZA...KEY>" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "google/gemini-omni-1.1-flash",
+    "input": {
+      "prompt": "кот прыгает через лужу, со звуком плеска",
+      "aspect_ratio": "16:9",
+      "resolution": "720p",
+      "duration": "6",
+      "images": [
+        { "type": "url", "data": "https://example.com/cat.png" }
+      ],
+      "seed": 42
+    },
+    "async": true
+  }'
+```
+
+## Асинхронная генерация
+
+Генерация видео — асинхронный процесс. После отправки запроса вы получите `id`, который нужно использовать для проверки статуса:
+
+<Steps>
+  <Step title="Отправка запроса">
+    POST на `/api/v1/media` возвращает `id` генерации
+  </Step>
+  <Step title="Проверка статуса">
+    GET на `/api/v1/media/{id}` возвращает текущий статус
+  </Step>
+  <Step title="Получение результата">
+    Когда статус `completed`, в ответе будет URL готового видео
+  </Step>
+</Steps>
+
+## Советы и лучшие практики
+
+<AccordionGroup>
+  <Accordion title="Описывайте движение" icon="arrows-rotate">
+    В промпте явно указывайте, что должно двигаться: «камера приближается», «объект вращается», «человек бежит». Без этого модель может выдать статичную сцену.
+  </Accordion>
+  <Accordion title="Следите за duration и разрешением" icon="gauge-high">
+    Большие значения `duration` (8–10 сек) и `4k` заметно увеличивают время и стоимость генерации. Для тестов используйте `720p` + `duration: 4`.
+  </Accordion>
+  <Accordion title="Передавайте файлы по URL" icon="link">
+    `images[]` и `videos[]` принимают публичные URL в формате `{ "type": "url", "data": "https://..." }`. Для приватных файлов сначала загрузите их через `/v1/storage/upload` (см. [Хранилище файлов](/api-reference/storage/upload)).
+  </Accordion>
+  <Accordion title="Соблюдайте квоту референсов" icon="wand-magic-sparkles">
+    Суммарное число референсов ограничено: `images + videos×2 + character_ids ≤ 7`. Если передать больше — модель вернёт ошибку.
+  </Accordion>
+  <Accordion title="first/last frames — не сочетаются с другими референсами" icon="image">
+    `first_frame_url` и `last_frame_url` — это самостоятельный режим. Их нельзя использовать вместе с `images`, `videos`, `audio_ids` или `character_ids`.
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Статус генерации" icon="spinner" href="/api-reference/media/status">
+    Проверка статуса генерации медиа
+  </Card>
+  <Card title="Хранилище файлов" icon="database" href="/api-reference/storage/upload">
+    Загрузка изображений и видео
+  </Card>
+</CardGroup>
