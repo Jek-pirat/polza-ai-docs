@@ -74,6 +74,7 @@
                 "group": "Видео",
                 "icon": "video",
                 "pages": [
+                  "gaidy/gemini-omni-1-1-flash",
                   "gaidy/gemini-omni-video",
                   "gaidy/seedance-1-5-pro",
                   "gaidy/seedance-2",
