@@ -1,0 +1,64 @@
+---
+title: "Qwen Image 2"
+description: "Генерация и редактирование изображений с Qwen Image 2 — нативный 2K выход и рендеринг текста"
+icon: "image"
+---
+
+Qwen Image 2 — модель генерации и редактирования изображений от Alibaba с нативным 2K выходом и качественным рендерингом текста на изображении. Поддерживает text-to-image и image-to-image: на вход можно передать до 3 референс-изображений.
+
+<Note>
+  Полная документация API: [Генерация медиа](/api-reference/media/create)
+</Note>
+
+## Обзор
+
+| Характеристика | Значение |
+|---|---|
+| ID модели | `qwen/image-2` |
+| prompt | Текстовое описание (до 5 000 символов, любой язык) |
+| aspect_ratio | `1:1`, `3:4`, `4:3`, `9:16`, `16:9` |
+| output_format | `png`, `jpeg` |
+| images | До 3 референсных изображений на вход |
+
+## Параметры
+
+| Параметр | Тип | Обязательный | Описание |
+|---|---|---|---|
+| `prompt` | string | Да | Текстовое описание изображения (до 5 000 символов) |
+| `aspect_ratio` | string | Нет | `1:1`, `3:4`, `4:3`, `9:16`, `16:9` |
+| `output_format` | string | Нет | `png`, `jpeg` |
+| `images` | array | Нет | Референсные изображения для редактирования (0–3) |
+
+## Пример запроса (cURL)
+
+```bash
+curl -X POST "https://polza.ai/api/v1/media" \\
+  -H "Authorization: Bearer <POLZA...KEY>" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "qwen/image-2",
+    "input": {
+      "prompt": "уютный книжный магазин с тёплым светом",
+      "aspect_ratio": "16:9",
+      "output_format": "png"
+    },
+    "async": true
+  }'
+```
+
+С референс-изображениями передайте в `input` массив `images` с URL или данными (до 3 шт.):
+
+```json
+{
+  "model": "qwen/image-2",
+  "input": {
+    "prompt": "перенеси стиль этого фото в киберпанк",
+    "aspect_ratio": "1:1",
+    "output_format": "png",
+    "images": [
+      { "type": "url", "data": "https://example.com/source.png" }
+    ]
+  },
+  "async": true
+}
+```
