@@ -100,6 +100,8 @@
                   "gaidy/flux-2-flex",
                   "gaidy/grok-imagine",
                   "gaidy/qwen-image",
+                  "gaidy/qwen-image-2",
+                  "gaidy/qwen-image-2.1",
                   "gaidy/gpt-image-1-5",
                   "gaidy/gpt-5-image-mini",
                   "gaidy/gpt-5-image",

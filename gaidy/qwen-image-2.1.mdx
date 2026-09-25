@@ -1,0 +1,108 @@
+---
+title: "Qwen Image 2.1"
+description: "Генерация и редактирование изображений с Qwen Image 2.1 — 1K/2K, прозрачный фон, до 10 референсов"
+icon: "image"
+---
+
+Qwen Image 2.1 — модель генерации и редактирования изображений от Alibaba с поддержкой разрешений 1K/2K и прозрачного фона. Поддерживает text-to-image и image-to-image: на вход можно передать до 10 референс-изображений, локальную правку через `mask_url` и автоматическое улучшение промпта через `enhance_prompt`.
+
+<Note>
+  Полная документация API: [Генерация медиа](/api-reference/media/create)
+</Note>
+
+## Обзор
+
+| Характеристика | Значение |
+|---|---|
+| ID модели | `qwen/image-2.1` |
+| prompt | Текстовое описание (до 5 000 символов, любой язык) |
+| aspect_ratio | `1:1`, `4:3`, `3:4`, `3:2`, `2:3`, `16:9`, `9:16` |
+| image_resolution | `1K`, `2K` (по умолчанию `1K`) |
+| output_format | `png`, `webp`, `jpeg` (по умолчанию `png`) |
+| background | `opaque`, `transparent` (по умолчанию `opaque`) |
+| images | До 10 референсных изображений на вход |
+| mask_url | URL маски для локальной правки (только с одним референсом) |
+| seed | Зерно генерации (без него — случайное) |
+| enhance_prompt | Автоматическое улучшение промпта (по умолчанию `false`) |
+
+## Параметры
+
+| Параметр | Тип | Обязательный | По умолчанию | Описание |
+|---|---|---|---|---|
+| `prompt` | string | Да | — | Описание картинки. Любой язык, до 5 000 символов |
+| `aspect_ratio` | string | Нет | — | Соотношение сторон. Без значения: `1:1` при генерации, пропорции первого референса при редактировании |
+| `image_resolution` | string | Нет | `1K` | `1K` (1024×1024 для 1:1) или `2K` (вчетверо больше пикселей, дороже вдвое) |
+| `output_format` | string | Нет | `png` | `png`, `webp`, `jpeg`. Альфа-канал есть у `png` и `webp` |
+| `images` | array | Нет | — | Референсы для редактирования (0–10). Порядок — тот, на который ссылается промпт |
+| `seed` | int | Нет | — | Зерно генерации; без него — случайное |
+| `mask_url` | string | Нет | — | Маска для локальной правки: белое — менять, чёрное — оставить. Только с одним референсом и несовместима с прозрачным фоном |
+| `background` | string | Нет | `opaque` | Фон. `transparent` требует `png` или `webp` |
+| `enhance_prompt` | bool | Нет | `false` | Переписать промпт перед генерацией. Добавляет 10–30 секунд |
+
+## Пример запроса (cURL)
+
+```bash
+curl -X POST "https://polza.ai/api/v1/media" \\
+  -H "Authorization: Bearer <POLZA...KEY>" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "qwen/image-2.1",
+    "input": {
+      "prompt": "космонавт на фоне туманности, текст на футболке: HERMES",
+      "aspect_ratio": "1:1",
+      "image_resolution": "2K",
+      "output_format": "png",
+      "enhance_prompt": true
+    },
+    "async": true
+  }'
+```
+
+С локальной правкой через маску (один референс, без прозрачного фона):
+
+```json
+{
+  "model": "qwen/image-2.1",
+  "input": {
+    "prompt": "замени фон на закатный пляж",
+    "images": [
+      { "type": "url", "data": "https://example.com/photo.png" }
+    ],
+    "mask_url": "https://example.com/photo-mask.png",
+    "output_format": "png"
+  },
+  "async": true
+}
+```
+
+С прозрачным фоном (PNG/WebP):
+
+```json
+{
+  "model": "qwen/image-2.1",
+  "input": {
+    "prompt": "иконка приложения, плоский стиль",
+    "aspect_ratio": "1:1",
+    "output_format": "png",
+    "background": "transparent"
+  },
+  "async": true
+}
+```
+
+## Советы и лучшие практики
+
+<AccordionGroup>
+  <Accordion title="Рендеринг текста на изображении" icon="font">
+    Qwen Image 2.1 уверенно рисует надписи на картинке — формулируйте текст в промпте явно и в кавычках: `текст на футболке: "HERMES"`. Для 2K используйте `image_resolution: "2K"`.
+  </Accordion>
+  <Accordion title="Прозрачный фон" icon="image">
+    Параметр `background: "transparent"` работает только с `output_format: png` или `webp`. Не сочетается с `mask_url`.
+  </Accordion>
+  <Accordion title="enhance_prompt увеличивает время" icon="gauge-high">
+    Перед генерацией модель переписывает ваш промпт — это добавляет 10–30 секунд. Используйте, когда нужен максимальный результат; отключайте в итеративных сценариях.
+  </Accordion>
+  <Accordion title="Порядок images" icon="wand-magic-sparkles">
+    В `images[]` сохраняйте порядок — на него ссылается промпт («первое изображение», «второй референс»). До 10 шт.
+  </Accordion>
+</AccordionGroup>
