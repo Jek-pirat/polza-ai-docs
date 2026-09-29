@@ -1,0 +1,74 @@
+---
+title: GET Key
+description: Лимит и расход API-ключа, которым сделан запрос
+openapi: GET /v1/key
+icon: key
+---
+
+Возвращает лимит и расход того API-ключа, с которым пришёл запрос. Работает только с API-ключом: с токеном личного кабинета вернётся `400`. Баланс организации здесь не показывается — для него есть [`GET /v2/balance`](/api-reference/other/balance-v2).
+
+## Примеры
+
+<CodeGroup>
+```bash cURL
+curl "https://polza.ai/api/v1/key" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'https://polza.ai/api/v1/key',
+    headers={'Authorization': 'Bearer YOUR_API_KEY'}
+)
+
+key = response.json()
+print(f"Потрачено за месяц: {key['usage_monthly']} руб., осталось: {key['limit_remaining']}")
+```
+
+```javascript JavaScript
+const response = await fetch('https://polza.ai/api/v1/key', {
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+});
+
+const key = await response.json();
+console.log(`Потрачено за месяц: ${key.usage_monthly} руб., осталось: ${key.limit_remaining}`);
+```
+</CodeGroup>
+
+## Ответ
+
+```json
+{
+  "creator_user_id": "usr_1234567890123456789",
+  "label": "pza_AbCd••••••••••••••••••••XyZ123",
+  "limit": 5000,
+  "limit_remaining": 3820.5,
+  "limit_reset": "monthly",
+  "usage": 12450.75,
+  "usage_daily": 96.1,
+  "usage_weekly": 410.2,
+  "usage_monthly": 1179.5
+}
+```
+
+Все суммы — в рублях.
+
+| Поле | Описание |
+|------|----------|
+| `creator_user_id` | Пользователь, создавший ключ |
+| `label` | Маска ключа (не имя ключа) |
+| `limit` | Лимит расходов ключа; `null` — лимит не задан |
+| `limit_remaining` | Сколько осталось до лимита в текущем периоде; `null` — лимит не задан |
+| `limit_reset` | Период лимита: `daily`, `weekly`, `monthly` или `never` (лимит на всё время); `null` — лимит не задан |
+| `usage` | Расход по ключу за всё время |
+| `usage_daily` | Расход за текущий день |
+| `usage_weekly` | Расход за текущую неделю (с понедельника) |
+| `usage_monthly` | Расход за текущий месяц (с 1-го числа) |
+
+Периоды начинаются в 01:00 по московскому времени. Когда лимит исчерпан, запросы с этим ключом получают `402`.
+
+<Note>
+Имена полей совместимы с `GET /api/v1/key` OpenRouter, но ответ приходит без обёртки `data`, а суммы указаны в рублях.
+</Note>
