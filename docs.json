@@ -236,7 +236,8 @@
             "group": "Другое",
             "pages": [
               "api-reference/other/balance",
-              "api-reference/other/balance-v2"
+              "api-reference/other/balance-v2",
+              "api-reference/other/key"
             ]
           }
         ]
