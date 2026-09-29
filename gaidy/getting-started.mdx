@@ -84,7 +84,7 @@ Polza.ai работает по модели оплаты за использов
 
 <CodeGroup>
 ```typescript TypeScript
-const response = await fetch('https://polza.ai/api/v1/balance', {
+const response = await fetch('https://polza.ai/api/v2/balance', {
   headers: {
     'Authorization': 'Bearer <POLZA_AI_API_KEY>'
   }
@@ -99,7 +99,7 @@ console.log(`Потрачено: ${data.spentAmount} руб.`);
 import requests
 
 response = requests.get(
-    'https://polza.ai/api/v1/balance',
+    'https://polza.ai/api/v2/balance',
     headers={'Authorization': 'Bearer <POLZA_AI_API_KEY>'}
 )
 
@@ -109,7 +109,7 @@ print(f"Потрачено: {data['spentAmount']} руб.")
 ```
 
 ```bash cURL
-curl "https://polza.ai/api/v1/balance" \
+curl "https://polza.ai/api/v2/balance" \
   -H "Authorization: Bearer <POLZA_AI_API_KEY>"
 ```
 </CodeGroup>
