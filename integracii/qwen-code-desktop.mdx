@@ -1,0 +1,202 @@
+---
+title: Qwen Code Desktop
+description: Подключение десктопного приложения Qwen Code к Polza.ai
+icon: desktop
+---
+
+Qwen Code Desktop — официальное десктоп-приложение от команды QwenLM (Alibaba). Кросс-платформенный AI-агент с GUI для работы с кодом, документами и проектами: чат, генерация, анализ и редактирование файлов. Подключается к Polza.ai как к OpenAI-совместимому провайдеру.
+
+<Note>
+  Эта страница — про **десктоп-приложение** Qwen Code. Терминальный вариант (CLI) описан в [интеграции с Qwen Code](/integracii/qwen-code).
+</Note>
+
+## Требования
+
+- Установленное приложение Qwen Code Desktop (Windows, macOS или Linux)
+- Аккаунт на [polza.ai](https://polza.ai/dashboard) и API-ключ
+
+## Установка Qwen Code Desktop
+
+Скачайте самую свежую версию из [списка релизов на GitHub](https://github.com/QwenLM/qwen-code/releases) — пункт **Qwen Code Desktop** находится в боковом меню слева. Выберите файл, подходящий под вашу ОС и архитектуру, и установите как обычную программу.
+
+<Note>
+  Ссылка на актуальный релиз выглядит так: `https://github.com/QwenLM/qwen-code/releases#release-desktop-v0.24.7`. Версия в якоре может меняться с каждым релизом — ориентируйтесь по списку, а не по конкретному номеру.
+</Note>
+
+## Подключение к Polza.ai
+
+Конфигурация приложения хранится в файле `~/.qwen/settings.json`. Откройте его в любом текстовом редакторе и замените содержимое минимальным конфигом ниже.
+
+<Tabs>
+  <Tab title="Windows">
+
+    Путь к файлу:
+
+    ```
+    C:\Users\<ИМЯ_ПОЛЬЗОВАТЕЛЯ>\.qwen\settings.json
+    ```
+
+  </Tab>
+  <Tab title="macOS / Linux">
+
+    Путь к файлу:
+
+    ```
+    ~/.qwen/settings.json
+    ```
+
+  </Tab>
+</Tabs>
+
+### Минимальный конфиг
+
+```json
+{
+  "modelProviders": {
+    "openai": [
+      {
+        "id": "deepseek/deepseek-v4-flash",
+        "baseUrl": "https://polza.ai/api/v1",
+        "envKey": "POLZA_API_KEY"
+      }
+    ]
+  },
+  "env": {
+    "POLZA_API_KEY": "<ваш api ключ>"
+  },
+  "security": {
+    "auth": {
+      "selectedType": "openai"
+    }
+  },
+  "model": {
+    "name": "deepseek/deepseek-v4-flash",
+    "baseUrl": "https://polza.ai/api/v1"
+  },
+  "$version": 4
+}
+```
+
+Что заполнить:
+
+| Поле | Значение | Где взять |
+|---|---|---|
+| `modelProviders.openai[0].id` | `deepseek/deepseek-v4-flash` или любой другой slug из [каталога](https://polza.ai/models) | [polza.ai/models](https://polza.ai/models) |
+| `modelProviders.openai[0].baseUrl` | `https://polza.ai/api/v1` | — |
+| `env.POLZA_API_KEY` | ваш API-ключ | [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys) |
+| `model.name` | тот же slug, что и в `id` | — |
+| `model.baseUrl` | `https://polza.ai/api/v1` | — |
+
+<Warning>
+  Ключ хранится в открытом виде в конфиг-файле. Не публикуйте конфиг и не коммитьте его в публичные репозитории — добавьте файл в `.gitignore` при работе с проектом.
+</Warning>
+
+### Проверка подключения
+
+Сохраните `settings.json`, откройте Qwen Code Desktop и отправьте любой запрос. 
+<Frame>
+  <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/c200e418aebf444f2187c27f88437696f0191a05e162d4c339740d6c23b0573a.png" alt="Qwen Code Desktop с подключённой моделью deepseek/deepseek-v4-flash через Polza.ai" />
+</Frame>
+
+## Несколько моделей в конфиге
+
+Если вы хотите быстро менять модели внутри приложения — добавьте их в массив `modelProviders.openai`. Каждый элемент массива — отдельная модель с собственным именем и параметрами. Активная модель выбирается полем `model.name`.
+
+```json
+{
+  "modelProviders": {
+    "openai": [
+      {
+        "id": "model-id-1",
+        "name": "Модель 1",
+        "baseUrl": "https://polza.ai/api/v1",
+        "envKey": "POLZA_API_KEY"
+      },
+      {
+        "id": "model-id-2",
+        "name": "Модель 2",
+        "baseUrl": "https://polza.ai/api/v1",
+        "envKey": "POLZA_API_KEY"
+      },
+      {
+        "id": "model-id-3",
+        "name": "Модель 3",
+        "baseUrl": "https://polza.ai/api/v1",
+        "envKey": "POLZA_API_KEY"
+      }
+    ]
+  },
+  "env": {
+    "POLZA_API_KEY": "<ваш api ключ>"
+  },
+  "security": {
+    "auth": {
+      "selectedType": "openai"
+    }
+  },
+  "model": {
+    "name": "model-id-1"
+  }
+}
+```
+
+- `id` — slug модели из [каталога Polza.ai](https://polza.ai/models) (например, `anthropic/claude-sonnet-4.6`, `openai/gpt-6-astra`).
+- `name` — человекочитаемое имя, которое показывается в пикере Qwen Code Desktop.
+- `baseUrl` — у всех моделей один и тот же: `https://polza.ai/api/v1`.
+- `model.name` — slug активной модели; переключение между моделями в массиве происходит через этот пикер.
+
+<Note>
+  Поле `env.POLZA_API_KEY` используется всеми моделями через переменную `envKey`. Один и тот же ключ подходит для всех записей в массиве `modelProviders.openai`.
+</Note>
+
+<Frame>
+  <img src="https://storage.yandexcloud.net/polza-docs/polza-docs/images/24ab996215e241ab173320ebf5534ef5982e3d8b8168385037fa367617c6830f.png" alt="Пикер моделей в Qwen Code Desktop: deepseek/deepseek-v4-flash, openai/gpt-6.1-sol, z-ai/glm-5.3-prime" />
+</Frame>
+
+## Рекомендуемые модели
+
+Polza.ai поддерживает сотни моделей; ниже подборка для типовых задач в десктоп-клиенте. Полный список — на [polza.ai/models](https://polza.ai/models).
+
+| Модель | ID | Для чего подходит |
+|---|---|---|
+| Claude Sonnet 5 | `anthropic/claude-sonnet-5` | Фронтир-качества среди Sonnet-класса: кодинг, агенты, профессиональные задачи. Универсальный рабочий выбор |
+| Claude Opus 5.5 | `anthropic/claude-opus-5.5` | Флагман Anthropic: сложные рассуждения, многошаговые изменения в больших кодовых базах, длинные агенты |
+| GPT-6 Luna | `openai/gpt-6-luna` | Быстрая и самая дешёвая в линейке GPT-6: чат, классификация, лёгкие агенты, сценарии с жёсткими лимитами по latency |
+| GPT-6 Sol | `openai/gpt-6-sol` | Средний ярус GPT-6 между Luna и Astra: профессиональные задачи без максимальных требований |
+| GPT-6 Astra | `openai/gpt-6-astra` | Флагман OpenAI: продвинутая аналитика, software engineering, deep research, длинные end-to-end сценарии |
+| Gemini 3.8 Flash | `google/gemini-3.8-flash` | Самая интеллектуальная модель линейки Flash: software engineering, агентные задачи, мультимодальный ввод (текст/картинки/видео/аудио) |
+| DeepSeek V4.1 Flash | `deepseek/deepseek-v4.1-flash` | Самая экономичная модель в подборке: черновики, рутинные правки, проверка подключения |
+
+## Решение проблем
+
+<AccordionGroup>
+  <Accordion title="Приложение не подключается к Polza.ai">
+    * Проверьте что в `settings.json` `baseUrl` указан точно `https://polza.ai/api/v1` (без опечаток и лишнего `/` в конце)
+    * Убедитесь что `model.name` совпадает с `id` одной из моделей в массиве `modelProviders.openai`
+    * Полностью закройте Qwen Code Desktop и откройте заново — конфиг перечитывается только при старте
+  </Accordion>
+  <Accordion title="Ошибка аутентификации (401 Unauthorized)">
+    * Скопируйте ключ заново из [личного кабинета](https://polza.ai/dashboard/api-keys) — лишние пробелы и Unicode-символы ломают auth
+    * Поле `env.POLZA_API_KEY` должно содержать сам ключ, а в `envKey` — только имя переменной (`POLZA_API_KEY`)
+    * На балансе есть положительный остаток
+  </Accordion>
+  <Accordion title="Модель не найдена">
+    * Проверьте что `id` модели существует в [каталоге Polza.ai](https://polza.ai/models) — slug чувствителен к регистру
+    * Если вы переименовали модель — обновите и `modelProviders.openai[].id`, и `model.name`
+  </Accordion>
+  <Accordion title="JSON в settings.json невалиден">
+    * Скопируйте содержимое через `cat ~/.qwen/settings.json | python3 -m json.tool` — утилита покажет, где синтаксическая ошибка
+    * Частая причина — пропущенная запятая между объектами массива или лишняя запятая после последнего элемента
+  </Accordion>
+</AccordionGroup>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Qwen Code CLI" icon="terminal" href="/integracii/qwen-code">
+    Терминальный вариант Qwen Code — та же модель без GUI
+  </Card>
+  <Card title="Выбор провайдера" icon="server" href="/gaidy/provider-selection">
+    Как выбирать и переключаться между провайдерами моделей
+  </Card>
+</CardGroup>

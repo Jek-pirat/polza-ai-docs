@@ -112,6 +112,16 @@
       "source_path": "images/hermes-agent/setup.png",
       "uploaded_at": "2026-06-17T16:43:42+00:00"
     },
+    "24ab996215e241ab173320ebf5534ef5982e3d8b8168385037fa367617c6830f": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/qwen-code-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/24ab996215e241ab173320ebf5534ef5982e3d8b8168385037fa367617c6830f.png",
+      "s3_key": "polza-docs/images/24ab996215e241ab173320ebf5534ef5982e3d8b8168385037fa367617c6830f.png",
+      "sha256": "24ab996215e241ab173320ebf5534ef5982e3d8b8168385037fa367617c6830f",
+      "size": 72881,
+      "source_path": "images/qwen-code-desktop/02-model-picker.png",
+      "uploaded_at": "2026-10-01T12:16:21+00:00"
+    },
     "24b342873b265b1fb531286026178b1716bf183f3ef564b20f12d8494a143262": {
       "content_type": "image/png",
       "first_seen_in": "integracii/claude-code.mdx",
@@ -413,6 +423,16 @@
       "size": 80775,
       "source_path": "images/deepseek-harness/model_work.png",
       "uploaded_at": "2026-09-02T15:45:51+00:00"
+    },
+    "c200e418aebf444f2187c27f88437696f0191a05e162d4c339740d6c23b0573a": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/qwen-code-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/c200e418aebf444f2187c27f88437696f0191a05e162d4c339740d6c23b0573a.png",
+      "s3_key": "polza-docs/images/c200e418aebf444f2187c27f88437696f0191a05e162d4c339740d6c23b0573a.png",
+      "sha256": "c200e418aebf444f2187c27f88437696f0191a05e162d4c339740d6c23b0573a",
+      "size": 67996,
+      "source_path": "images/qwen-code-desktop/01-ready.png",
+      "uploaded_at": "2026-10-01T12:17:39+00:00"
     },
     "c4caa246d7b4309c14bbce2adf2abd25906863212654706661c51b307cedfb02": {
       "content_type": "image/png",
