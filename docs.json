@@ -126,6 +126,7 @@
                 "pages": [
                   "gaidy/suno-music",
                   "gaidy/suno-sounds",
+                  "gaidy/suno-mashup",
                   "gaidy/google-lyria-3"
                 ]
               }
