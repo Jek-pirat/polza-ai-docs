@@ -243,17 +243,17 @@ curl -X POST "https://polza.ai/api/v1/media" \
 | Параметр | Тип | Обязательный | Описание |
 |----------|-----|--------------|----------|
 | `model` | string | Да | `suno/generate` |
-| `input.prompt` | string | Да | Описание трека или текст песни (до 5 000 символов). В custom mode используется как lyrics — поддерживает теги `[Verse]`, `[Chorus]`, `[Bridge]` и др. |
-| `input.customMode` | boolean | Нет | Расширенный режим с собственным текстом песни. По умолчанию `false`. Включение требует `style` и `title` |
-| `input.instrumental` | boolean | Нет | Инструментальная музыка без вокала. По умолчанию `false` |
-| `input.style` | string | Нет | Жанр/стиль музыки (до 1 000 символов). Обязателен при использовании custom mode. Пример: `Pop, Electronic, Upbeat` |
-| `input.title` | string | Нет | Название трека (до 80 символов). Обязателен при использовании custom mode |
-| `input.vocalGender` | string | Нет | Пол вокалиста. Только если `instrumental: false`. Значения: `m` (мужской), `f` (женский) |
-| `input.duration` | number | Нет | Длительность трека в секундах (10–360). Только в custom mode |
-| `input.audioWeight` | number | Нет | Вес аудио при генерации, 0.00–1.00 (до двух знаков после запятой) |
-| `input.personaId` | string | Нет | ID персоны или голоса. Только в custom mode |
-| `input.personaModel` | string | Нет | Тип персоны. Только в custom mode. Значения: `style_persona`, `voice_persona` |
-| `input.version` | string | Нет | Версия модели: `V6` (по умолчанию), `V6_MINI`, `V6_WILD` |
+| `prompt` | string | Да | Описание трека или текст песни (до 5 000 символов). В custom mode используется как lyrics — поддерживает теги `[Verse]`, `[Chorus]`, `[Bridge]` и др. |
+| `customMode` | boolean | Нет | Расширенный режим с собственным текстом песни. По умолчанию `false`. Включение требует `style` и `title` |
+| `instrumental` | boolean | Нет | Инструментальная музыка без вокала. По умолчанию `false` |
+| `style` | string | Нет | Жанр/стиль музыки (до 1 000 символов). Обязателен при использовании custom mode. Пример: `Pop, Electronic, Upbeat` |
+| `title` | string | Нет | Название трека (до 80 символов). Обязателен при использовании custom mode |
+| `vocalGender` | string | Нет | Пол вокалиста. Только если `instrumental: false`. Значения: `m` (мужской), `f` (женский) |
+| `duration` | number | Нет | Длительность трека в секундах (10–360). Только в custom mode |
+| `audioWeight` | number | Нет | Вес аудио при генерации, 0.00–1.00 (до двух знаков после запятой) |
+| `personaId` | string | Нет | ID персоны или голоса. Только в custom mode |
+| `personaModel` | string | Нет | Тип персоны. Только в custom mode. Значения: `style_persona`, `voice_persona` |
+| `version` | string | Нет | Версия модели: `V6` (по умолчанию), `V6_MINI`, `V6_WILD` |
 | `async` | boolean | Нет | Асинхронный режим. По умолчанию `false` |
 
 ## Советы и лучшие практики

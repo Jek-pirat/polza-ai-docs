@@ -172,8 +172,8 @@ curl -X POST "https://polza.ai/api/v1/media" \
 | Параметр | Тип | Обязательный | Описание |
 |----------|-----|--------------|----------|
 | `model` | string | Да | `google/lyria-3-pro-preview` или `google/lyria-3-clip-preview` |
-| `input.prompt` | string | Да | Описание трека, до 5000 символов |
-| `input.images` | array | Нет | Изображения-референсы (URL или base64) |
+| `prompt` | string | Да | Описание трека, до 5000 символов |
+| `images` | array | Нет | Изображения-референсы (URL или base64) |
 | `callBackUrl` | string | Нет | URL для callback по завершении генерации |
 | `async` | boolean | Нет | Асинхронный режим (по умолчанию `false`) |
 
