@@ -1,0 +1,274 @@
+---
+title: Suno Sounds
+description: Генерация звуковых эффектов, сэмплов и атмосферных аудиофрагментов с моделью Suno
+icon: wave-square
+---
+
+Suno Sounds — инструмент Suno для создания отдельных аудиофрагментов по текстовому описанию. Звуковые эффекты, шумы окружающей среды, фоли и инструментальные сэмплы: можно запросить шум дождя, шаги, короткий переход или ударный звук. Для музыкальных заготовок доступны лупы с заданными темпом и тональностью.
+
+<Note>
+Полная документация API: [Генерация медиа](/api-reference/media/create)
+</Note>
+
+<Warning>
+Функция находится в бета-версии. Точность генерации продолжает дорабатываться — описание фоновой обстановки иногда даёт музыкальное звучание, может потребоваться несколько итераций с уточнёнными формулировками.
+</Warning>
+
+## Обзор
+
+| Характеристика | Значение |
+|----------------|----------|
+| ID модели | `suno/sounds` |
+| Эндпоинт | `/api/v1/media` |
+| Max prompt | 500 символов |
+| Версии | V6 (по умолчанию), V6_MINI, V6_WILD |
+| Формат результата | One Shot (одиночный звук) или Loop (зацикленный фрагмент) |
+
+## Возможности
+
+<CardGroup cols={2}>
+  <Card title="Звуковые эффекты" icon="bolt">
+    Короткие переходы, удары, акценты для видео и игр
+  </Card>
+  <Card title="Шумы и фоли" icon="cloud-rain">
+    Дождь, ветер, шаги, атмосферные фоновые шумы
+  </Card>
+  <Card title="Музыкальные сэмплы" icon="drum">
+    Ударные и инструментальные заготовки для продакшена
+  </Card>
+  <Card title="Лупы с BPM" icon="arrows-rotate">
+    Повторяющиеся фрагменты с заданным темпом и тональностью
+  </Card>
+</CardGroup>
+
+## Примеры запросов
+
+### Звуковой эффект
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST "https://polza.ai/api/v1/media" \
+      -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "suno/sounds",
+        "input": {
+          "prompt": "Короткий металлический удар, как щелчок затвора камеры"
+        }
+      }'
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://polza.ai/api/v1/media',
+        headers={'Authorization': 'Bearer <POLZA_AI_API_KEY>'},
+        json={
+            'model': 'suno/sounds',
+            'input': {
+                'prompt': 'Короткий металлический удар, как щелчок затвора камеры'
+            }
+        }
+    )
+    print(response.json())
+    ```
+  </Tab>
+  <Tab title="TypeScript">
+    ```typescript
+    const response = await fetch('https://polza.ai/api/v1/media', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer <POLZA_AI_API_KEY>',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'suno/sounds',
+        input: {
+          prompt: 'Короткий металлический удар, как щелчок затвора камеры'
+        }
+      })
+    });
+
+    console.log(await response.json());
+    ```
+  </Tab>
+</Tabs>
+
+### Луп с темпом и тональностью
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST "https://polza.ai/api/v1/media" \
+      -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "suno/sounds",
+        "input": {
+          "prompt": "Энергичный электронный бит с синтезатором и басом",
+          "soundLoop": true,
+          "soundTempo": 128,
+          "soundKey": "Am"
+        }
+      }'
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://polza.ai/api/v1/media',
+        headers={'Authorization': 'Bearer <POLZA_AI_API_KEY>'},
+        json={
+            'model': 'suno/sounds',
+            'input': {
+                'prompt': 'Энергичный электронный бит с синтезатором и басом',
+                'soundLoop': True,
+                'soundTempo': 128,
+                'soundKey': 'Am'
+            }
+        }
+    )
+    print(response.json())
+    ```
+  </Tab>
+  <Tab title="TypeScript">
+    ```typescript
+    const response = await fetch('https://polza.ai/api/v1/media', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer <POLZA_AI_API_KEY>',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'suno/sounds',
+        input: {
+          prompt: 'Энергичный электронный бит с синтезатором и басом',
+          soundLoop: true,
+          soundTempo: 128,
+          soundKey: 'Am'
+        }
+      })
+    });
+
+    console.log(await response.json());
+    ```
+  </Tab>
+</Tabs>
+
+### Атмосферный фон
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST "https://polza.ai/api/v1/media" \
+      -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "suno/sounds",
+        "input": {
+          "prompt": "Тихий летний лес: лёгкий ветер в листве, далёкие птицы, журчание ручья",
+          "soundLoop": true
+        }
+      }'
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://polza.ai/api/v1/media',
+        headers={'Authorization': 'Bearer <POLZA_AI_API_KEY>'},
+        json={
+            'model': 'suno/sounds',
+            'input': {
+                'prompt': 'Тихий летний лес: лёгкий ветер в листве, далёкие птицы, журчание ручья',
+                'soundLoop': True
+            }
+        }
+    )
+    print(response.json())
+    ```
+  </Tab>
+  <Tab title="TypeScript">
+    ```typescript
+    const response = await fetch('https://polza.ai/api/v1/media', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer <POLZA_AI_API_KEY>',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'suno/sounds',
+        input: {
+          prompt: 'Тихий летний лес: лёгкий ветер в листве, далёкие птицы, журчание ручья',
+          soundLoop: true
+        }
+      })
+    });
+
+    console.log(await response.json());
+    ```
+  </Tab>
+</Tabs>
+
+## Параметры
+
+| Параметр | Тип | Обязательный | Описание |
+|----------|-----|--------------|----------|
+| `model` | string | Да | `suno/sounds` |
+| `prompt` | string | Да | Описание звука или фоновой музыки, до 500 символов |
+| `version` | string | Нет | Версия модели: `V6` (по умолчанию), `V6_MINI`, `V6_WILD` |
+| `soundLoop` | boolean | Нет | Зациклить результат. По умолчанию `false` (формат One Shot) |
+| `soundTempo` | number | Нет | Темп в BPM (1–300). Актуален для лупов |
+| `soundKey` | string | Нет | Тональность результата. По умолчанию `Any`. Доступные значения: `Any`, `Cm`, `C#m`, `Dm`, `D#m`, `Em`, `Fm`, `F#m`, `Gm`, `G#m`, `Am`, `A#m`, `Bm`, `C`, `C#`, `D`, `D#`, `E`, `F`, `F#`, `G`, `G#`, `A`, `A#`, `B` |
+| `grabLyrics` | boolean | Нет | Получать lyrics/subtitles после генерации. По умолчанию `false` |
+
+## Советы и лучшие практики
+
+<AccordionGroup>
+  <Accordion title="Конкретность формулировок" icon="bullseye">
+    Suno рекомендует описывать звук через узнаваемые названия и характеристики. Вместо «какой-то звук» — «короткий сухой щелчок, как удар деревянной палочки по столу». Чем точнее описание, тем ближе результат к замыслу.
+  </Accordion>
+  <Accordion title="One Shot vs Loop" icon="arrows-rotate">
+    По умолчанию результат — одиночный звук (One Shot). Для повторяющегося фрагмента, который впишется в фон ролика или ритмическую основу трека, передавайте `soundLoop: true`. Лупы естественно сочетаются с `soundTempo` и `soundKey`.
+  </Accordion>
+  <Accordion title="Выбор тональности для лупов" icon="music">
+    Если заранее известна тональность проекта — укажите её в `soundKey`. Это упрощает последующее сведение лупа с основным треком. Если тональность не важна — оставьте `Any`.
+  </Accordion>
+  <Accordion title="Несколько итераций" icon="arrows-rotate">
+    Бета-статус модели означает, что с первого раза результат может не попасть в замысел. Описание фоновой обстановки иногда даёт музыкальное звучание — уточняйте формулировку и пробуйте снова.
+  </Accordion>
+</AccordionGroup>
+
+## Асинхронная генерация
+
+Генерация звука — асинхронный процесс. После отправки запроса вы получите `id`, который нужно использовать для проверки статуса:
+
+<Steps>
+  <Step title="Отправка запроса">
+    POST запрос на `/api/v1/media` возвращает `id` генерации.
+  </Step>
+  <Step title="Проверка статуса">
+    GET запрос на `/api/v1/media/{id}` возвращает текущий статус.
+  </Step>
+  <Step title="Получение результата">
+    Когда статус `completed`, в ответе будут URL аудиофайла и метаданные сгенерированного звука.
+  </Step>
+</Steps>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Статус генерации" href="/api-reference/media/get">
+    Проверка статуса генерации медиа
+  </Card>
+  <Card title="Suno Music Generate" href="/gaidy/suno-music">
+    Полноценная генерация музыки с вокалом и текстом песни
+  </Card>
+</CardGroup>
