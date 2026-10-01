@@ -81,11 +81,11 @@ Qwen Code Desktop — официальное десктоп-приложение
 
 | Поле | Значение | Где взять |
 |---|---|---|
-| `modelProviders.openai[0].id` | `deepseek/deepseek-v4-flash` или любой другой slug из [каталога](https://polza.ai/models) | [polza.ai/models](https://polza.ai/models) |
-| `modelProviders.openai[0].baseUrl` | `https://polza.ai/api/v1` | — |
-| `env.POLZA_API_KEY` | ваш API-ключ | [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys) |
-| `model.name` | тот же slug, что и в `id` | — |
-| `model.baseUrl` | `https://polza.ai/api/v1` | — |
+| `id` | `deepseek/deepseek-v4-flash` или любой другой slug из [каталога](https://polza.ai/models) | [polza.ai/models](https://polza.ai/models) |
+| `baseUrl` | `https://polza.ai/api/v1` | — |
+| `POLZA_API_KEY` (в `env`) | ваш API-ключ | [polza.ai/dashboard/api-keys](https://polza.ai/dashboard/api-keys) |
+| `name` | тот же slug, что и в `id` | — |
+| `baseUrl` (в `model`) | `https://polza.ai/api/v1` | — |
 
 <Warning>
   Ключ хранится в открытом виде в конфиг-файле. Не публикуйте конфиг и не коммитьте его в публичные репозитории — добавьте файл в `.gitignore` при работе с проектом.
@@ -100,7 +100,7 @@ Qwen Code Desktop — официальное десктоп-приложение
 
 ## Несколько моделей в конфиге
 
-Если вы хотите быстро менять модели внутри приложения — добавьте их в массив `modelProviders.openai`. Каждый элемент массива — отдельная модель с собственным именем и параметрами. Активная модель выбирается полем `model.name`.
+Если вы хотите быстро менять модели внутри приложения — добавьте их в массив `openai` (внутри `modelProviders`). Каждый элемент массива — отдельная модель с собственным именем и параметрами. Активная модель выбирается полем `name` (в секции `model`).
 
 ```json
 {
@@ -143,10 +143,10 @@ Qwen Code Desktop — официальное десктоп-приложение
 - `id` — slug модели из [каталога Polza.ai](https://polza.ai/models) (например, `anthropic/claude-sonnet-4.6`, `openai/gpt-6-astra`).
 - `name` — человекочитаемое имя, которое показывается в пикере Qwen Code Desktop.
 - `baseUrl` — у всех моделей один и тот же: `https://polza.ai/api/v1`.
-- `model.name` — slug активной модели; переключение между моделями в массиве происходит через этот пикер.
+- `name` — slug активной модели; переключение между моделями в массиве происходит через этот пикер.
 
 <Note>
-  Поле `env.POLZA_API_KEY` используется всеми моделями через переменную `envKey`. Один и тот же ключ подходит для всех записей в массиве `modelProviders.openai`.
+  Поле `POLZA_API_KEY` (в секции `env`) используется всеми моделями через переменную `envKey`. Один и тот же ключ подходит для всех записей в массиве `modelProviders.openai`.
 </Note>
 
 <Frame>
@@ -172,17 +172,17 @@ Polza.ai поддерживает сотни моделей; ниже подбо
 <AccordionGroup>
   <Accordion title="Приложение не подключается к Polza.ai">
     * Проверьте что в `settings.json` `baseUrl` указан точно `https://polza.ai/api/v1` (без опечаток и лишнего `/` в конце)
-    * Убедитесь что `model.name` совпадает с `id` одной из моделей в массиве `modelProviders.openai`
+    * Убедитесь что `name` (в секции `model`) совпадает с `id` одной из моделей в массиве `modelProviders.openai`
     * Полностью закройте Qwen Code Desktop и откройте заново — конфиг перечитывается только при старте
   </Accordion>
   <Accordion title="Ошибка аутентификации (401 Unauthorized)">
     * Скопируйте ключ заново из [личного кабинета](https://polza.ai/dashboard/api-keys) — лишние пробелы и Unicode-символы ломают auth
-    * Поле `env.POLZA_API_KEY` должно содержать сам ключ, а в `envKey` — только имя переменной (`POLZA_API_KEY`)
+    * Поле `POLZA_API_KEY` (в секции `env`) должно содержать сам ключ, а в `envKey` — только имя переменной (`POLZA_API_KEY`)
     * На балансе есть положительный остаток
   </Accordion>
   <Accordion title="Модель не найдена">
     * Проверьте что `id` модели существует в [каталоге Polza.ai](https://polza.ai/models) — slug чувствителен к регистру
-    * Если вы переименовали модель — обновите и `modelProviders.openai[].id`, и `model.name`
+    * Если вы переименовали модель — обновите и `id` (в `modelProviders.openai[]`), и `name` (в `model`)
   </Accordion>
   <Accordion title="JSON в settings.json невалиден">
     * Скопируйте содержимое через `cat ~/.qwen/settings.json | python3 -m json.tool` — утилита покажет, где синтаксическая ошибка
