@@ -1,0 +1,242 @@
+---
+title: Suno Mashup
+description: Объединение двух песен в новый мэшап-трек с моделью Suno
+icon: shuffle
+---
+
+Suno Mashup — инструмент Suno для создания нового трека на основе двух исходных песен. На вход подаются ссылки на два аудиофайла, на выходе — мэшап с переработанным текстом и музыкальным сочетанием исходных композиций.
+
+<Note>
+Полная документация API: [Генерация медиа](/api-reference/media/create)
+</Note>
+
+## Обзор
+
+| Характеристика | Значение |
+|----------------|----------|
+| ID модели | `suno/mashup` |
+| Эндпоинт | `/api/v1/media` |
+| Max prompt | 500 символов (обычный режим) / 5 000 символов (custom mode) |
+| Max style | 1 000 символов |
+| Max title | 80 символов |
+| Количество исходных треков | Ровно 2 (по `uploadUrlList`) |
+| Версии | V6 (по умолчанию), V6_MINI, V6_WILD |
+
+## Возможности
+
+<CardGroup cols={2}>
+  <Card title="Смешивание двух треков" icon="shuffle">
+    Объединение двух исходных аудио в один мэшап-трек
+  </Card>
+  <Card title="Переработка текста" icon="pen">
+    Формирование нового текста на основе исходного материала
+  </Card>
+  <Card title="Custom Mode" icon="sliders">
+    Свой текст песни, стиль и название через custom mode
+  </Card>
+  <Card title="Выбор версии" icon="code-branch">
+    V6, V6_MINI или V6_WILD — под задачу и нужное качество
+  </Card>
+</CardGroup>
+
+## Примеры запросов
+
+### Простой мэшап
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST "https://polza.ai/api/v1/media" \
+      -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "suno/mashup",
+        "input": {
+          "prompt": "Энергичный поп-рок мэшап с ярким припевом",
+          "uploadUrlList": [
+            "https://example.com/track-1.mp3",
+            "https://example.com/track-2.mp3"
+          ]
+        }
+      }'
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://polza.ai/api/v1/media',
+        headers={'Authorization': 'Bearer <POLZA_AI_API_KEY>'},
+        json={
+            'model': 'suno/mashup',
+            'input': {
+                'prompt': 'Энергичный поп-рок мэшап с ярким припевом',
+                'uploadUrlList': [
+                    'https://example.com/track-1.mp3',
+                    'https://example.com/track-2.mp3'
+                ]
+            }
+        }
+    )
+    print(response.json())
+    ```
+  </Tab>
+  <Tab title="TypeScript">
+    ```typescript
+    const response = await fetch('https://polza.ai/api/v1/media', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer <POLZA_AI_API_KEY>',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'suno/mashup',
+        input: {
+          prompt: 'Энергичный поп-рок мэшап с ярким припевом',
+          uploadUrlList: [
+            'https://example.com/track-1.mp3',
+            'https://example.com/track-2.mp3'
+          ]
+        }
+      })
+    });
+
+    console.log(await response.json());
+    ```
+  </Tab>
+</Tabs>
+
+### Custom Mode (свой текст, стиль, название)
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST "https://polza.ai/api/v1/media" \
+      -H "Authorization: Bearer <POLZA_AI_API_KEY>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "suno/mashup",
+        "input": {
+          "customMode": true,
+          "prompt": "[Verse]\nДва сердца бьются в одном ритме\n[Chorus]\nМы — новый звук, мы — новый мир",
+          "style": "Pop, Electronic, Upbeat",
+          "title": "Новый ритм",
+          "uploadUrlList": [
+            "https://example.com/track-1.mp3",
+            "https://example.com/track-2.mp3"
+          ]
+        }
+      }'
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://polza.ai/api/v1/media',
+        headers={'Authorization': 'Bearer <POLZA_AI_API_KEY>'},
+        json={
+            'model': 'suno/mashup',
+            'input': {
+                'customMode': True,
+                'prompt': '[Verse]\nДва сердца бьются в одном ритме\n[Chorus]\nМы — новый звук, мы — новый мир',
+                'style': 'Pop, Electronic, Upbeat',
+                'title': 'Новый ритм',
+                'uploadUrlList': [
+                    'https://example.com/track-1.mp3',
+                    'https://example.com/track-2.mp3'
+                ]
+            }
+        }
+    )
+    print(response.json())
+    ```
+  </Tab>
+  <Tab title="TypeScript">
+    ```typescript
+    const response = await fetch('https://polza.ai/api/v1/media', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer <POLZA_AI_API_KEY>',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'suno/mashup',
+        input: {
+          customMode: true,
+          prompt: '[Verse]\nДва сердца бьются в одном ритме\n[Chorus]\nМы — новый звук, мы — новый мир',
+          style: 'Pop, Electronic, Upbeat',
+          title: 'Новый ритм',
+          uploadUrlList: [
+            'https://example.com/track-1.mp3',
+            'https://example.com/track-2.mp3'
+          ]
+        }
+      })
+    });
+
+    console.log(await response.json());
+    ```
+  </Tab>
+</Tabs>
+
+## Параметры
+
+| Параметр | Тип | Обязательный | Описание |
+|----------|-----|--------------|----------|
+| `model` | string | Да | `suno/mashup` |
+| `uploadUrlList` | string[] | Да | Ровно 2 публичные URL-ссылки на аудио для смешивания |
+| `prompt` | string | Да | Описание трека или lyrics. До 500 символов в обычном режиме, до 5 000 — в custom mode |
+| `customMode` | boolean | Нет | Расширенный режим с собственным текстом песни. По умолчанию `false` |
+| `style` | string | Нет | Жанр/стиль музыки, до 1 000 символов. Обязателен при использовании custom mode |
+| `title` | string | Нет | Название трека, до 80 символов. Обязателен при использовании custom mode |
+| `version` | string | Нет | Версия модели: `V6` (по умолчанию), `V6_MINI`, `V6_WILD` |
+
+## Советы и лучшие практики
+
+<AccordionGroup>
+  <Accordion title="Доступность ссылок" icon="link">
+    Suno должен иметь возможность скачать оба файла по переданным URL. Размещайте аудио на хостинге с публичным доступом и стабильным скачиванием (S3, собственный CDN, публичный bucket). Закрытые или требующие авторизации ссылки приведут к ошибке генерации.
+  </Accordion>
+  <Accordion title="Конкретный промпт" icon="bullseye">
+    Описывайте желаемое настроение, жанр и структуру: «Энергичный поп-рок мэшап с ярким припевом». В custom mode используйте теги `[Verse]`, `[Chorus]`, `[Bridge]`, `[Outro]` для структурирования текста.
+  </Accordion>
+  <Accordion title="Custom Mode для контроля" icon="sliders">
+    Если нужен свой текст, конкретный стиль и название трека — включайте `customMode: true` и передавайте `style`, `title` и расширенный `prompt`. Без custom mode модель сама сформирует текст и подберёт стиль на основе исходных треков.
+  </Accordion>
+  <Accordion title="Выбор версии модели" icon="code-branch">
+    V6 — флагман по умолчанию. V6_MINI — быстрее и дешевле для экспериментов. V6_WILD — даёт более нестандартные сочетания, подходит для творческих поисков.
+  </Accordion>
+</AccordionGroup>
+
+## Асинхронная генерация
+
+Генерация мэшапа — асинхронный процесс. После отправки запроса вы получите `id`, который нужно использовать для проверки статуса:
+
+<Steps>
+  <Step title="Отправка запроса">
+    POST запрос на `/api/v1/media` возвращает `id` генерации.
+  </Step>
+  <Step title="Проверка статуса">
+    GET запрос на `/api/v1/media/{id}` возвращает текущий статус.
+  </Step>
+  <Step title="Получение результата">
+    Когда статус `completed`, в ответе будут URL аудиофайла, обложка, название и длительность мэшапа.
+  </Step>
+</Steps>
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="Статус генерации" href="/api-reference/media/get">
+    Проверка статуса генерации медиа
+  </Card>
+  <Card title="Suno Music Generate" href="/gaidy/suno-music">
+    Генерация полноценной песни с вокалом и текстом
+  </Card>
+  <Card title="Suno Sounds" href="/gaidy/suno-sounds">
+    Звуковые эффекты, сэмплы и атмосферные фоны
+  </Card>
+</CardGroup>
