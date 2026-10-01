@@ -125,6 +125,7 @@
                 "icon": "music",
                 "pages": [
                   "gaidy/suno-music",
+                  "gaidy/suno-sounds",
                   "gaidy/google-lyria-3"
                 ]
               }
