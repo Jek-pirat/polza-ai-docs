@@ -154,7 +154,8 @@
               "integracii/proxy",
               "gaidy/rag",
               "integracii/roo-code",
-              "integracii/qwen-code"
+              "integracii/qwen-code",
+              "integracii/qwen-code-desktop"
             ]
           }
         ]
