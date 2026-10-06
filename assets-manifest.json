@@ -12,6 +12,16 @@
       "source_path": "images/openclaw-desktop/07-ready.png",
       "uploaded_at": "2026-09-23T11:49:36+00:00"
     },
+    "063e7b378bfbf9c927f2a1d59c10b884c33031c647926f7bebe65cbd29cdadd2": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/hermes-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/063e7b378bfbf9c927f2a1d59c10b884c33031c647926f7bebe65cbd29cdadd2.png",
+      "s3_key": "polza-docs/images/063e7b378bfbf9c927f2a1d59c10b884c33031c647926f7bebe65cbd29cdadd2.png",
+      "sha256": "063e7b378bfbf9c927f2a1d59c10b884c33031c647926f7bebe65cbd29cdadd2",
+      "size": 101331,
+      "source_path": "images/hermes-desktop/02-endpoint-form.png",
+      "uploaded_at": "2026-10-06T12:14:37+00:00"
+    },
     "0896ea91ac7a54497cbaee05170378ce122e8039814721c49442c89ed8c7ffa4": {
       "content_type": "image/png",
       "first_seen_in": "integracii/dify.mdx",
@@ -41,6 +51,16 @@
       "size": 52475,
       "source_path": "images/claude-desktop/models-list.jpg",
       "uploaded_at": "2026-08-24T15:08:25+00:00"
+    },
+    "1182d12eada3a8ae8dd43f017dcca6fa2341b27345190ecc5d6a2fd88e88247d": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cherry-studio.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/1182d12eada3a8ae8dd43f017dcca6fa2341b27345190ecc5d6a2fd88e88247d.png",
+      "s3_key": "polza-docs/images/1182d12eada3a8ae8dd43f017dcca6fa2341b27345190ecc5d6a2fd88e88247d.png",
+      "sha256": "1182d12eada3a8ae8dd43f017dcca6fa2341b27345190ecc5d6a2fd88e88247d",
+      "size": 127048,
+      "source_path": "images/cherry-studio/2.png",
+      "uploaded_at": "2026-10-06T12:14:36+00:00"
     },
     "119728ec909728bc14a822da1522573f470d5bbac6bedc21a9f232b541aae955": {
       "content_type": "image/png",
@@ -268,6 +288,16 @@
       "source_path": "images/kilo-code/kilocode-connection-settings.png",
       "uploaded_at": "2026-06-17T16:43:43+00:00"
     },
+    "65e637f596909876d7215a569ea5c95aba484f8be025926dd5633a460aa8f8f0": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cherry-studio.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/65e637f596909876d7215a569ea5c95aba484f8be025926dd5633a460aa8f8f0.png",
+      "s3_key": "polza-docs/images/65e637f596909876d7215a569ea5c95aba484f8be025926dd5633a460aa8f8f0.png",
+      "sha256": "65e637f596909876d7215a569ea5c95aba484f8be025926dd5633a460aa8f8f0",
+      "size": 90462,
+      "source_path": "images/cherry-studio/7.png",
+      "uploaded_at": "2026-10-06T12:14:37+00:00"
+    },
     "663c2b7412b72b263b8c7fd3c47e3181678eb5f9937c05d59bcdfa25b63064b6": {
       "content_type": "image/png",
       "first_seen_in": "integracii/deepseek-harness.mdx",
@@ -277,6 +307,16 @@
       "size": 114527,
       "source_path": "images/deepseek-harness/settings.png",
       "uploaded_at": "2026-09-02T15:45:51+00:00"
+    },
+    "73d26d599c61b80ee20f15e0aa2533603d1548be26993b9e1667e1076ea97a9e": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/hermes-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/73d26d599c61b80ee20f15e0aa2533603d1548be26993b9e1667e1076ea97a9e.png",
+      "s3_key": "polza-docs/images/73d26d599c61b80ee20f15e0aa2533603d1548be26993b9e1667e1076ea97a9e.png",
+      "sha256": "73d26d599c61b80ee20f15e0aa2533603d1548be26993b9e1667e1076ea97a9e",
+      "size": 115257,
+      "source_path": "images/hermes-desktop/04-model-switcher.png",
+      "uploaded_at": "2026-10-06T12:14:38+00:00"
     },
     "74dbec2bcd8c9f74c419a53e4d26b878d34d257ccc7b4cb0ca17c1d6e82bfb22": {
       "content_type": "image/png",
@@ -364,6 +404,26 @@
       "source_path": "images/claude-desktop/gateway-credentials.png",
       "uploaded_at": "2026-08-24T14:58:46+00:00"
     },
+    "97fb74c56b369bc072503b31f3824342c4569710cac86bc8358b1ab6c611150f": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/hermes-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/97fb74c56b369bc072503b31f3824342c4569710cac86bc8358b1ab6c611150f.png",
+      "s3_key": "polza-docs/images/97fb74c56b369bc072503b31f3824342c4569710cac86bc8358b1ab6c611150f.png",
+      "sha256": "97fb74c56b369bc072503b31f3824342c4569710cac86bc8358b1ab6c611150f",
+      "size": 40177,
+      "source_path": "images/hermes-desktop/01-skip-provider.png",
+      "uploaded_at": "2026-10-06T12:14:37+00:00"
+    },
+    "a1f3aab287ec8cfa874b4e33c6fd18408fbd728577f243af885d7db7c1e5e12a": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cherry-studio.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/a1f3aab287ec8cfa874b4e33c6fd18408fbd728577f243af885d7db7c1e5e12a.png",
+      "s3_key": "polza-docs/images/a1f3aab287ec8cfa874b4e33c6fd18408fbd728577f243af885d7db7c1e5e12a.png",
+      "sha256": "a1f3aab287ec8cfa874b4e33c6fd18408fbd728577f243af885d7db7c1e5e12a",
+      "size": 148587,
+      "source_path": "images/cherry-studio/3.png",
+      "uploaded_at": "2026-10-06T12:14:36+00:00"
+    },
     "a297e43374b4f86029216cd46c2337890589db27c095212f4cc94ee51fa0339e": {
       "content_type": "image/png",
       "first_seen_in": "integracii/polza-ide.mdx",
@@ -433,6 +493,26 @@
       "size": 67996,
       "source_path": "images/qwen-code-desktop/01-ready.png",
       "uploaded_at": "2026-10-01T12:17:39+00:00"
+    },
+    "c24e2721512259589b039ec0f8ec451ffee42cac5fe1df5ce49cc1a59464c6ce": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cherry-studio.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/c24e2721512259589b039ec0f8ec451ffee42cac5fe1df5ce49cc1a59464c6ce.png",
+      "s3_key": "polza-docs/images/c24e2721512259589b039ec0f8ec451ffee42cac5fe1df5ce49cc1a59464c6ce.png",
+      "sha256": "c24e2721512259589b039ec0f8ec451ffee42cac5fe1df5ce49cc1a59464c6ce",
+      "size": 159196,
+      "source_path": "images/cherry-studio/4.png",
+      "uploaded_at": "2026-10-06T12:14:36+00:00"
+    },
+    "c3f44bbefac9de93d45d8a12ada641b76765e026bd8ffe6c7b44e3e7b7144aac": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/hermes-desktop.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/c3f44bbefac9de93d45d8a12ada641b76765e026bd8ffe6c7b44e3e7b7144aac.png",
+      "s3_key": "polza-docs/images/c3f44bbefac9de93d45d8a12ada641b76765e026bd8ffe6c7b44e3e7b7144aac.png",
+      "sha256": "c3f44bbefac9de93d45d8a12ada641b76765e026bd8ffe6c7b44e3e7b7144aac",
+      "size": 120497,
+      "source_path": "images/hermes-desktop/03-ready.png",
+      "uploaded_at": "2026-10-06T12:14:38+00:00"
     },
     "c4caa246d7b4309c14bbce2adf2abd25906863212654706661c51b307cedfb02": {
       "content_type": "image/png",
@@ -514,6 +594,16 @@
       "source_path": "images/n8n/n8n-credentials.png",
       "uploaded_at": "2026-06-17T16:43:45+00:00"
     },
+    "de3d29ce59931f1c2de38b70a449e7610a0c66825c377a38bc16d3856f1c6f31": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cherry-studio.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/de3d29ce59931f1c2de38b70a449e7610a0c66825c377a38bc16d3856f1c6f31.png",
+      "s3_key": "polza-docs/images/de3d29ce59931f1c2de38b70a449e7610a0c66825c377a38bc16d3856f1c6f31.png",
+      "sha256": "de3d29ce59931f1c2de38b70a449e7610a0c66825c377a38bc16d3856f1c6f31",
+      "size": 79778,
+      "source_path": "images/cherry-studio/5.png",
+      "uploaded_at": "2026-10-06T12:14:36+00:00"
+    },
     "e08808d75b565ce1af6a3a47c90cba6b863cf4f0a851a1c1bd3ba8ec6c4f174c": {
       "content_type": "image/png",
       "first_seen_in": "integracii/dify.mdx",
@@ -534,6 +624,16 @@
       "source_path": "images/hermes-agent/dashboard.png",
       "uploaded_at": "2026-06-17T16:43:43+00:00"
     },
+    "e4c37509be7734ce006c471531e1eb8a2ab6a858f44f20e72e1d00256a1b7474": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cherry-studio.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/e4c37509be7734ce006c471531e1eb8a2ab6a858f44f20e72e1d00256a1b7474.png",
+      "s3_key": "polza-docs/images/e4c37509be7734ce006c471531e1eb8a2ab6a858f44f20e72e1d00256a1b7474.png",
+      "sha256": "e4c37509be7734ce006c471531e1eb8a2ab6a858f44f20e72e1d00256a1b7474",
+      "size": 76891,
+      "source_path": "images/cherry-studio/6.png",
+      "uploaded_at": "2026-10-06T12:14:37+00:00"
+    },
     "ef2a0f4953ac4502c869cf3caa627dfdd6e6cb64f1031c423bbeba96032be4cf": {
       "content_type": "image/png",
       "first_seen_in": "integracii/pycharm.mdx",
@@ -543,6 +643,16 @@
       "size": 491718,
       "source_path": "images/pycharm/proxyai-toolwindow.png",
       "uploaded_at": "2026-06-17T16:43:47+00:00"
+    },
+    "f034588a8c65ab33d12babf50b6b722c49d97da980b2315d9c65f94869624fbe": {
+      "content_type": "image/png",
+      "first_seen_in": "integracii/cherry-studio.mdx",
+      "public_url": "https://storage.yandexcloud.net/polza-docs/polza-docs/images/f034588a8c65ab33d12babf50b6b722c49d97da980b2315d9c65f94869624fbe.png",
+      "s3_key": "polza-docs/images/f034588a8c65ab33d12babf50b6b722c49d97da980b2315d9c65f94869624fbe.png",
+      "sha256": "f034588a8c65ab33d12babf50b6b722c49d97da980b2315d9c65f94869624fbe",
+      "size": 67098,
+      "source_path": "images/cherry-studio/1.png",
+      "uploaded_at": "2026-10-06T12:14:35+00:00"
     },
     "f1672565fd2906e4b3a48a41259486d411f4724c454a199b785d183d7406f142": {
       "content_type": "image/png",
