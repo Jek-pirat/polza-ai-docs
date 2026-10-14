@@ -87,7 +87,7 @@ CODE_CHALLENGE=$(echo -n "$CODE_VERIFIER" | openssl dgst -sha256 -binary | opens
 | `callback_url` | да | URL для редиректа после авторизации (HTTPS, исключение: localhost) |
 | `code_challenge` | да | `BASE64URL(SHA256(code_verifier))`, 43-128 символов |
 | `code_challenge_method` | да | Всегда `S256` |
-| `state` | нет | Произвольная строка для CSRF-защиты (возвращается без изменений) |
+| `state` | нет | Произвольная строка для CSRF-защиты, до 256 символов (возвращается без изменений) |
 | `app_name` | нет | Название приложения (отображается на consent screen) |
 
 <CodeGroup>
@@ -248,7 +248,7 @@ const openai = new OpenAI({
 });
 
 const completion = await openai.chat.completions.create({
-  model: 'openai/gpt-4o',
+  model: 'openai/gpt-5.4-mini',
   messages: [{ role: 'user', content: 'Привет!' }],
 });
 ```
@@ -262,7 +262,7 @@ client = OpenAI(
 )
 
 completion = client.chat.completions.create(
-    model="openai/gpt-4o",
+    model="openai/gpt-5.4-mini",
     messages=[{"role": "user", "content": "Привет!"}],
 )
 ```
@@ -272,7 +272,7 @@ curl -X POST "https://polza.ai/api/v1/chat/completions" \
   -H "Authorization: Bearer pza_abc123..." \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "openai/gpt-4o",
+    "model": "openai/gpt-5.4-mini",
     "messages": [{"role": "user", "content": "Привет!"}]
   }'
 ```
@@ -318,7 +318,7 @@ curl -H "Authorization: Bearer pza_abc123..." \
 | `month` | Месячный лимит |
 | `total` | Общий лимит (без сброса) |
 
-Сумма указывается в рублях. При достижении лимита запросы через этот ключ будут отклоняться с ошибкой `402`.
+По умолчанию на экране согласия стоит лимит 100 ₽ в день; пользователь может изменить его или снять. Сумма указывается в рублях. При достижении лимита, а также при нехватке средств на балансе организации запросы через этот ключ отклоняются с ошибкой `402`.
 
 ## Повторная авторизация
 
@@ -336,7 +336,7 @@ curl -H "Authorization: Bearer pza_abc123..." \
 - **HTTPS обязателен** для `callback_url` (исключение: `localhost` и `127.0.0.1` для локальной разработки)
 - **Код авторизации** действителен 5 минут и может быть использован только один раз
 - **code_verifier** проверяется с защитой от timing-атак
-- **Rate limit** на эндпоинт `/api/auth/token`: 5 запросов в минуту
+- **Rate limit** на эндпоинт `/api/auth/token`: 5 запросов в минуту с одного IP-адреса
 
 ## Ошибки
 
@@ -355,7 +355,7 @@ curl -H "Authorization: Bearer pza_abc123..." \
 | 400 | Код авторизации истёк | Прошло более 5 минут |
 | 400 | callback_url не совпадает | URL не совпадает с указанным при авторизации |
 | 400 | Невалидный code_verifier | PKCE-проверка не пройдена |
-| 429 | Too Many Requests | Превышен rate limit (5 запросов/мин) |
+| 429 | Too Many Requests | Превышен rate limit (5 запросов в минуту с одного IP) |
 
 ### При авторизации (`GET /api/auth/authorize`)
 
