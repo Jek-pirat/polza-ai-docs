@@ -289,7 +289,7 @@ curl -X POST "https://polza.ai/api/v1/responses" \
 }
 ```
 
-Число поисков Polza и их стоимость видны и в [истории генераций](/api-reference/history/generations) — в поле `webSearch`.
+В [истории генераций](/api-reference/history/generations) поиск виден строкой состава цены `costLines`: `plugin:web_search` — поиск Polza до вызова модели, `tool:polza:web_search` — поиск Polza по вызову модели, `native_web_search` — родной поиск провайдера.
 
 Если поисковик не ответил, запрос не падает: модель отвечает без результатов поиска. Такой поиск не оплачивается и не попадает в счётчик.
 
