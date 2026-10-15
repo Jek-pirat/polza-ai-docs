@@ -9,10 +9,10 @@ rss: true
 
 ## Веб-поиск через Polza
 
-Веб-поиск в любом формате — плагин `web`, `web_search_options`, `web_search` в Responses, `web_search_20250305` в Anthropic, `googleSearch` в Gemini — теперь выполняет Polza поисковиком Яндекса или Google, для любой модели. Провайдеру модели поиск не передаётся.
+Веб-поиск в любом формате — плагин `web`, `web_search_options`, `web_search` в Responses, `web_search_20250305` в Anthropic, `googleSearch` в Gemini — теперь работает с любой моделью. Ищет провайдер модели, если умеет, или Polza поисковиком Яндекса или Google.
 
-- Поисковик выбирается параметром `engine` плагина `web`: `yandex` (по умолчанию) или `google`
-- 0,50 ₽ за выполненный поиск; поиск с ошибкой не оплачивается
+- Плагин `web`: `engine` — `yandex` (по умолчанию) или `google`, поиск Polza; `native` — родной поиск провайдера, если модель его поддерживает
+- Поиск Polza — 0,50 ₽ за выполненный поиск, родной поиск — по тарифу провайдера `web_search_per_thousand`; поиск с ошибкой не оплачивается
 - Число поисков — в `usage.server_tool_use.web_search_requests`, стоимость — в истории генераций
 
 [Подробнее →](/gaidy/web-search)
