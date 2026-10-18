@@ -54,16 +54,16 @@ uv run --with boto3 python scripts/upload_images_to_s3.py --dry-run
 Set the env vars and run:
 
 ```bash
-export S3_ENDPOINT="https://storage.yandexcloud.net"   # default
-export S3_BUCKET="polza-ai-assets"
+# Selectel S3 (since 2026-10): private bucket, public reads go through s3-proxy
+# at https://s3.polza.ai, which only serves allowed prefixes (static/ is one of them).
+export S3_ENDPOINT="https://s3.ru-6.storage.selcloud.ru"
+export S3_BUCKET="s3.polza.ai"
 export S3_ACCESS_KEY_ID="..."
 export S3_SECRET_ACCESS_KEY="..."
-export S3_REGION="ru-central1"                          # default
-export S3_KEY_PREFIX="polza-ai-docs/assets"             # default
-# Optional: override the public base URL if the bucket is behind a CDN.
-# export S3_PUBLIC_BASE="https://cdn.example/polza-ai-assets"
-# Optional: skip per-object ACL if the bucket uses a bucket policy instead.
-# export S3_NO_ACL=1
+export S3_REGION="ru-6"
+export S3_KEY_PREFIX="static/polza-docs/images"
+export S3_PUBLIC_BASE="https://s3.polza.ai"
+export S3_NO_ACL=1   # Selectel ignores ACLs; access is controlled by the proxy
 
 uv run --with boto3 python scripts/upload_images_to_s3.py
 ```
