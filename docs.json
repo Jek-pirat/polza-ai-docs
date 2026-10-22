@@ -47,6 +47,7 @@
             "group": "Продвинутое",
             "pages": [
               "gaidy/provider-selection",
+              "gaidy/unofficial-providers",
               "gaidy/tool-calling",
               "gaidy/structured-output",
               "gaidy/plugins",
