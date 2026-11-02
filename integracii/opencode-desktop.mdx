@@ -1,0 +1,320 @@
+---
+title: "OpenCode Desktop"
+description: "OpenCode — AI-ассистент для разработки, который помогает писать, редактировать и анализировать код прямо в вашем проекте."
+icon: "desktop"
+---
+
+С Polza.ai вы можете использовать модели Claude, GPT, DeepSeek и другие через единый API-ключ — без отдельных аккаунтов у каждого провайдера.
+
+В этой инструкции покажем, как подключить Polza.ai к настольному приложению OpenCode на macOS и Windows.
+
+<Note>
+  **Совместимость:** Windows 10/11 и macOS, OpenCode Desktop 2.x. Инструкция проверена на версии 2.2.0.
+</Note>
+
+<Note>
+  Это инструкция для настольного приложения OpenCode. Терминальный вариант (CLI) — отдельная страница: [OpenCode](/integracii/opencode).
+</Note>
+
+## Что понадобится
+
+- Установленное приложение [OpenCode](https://opencode.ai/).
+- Аккаунт Polza.ai с положительным балансом.
+- API-ключ Polza.ai.
+- Терминал на macOS или PowerShell на Windows — стандартные инструменты обеих систем.
+
+<Steps>
+  <Step title="Получите API-ключ Polza.ai">
+    Войдите в личный кабинет [Polza.ai](https://polza.ai/).
+
+    1. Перейдите в раздел «API-ключи».
+    2. Создайте новый ключ или используйте существующий.
+
+    Сохраните ключ — он понадобится для подключения OpenCode.
+
+    <Warning>
+      **Важно:** не передавайте API-ключ другим пользователям и не публикуйте его в открытом доступе.
+    </Warning>
+  </Step>
+
+  <Step title="Создайте файл конфигурации OpenCode">
+    <Tabs>
+      <Tab title="macOS">
+        Откройте приложение «Терминал» на macOS и выполните команду:
+
+        ```bash
+        mkdir -p ~/.config/opencode
+        touch ~/.config/opencode/opencode.json
+        open -e ~/.config/opencode/opencode.json
+        ```
+
+        Команды создадут папку конфигурации, если её ещё нет, и откроют файл `opencode.json` в TextEdit.
+      </Tab>
+      <Tab title="Windows">
+        Нажмите `Win` + `X` и выберите «Терминал» или «Windows PowerShell». Права администратора не требуются.
+
+        Выполните следующую команду:
+
+        ```powershell
+        New-Item -ItemType Directory -Force "$HOME\.config\opencode" | Out-Null
+        ```
+
+        Она создаст папку конфигурации OpenCode, если её ещё нет.
+
+        Теперь создайте файл `opencode.json`, если он отсутствует, и откройте его в Блокноте:
+
+        ```powershell
+        $file = "$HOME\.config\opencode\opencode.json"
+        if (!(Test-Path $file)) {
+            New-Item -ItemType File -Path $file | Out-Null
+        }
+        notepad $file
+        ```
+      </Tab>
+    </Tabs>
+
+    Файл конфигурации будет находиться по адресу:
+
+    <Tabs>
+      <Tab title="macOS">
+        ```text
+        ~/.config/opencode/opencode.json
+        ```
+      </Tab>
+      <Tab title="Windows">
+        ```text
+        %USERPROFILE%\.config\opencode\opencode.json
+        ```
+
+        Например:
+
+        ```text
+        C:\Users\Username\.config\opencode\opencode.json
+        ```
+      </Tab>
+    </Tabs>
+
+    <Note>
+      **Обратите внимание:** OpenCode использует файл `opencode.json` или `opencode.jsonc`. Файл `service.json` для этой настройки не подходит. Если файл `opencode.json` уже существует, не удаляйте его содержимое. Провайдера Polza.ai нужно добавить к текущим настройкам.
+    </Note>
+  </Step>
+
+  <Step title="Добавьте провайдера Polza.ai">
+    Если файл `opencode.json` пустой, вставьте в него следующую конфигурацию:
+
+    ```json
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "providers": {
+        "polza": {
+          "name": "Polza.ai",
+          "package": "@opencode/ai/providers/openai-compatible",
+          "settings": {
+            "baseURL": "https://polza.ai/api/v1",
+            "apiKey": "{file:~/.config/opencode/provider-key}"
+          },
+          "models": {
+            "claude-sonnet-5": {
+              "name": "Claude Sonnet 5",
+              "modelID": "anthropic/claude-sonnet-5"
+            },
+            "deepseek-v4-flash": {
+              "name": "DeepSeek V4 Flash",
+              "modelID": "deepseek/deepseek-v4-flash"
+            }
+          }
+        }
+      }
+    }
+    ```
+
+    Сохраните файл — `Cmd` + `S` на macOS или `Ctrl` + `S` на Windows.
+
+    В конфигурации указаны две модели для примера. Вы сможете добавить другие модели из каталога Polza.ai.
+
+    <Warning>
+      Если у вас уже настроены другие провайдеры, добавьте объект `polza` внутрь существующего раздела `providers`, не заменяя остальные настройки.
+    </Warning>
+  </Step>
+
+  <Step title="Подключите API-ключ Polza.ai">
+    Для безопасности сохраним API-ключ отдельно от основного файла конфигурации.
+
+    <Tabs>
+      <Tab title="macOS">
+        Вернитесь в Терминал и выполните:
+
+        ```bash
+        touch ~/.config/opencode/provider-key
+        open -e ~/.config/opencode/provider-key
+        ```
+
+        В открывшийся файл вставьте API-ключ Polza.ai.
+
+        В файле должен находиться только ключ — без кавычек и дополнительных символов.
+
+        Сохраните файл и закройте TextEdit.
+
+        Теперь ограничьте доступ к файлу с ключом:
+
+        ```bash
+        chmod 600 ~/.config/opencode/provider-key
+        ```
+
+        <Note>
+          **Готово!** OpenCode будет автоматически считывать API-ключ из этого файла.
+        </Note>
+      </Tab>
+      <Tab title="Windows">
+        Вернитесь в PowerShell и выполните:
+
+        ```powershell
+        notepad "$HOME\.config\opencode\provider-key"
+        ```
+
+        Если Windows сообщит, что файл не найден, согласитесь создать новый.
+
+        В открывшийся Блокнот вставьте API-ключ Polza.ai.
+
+        В файле должен находиться только ключ — без кавычек, пробелов и дополнительного текста.
+
+        Нажмите `Ctrl` + `S` и закройте Блокнот.
+
+        Храните файл в личной папке пользователя и не предоставляйте к нему общий доступ.
+      </Tab>
+    </Tabs>
+
+    Теперь API-ключ хранится в отдельном файле:
+
+    <Tabs>
+      <Tab title="macOS">
+        ```text
+        ~/.config/opencode/provider-key
+        ```
+      </Tab>
+      <Tab title="Windows">
+        ```text
+        %USERPROFILE%\.config\opencode\provider-key
+        ```
+      </Tab>
+    </Tabs>
+
+    OpenCode будет автоматически считывать его благодаря настройке:
+
+    ```json
+    {
+      "apiKey": "{file:~/.config/opencode/provider-key}"
+    }
+    ```
+
+    <Warning>
+      **Важно:** не переименовывайте файл в `provider-key.txt`. Убедитесь, что его название — именно `provider-key`, без расширения.
+    </Warning>
+  </Step>
+
+  <Step title="Перезапустите OpenCode">
+    После перезапуска проверьте подключение:
+
+    1. Полностью закройте приложение OpenCode.
+    2. Запустите его повторно.
+    3. Откройте меню выбора AI-моделей.
+    4. Найдите провайдера **Polza.ai**.
+    5. Выберите Claude Sonnet 5 или DeepSeek V4 Flash.
+
+    На macOS закройте приложение через `Cmd` + `Q`.
+
+    Отправьте тестовый запрос, например:
+
+    > «Привет! Расскажи, как ты можешь помочь мне с разработкой».
+
+    <Note>
+      Если модель отвечает, подключение работает.
+    </Note>
+  </Step>
+</Steps>
+
+## Как добавить другие модели
+
+Вы можете использовать дополнительные модели из [каталога Polza.ai](https://polza.ai/).
+
+<Tabs>
+  <Tab title="macOS">
+    Для этого откройте `opencode.json` и добавьте нужную модель в раздел `models` провайдера `polza`.
+  </Tab>
+  <Tab title="Windows">
+    Для этого откройте конфигурацию через PowerShell:
+
+    ```powershell
+    notepad "$HOME\.config\opencode\opencode.json"
+    ```
+
+    Внутри раздела `models` добавьте новую запись:
+  </Tab>
+</Tabs>
+
+```json
+{
+  "providers": {
+    "polza": {
+      "models": {
+        "my-model": {
+          "name": "Название модели",
+          "modelID": "provider/model-id"
+        }
+      }
+    }
+  }
+}
+```
+
+Замените `provider/model-id` на точный идентификатор модели из каталога Polza.ai.
+
+Поле `my-model` определяет локальный идентификатор модели в OpenCode, а `name` — её отображаемое название.
+
+<Note>
+  При добавлении записей соблюдайте синтаксис JSON: соседние объекты должны разделяться запятыми.
+</Note>
+
+После сохранения файла перезапустите приложение.
+
+## Если подключение не работает
+
+<AccordionGroup>
+  <Accordion title="Polza.ai не появляется в списке моделей">
+    Убедитесь, что:
+
+    - Файл называется `opencode.json`, а не `opencode.json.txt`.
+    - Он находится в `%USERPROFILE%\.config\opencode\` на Windows или `~/.config/opencode/` на macOS.
+    - Конфигурация содержит раздел `providers`.
+    - В JSON нет синтаксических ошибок.
+    - Используется OpenCode Desktop 2.x.
+  </Accordion>
+  <Accordion title="Ошибка авторизации">
+    Проверьте правильность API-ключа в файле `provider-key`. Убедитесь, что он действителен и не содержит лишних символов.
+  </Accordion>
+  <Accordion title="Модель отображается, но не отвечает">
+    Проверьте баланс Polza.ai, доступность выбранной модели и правильность её идентификатора `modelID`.
+  </Accordion>
+  <Accordion title="Пропали ранее настроенные провайдеры">
+    Проверьте, не заменили ли вы существующий раздел `providers` целиком. Все провайдеры должны находиться внутри одного объекта `providers`.
+  </Accordion>
+</AccordionGroup>
+
+## Готово!
+
+Теперь вы можете работать с моделями Polza.ai прямо в OpenCode.
+
+Запросы оплачиваются по фактическому использованию токенов, без отдельной подписки на каждую модель. Расходы можно отслеживать в личном кабинете Polza.ai.
+
+## Следующие шаги
+
+<CardGroup cols={2}>
+  <Card title="OpenCode Desktop" icon="desktop" href="/integracii/opencode-desktop">
+    Настольное приложение OpenCode — подключение к Polza.ai по шагам
+  </Card>
+  <Card title="Выбор провайдера" icon="server" href="/gaidy/provider-selection">
+    Как выбирать и переключаться между провайдерами моделей
+  </Card>
+</CardGroup>
+
+Если при подключении возникнут вопросы, напишите в поддержку Polza.ai — поможем разобраться.
