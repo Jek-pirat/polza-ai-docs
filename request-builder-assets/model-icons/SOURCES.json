@@ -1,0 +1,190 @@
+{
+  "catalog": "https://polza.ai/icons",
+  "source": {
+    "package": "@lobehub/icons-static-svg",
+    "version": "1.95.1",
+    "generatedAt": "2026-09-28T05:33:49.293Z"
+  },
+  "assets": [
+    {
+      "file": "aionlabs-color.svg",
+      "url": "https://icons.polza.ai/aionlabs-color.svg",
+      "sha256": "952136a5655ac70b3c6a2c9fe93dfc9b22591d0d415b1fa9afbe618bda815b91"
+    },
+    {
+      "file": "alibaba-color.svg",
+      "url": "https://icons.polza.ai/alibaba-color.svg",
+      "sha256": "48ee796c5b1da5f5f11dbd70c5c64a3f7efcb9eeb9022ae687d81fc813e942ee"
+    },
+    {
+      "file": "bedrock-color.svg",
+      "url": "https://icons.polza.ai/bedrock-color.svg",
+      "sha256": "a149a5678ce2b5d821759aabca7b815867027a8231a76723b3673580e8177a60"
+    },
+    {
+      "file": "claude-color.svg",
+      "url": "https://icons.polza.ai/claude-color.svg",
+      "sha256": "a3101f3047a119aa11825ad9369510f0c472428c8c52d420e31bc62db44a8364"
+    },
+    {
+      "file": "arcee-color.svg",
+      "url": "https://icons.polza.ai/arcee-color.svg",
+      "sha256": "41a8ed8278ec89d6a12ba5c96172ee30d6fadc93474792a8c95732ad7466233e"
+    },
+    {
+      "file": "flux.svg",
+      "url": "https://icons.polza.ai/flux.svg",
+      "sha256": "c7d557466f39a895b1cd0d233a64c092ef61ba052160af7db20af37464a9138a"
+    },
+    {
+      "file": "bytedance-color.svg",
+      "url": "https://icons.polza.ai/bytedance-color.svg",
+      "sha256": "3d37647be262c79b044e293bb1a4993202537e9f9ffdbd2bbe7e9fc5378d1005"
+    },
+    {
+      "file": "cohere-color.svg",
+      "url": "https://icons.polza.ai/cohere-color.svg",
+      "sha256": "84d0ee3cbe66f030e5a18cb2c86da9166ab2137c7a98781693bb1fbf31e392b9"
+    },
+    {
+      "file": "deepseek-color.svg",
+      "url": "https://icons.polza.ai/deepseek-color.svg",
+      "sha256": "deba5f98a5c1796e20fcac3149bcd7eb8a32f0bdd04d048819400b1f28bd1439"
+    },
+    {
+      "file": "elevenlabs.svg",
+      "url": "https://icons.polza.ai/elevenlabs.svg",
+      "sha256": "152a4a89fd5228924b6ccc91a72675966df35e3b69d1cf93a67b6866cf846584"
+    },
+    {
+      "file": "fireworks-color.svg",
+      "url": "https://icons.polza.ai/fireworks-color.svg",
+      "sha256": "f1c4782b86bc03a36323fd68ad6cc376c6b2ebe57b701cc958ebd6b8d37effd6"
+    },
+    {
+      "file": "gemini-color.svg",
+      "url": "https://icons.polza.ai/gemini-color.svg",
+      "sha256": "8ab0a9bafec11f7e69bcb9fc4ffd8f1bc927d1ddcbbb6ff36dee5ae8b5a9d602"
+    },
+    {
+      "file": "grok.svg",
+      "url": "https://icons.polza.ai/grok.svg",
+      "sha256": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95"
+    },
+    {
+      "file": "ibm.svg",
+      "url": "https://icons.polza.ai/ibm.svg",
+      "sha256": "62c37af8c3f191572921197a29c90687079e62d3033f503faae59cdc96af0fb2"
+    },
+    {
+      "file": "inception.svg",
+      "url": "https://icons.polza.ai/inception.svg",
+      "sha256": "aa491f544e8b77f520e7d7d1dc2362a2212dc6cd1a9373b97bb447c3f848d213"
+    },
+    {
+      "file": "kling-color.svg",
+      "url": "https://icons.polza.ai/kling-color.svg",
+      "sha256": "a8aa4def0eb1c3ca0f0528597d28fa495249aa710aa403d3c571c47c81c6150c"
+    },
+    {
+      "file": "meta-color.svg",
+      "url": "https://icons.polza.ai/meta-color.svg",
+      "sha256": "adf9f2c1a646ccd3a37ca8c2e7e5985d64630cd633f4b95fba393d1d44e0578c"
+    },
+    {
+      "file": "microsoft-color.svg",
+      "url": "https://icons.polza.ai/microsoft-color.svg",
+      "sha256": "5cfb0ffa3231313c2968b5e3fedfcce8e2e96c61bde4572384c3889a77a80350"
+    },
+    {
+      "file": "minimax-color.svg",
+      "url": "https://icons.polza.ai/minimax-color.svg",
+      "sha256": "7f7187fa6d9b341ac5f22f6c5a970523afb439dc45566d64eb4f4b9b604d6b01"
+    },
+    {
+      "file": "mistral-color.svg",
+      "url": "https://icons.polza.ai/mistral-color.svg",
+      "sha256": "722f74b289d95486b43662fe24fa883b333701296f618406cd0ed502299170b6"
+    },
+    {
+      "file": "morph-color.svg",
+      "url": "https://icons.polza.ai/morph-color.svg",
+      "sha256": "994eb5b52da00eca9f4fa4d4c11a7fa1c1fa37dd9f58f9a97b951f0ea23a9f59"
+    },
+    {
+      "file": "nousresearch.svg",
+      "url": "https://icons.polza.ai/nousresearch.svg",
+      "sha256": "4dc3c7cdf13d2f0bdf16b872d76293f048010a00f580df68a85e1f9c4e500e5d"
+    },
+    {
+      "file": "nvidia-color.svg",
+      "url": "https://icons.polza.ai/nvidia-color.svg",
+      "sha256": "8c941e4eb8b782eccaaea1240c059d20be33ab8eda28d7c9ed9b53ac802fe683"
+    },
+    {
+      "file": "openai.svg",
+      "url": "https://icons.polza.ai/openai.svg",
+      "sha256": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186"
+    },
+    {
+      "file": "perceptron.svg",
+      "url": "https://icons.polza.ai/perceptron.svg",
+      "sha256": "a4e8b5f06318c9027f62874fb0a125b9d10eceda3fe2e3acd85faf7b6a5b9c26"
+    },
+    {
+      "file": "perplexity-color.svg",
+      "url": "https://icons.polza.ai/perplexity-color.svg",
+      "sha256": "8353f3ab20822f1a933224b0ea32cc39f0c32d5740f4af8c254b0f418e0a3a70"
+    },
+    {
+      "file": "poolside-color.svg",
+      "url": "https://icons.polza.ai/poolside-color.svg",
+      "sha256": "5df24fb33e364f9762952088b1ffd9b537dd3ddb6d3e1e5fec6893898eb29667"
+    },
+    {
+      "file": "qwen-color.svg",
+      "url": "https://icons.polza.ai/qwen-color.svg",
+      "sha256": "77f5768c66d08ce1d3d14e73373975c1bc0454be88c81523ddd0ffd7e2974029"
+    },
+    {
+      "file": "reka.svg",
+      "url": "https://icons.polza.ai/reka.svg",
+      "sha256": "533ae212f32db47ffc179c272fb6c7fb0cc71e516a68ad3b58c435b0e8f20063"
+    },
+    {
+      "file": "relace.svg",
+      "url": "https://icons.polza.ai/relace.svg",
+      "sha256": "06f3327a757c927e828f9328b8587f38aa350b3582ba62bcbf8371243e05a6f6"
+    },
+    {
+      "file": "sakana-color.svg",
+      "url": "https://icons.polza.ai/sakana-color.svg",
+      "sha256": "a635d8f584502c97d16b7682664c2420331c770445ae181f1c2673d6d97d0f38"
+    },
+    {
+      "file": "stepfun-color.svg",
+      "url": "https://icons.polza.ai/stepfun-color.svg",
+      "sha256": "f55afc0e6004c8854f76bd5bbcc0fce9fc0ed9316691d54fb02d088c24fab40d"
+    },
+    {
+      "file": "tencent-color.svg",
+      "url": "https://icons.polza.ai/tencent-color.svg",
+      "sha256": "7c370ad4b75e3f30d0fa7da71f90466a0ee95a887189479aa9df414079b50eb6"
+    },
+    {
+      "file": "upstage-color.svg",
+      "url": "https://icons.polza.ai/upstage-color.svg",
+      "sha256": "206e23f9143cd308998cddae36b674651d7435eebc357c596dacb2b39228a485"
+    },
+    {
+      "file": "yandex.svg",
+      "url": "https://icons.polza.ai/yandex.svg",
+      "sha256": "390d3758093817548b39bc60f9400369708c290093059796b25d4604813d3450"
+    },
+    {
+      "file": "zai.svg",
+      "url": "https://icons.polza.ai/zai.svg",
+      "sha256": "e748cb5108ce37b116d7a5ba97d37e0ae97eadf6849b0de11afb248e244a01e1"
+    }
+  ]
+}

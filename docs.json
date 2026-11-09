@@ -58,7 +58,8 @@
               "osobennosti/usage",
               "gaidy/oauth-pkce",
               "gaidy/mcp",
-              "osobennosti/aliases"
+              "osobennosti/aliases",
+              "instrumenty/request-builder"
             ]
           },
           {
@@ -372,5 +373,6 @@
       "title": "Страница не найдена",
       "description": "Такой страницы в документации нет — возможно, адрес изменился. Начните с [быстрого старта](/glavnoe/quickstart) или напишите в [поддержку](/glavnoe/support)."
     }
-  }
+  },
+  "packages": {}
 }
